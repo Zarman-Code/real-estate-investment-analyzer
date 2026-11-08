@@ -1,0 +1,2485 @@
+{
+  "deal.acquisition_fees_pct": [
+    {
+      "key": "deal.acquisition_fees_pct",
+      "value": 0.075,
+      "unit": "fraction",
+      "source_name": "Hypothèse de l'agent (config/defaults.yaml)",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:29+00:00",
+      "method": "assumption",
+      "status": "assumption",
+      "confidence": "low",
+      "notes": "Hypothèse : droits d'enregistrement d'un immeuble de bureaux ancien en Île-de-France (environ 6,9 %) plus émoluments et frais de notaire. À confirmer par le notaire (taux départemental, régime TVA éventuel). Fourchette retenue : [0.069 ; 0.08]. Recherche infructueuse : hypothèse appliquée par validate_research."
+    }
+  ],
+  "deal.asking_price_eur": [
+    {
+      "key": "deal.asking_price_eur",
+      "value": 28000000.0,
+      "unit": "€",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "hors droits"
+    }
+  ],
+  "deal.capex_eur_per_sqm_after": [
+    {
+      "key": "deal.capex_eur_per_sqm_after",
+      "value": 4000.0,
+      "unit": "€ HT/m²",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "par m² de surface utile après travaux"
+    }
+  ],
+  "deal.current_leases": [
+    {
+      "key": "deal.current_leases",
+      "value": [
+        {
+          "tenant": "Locataire en place",
+          "surface_sqm": 1200.0,
+          "rent_eur_sqm_year": 520.0,
+          "rent_basis": "HT HC",
+          "end_date": "2027-06-30"
+        }
+      ],
+      "unit": null,
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": null
+    }
+  ],
+  "deal.debt_margin_bps": [
+    {
+      "key": "deal.debt_margin_bps",
+      "value": 300.0,
+      "unit": "bps",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "marge sur Euribor3M"
+    }
+  ],
+  "deal.dpe_current": [
+    {
+      "key": "deal.dpe_current",
+      "value": "F",
+      "unit": null,
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": null
+    }
+  ],
+  "deal.dpe_target": [
+    {
+      "key": "deal.dpe_target",
+      "value": "B",
+      "unit": null,
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": null
+    }
+  ],
+  "deal.fees_and_contingency_pct_of_capex": [
+    {
+      "key": "deal.fees_and_contingency_pct_of_capex",
+      "value": 0.15,
+      "unit": "fraction",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "honoraires et aléas, en % du coût des travaux"
+    }
+  ],
+  "deal.ltv": [
+    {
+      "key": "deal.ltv",
+      "value": 0.6,
+      "unit": "fraction",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "« environ 60 % de dette » ; assiette à préciser en phase 4"
+    }
+  ],
+  "deal.occupancy_current_pct": [
+    {
+      "key": "deal.occupancy_current_pct",
+      "value": 0.4,
+      "unit": "fraction",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": null
+    }
+  ],
+  "deal.surface_after_sqm": [
+    {
+      "key": "deal.surface_after_sqm",
+      "value": 3200.0,
+      "unit": "m²",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "surface utile après travaux"
+    }
+  ],
+  "deal.surface_before_sqm": [
+    {
+      "key": "deal.surface_before_sqm",
+      "value": 3000.0,
+      "unit": "m²",
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "surface utile avant travaux"
+    }
+  ],
+  "deal.timeline": [
+    {
+      "key": "deal.timeline",
+      "value": {
+        "acquisition_date": "2027-01-01",
+        "works_start": "2027-07-01",
+        "works_duration_months": 18,
+        "letting_year": 2029,
+        "exit_year": 2029
+      },
+      "unit": null,
+      "source_name": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+      "source_url": null,
+      "data_date": "2026-11",
+      "retrieved_at": "2026-11-08T16:26:27+00:00",
+      "method": "user_input",
+      "status": "ok",
+      "confidence": "high",
+      "notes": null
+    }
+  ],
+  "energy.dpe_comparables": [
+    {
+      "key": "energy.dpe_comparables",
+      "value": {
+        "radius_m": 500,
+        "n_dpe": 1621,
+        "n_with_label": 1006,
+        "by_class": {
+          "A": 83,
+          "B": 94,
+          "C": 280,
+          "D": 255,
+          "E": 124,
+          "F": 41,
+          "G": 129
+        },
+        "share_b_or_better": 0.1759,
+        "share_f_or_worse": 0.169,
+        "median_kwhep_m2_year": 217.3,
+        "median_construction_year": 1945,
+        "by_sector": {
+          "W : Administrations, banques, bureaux": {
+            "A": 27,
+            "B": 42,
+            "C": 132,
+            "D": 122,
+            "E": 24,
+            "F": 5,
+            "G": 5
+          },
+          "locaux d'entreprise (bureaux)": {
+            "A": 18,
+            "B": 25,
+            "C": 46,
+            "D": 43,
+            "E": 16,
+            "F": 2,
+            "G": 7
+          },
+          "autres tertiaires non ERP": {
+            "A": 10,
+            "B": 9,
+            "C": 39,
+            "D": 35,
+            "E": 29,
+            "F": 5,
+            "G": 26
+          },
+          "N : Restaurants et débits de boisson": {
+            "A": 6,
+            "B": 2,
+            "C": 3,
+            "D": 13,
+            "E": 13,
+            "F": 11,
+            "G": 56
+          },
+          "M : Magasins de vente, centres commerciaux": {
+            "A": 7,
+            "B": 7,
+            "C": 22,
+            "D": 21,
+            "E": 26,
+            "F": 14,
+            "G": 21
+          },
+          "J : Structures d’accueil pour personnes âgées ou personnes handicapées": {
+            "A": 2,
+            "B": 5,
+            "C": 18,
+            "D": 7,
+            "E": 2,
+            "F": 1,
+            "G": 5
+          },
+          "O : Hôtels et pensions de famille": {
+            "A": 4,
+            "B": 2,
+            "C": 10,
+            "D": 7,
+            "E": 0,
+            "F": 1,
+            "G": 4
+          },
+          "GHW : Bureaux": {
+            "A": 7,
+            "B": 1,
+            "C": 3,
+            "D": 3,
+            "E": 3,
+            "F": 1,
+            "G": 0
+          }
+        }
+      },
+      "unit": null,
+      "source_name": "ADEME - DPE tertiaire (depuis juillet 2021)",
+      "source_url": "https://data.ademe.fr/data-fair/api/v1/datasets/j9ol0fwjqckyf49vr29nknbu/lines?geo_distance=2.340481%3A48.872592%3A500&size=1000&select=etiquette_dpe%2Cetiquette_ges%2Csecteur_activite%2Cannee_construction%2Csurface_utile%2Cconso_kwhep_m2_an%2Cdate_etablissement_dpe&after=382.6074411797782%2C34575339391363%2C992523",
+      "data_date": "2026-11-08",
+      "retrieved_at": "2026-11-08T14:56:35+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "1621 DPE tertiaires établis depuis juillet 2021 dans un rayon de 500 m ; part des étiquettes A-B : 18% ; tous secteurs d'activité (bureaux non isolés, libellé à confirmer) ; avertissement ADEME : base non représentative du parc"
+    }
+  ],
+  "index.bt01": [
+    {
+      "key": "index.bt01",
+      "value": {
+        "last": 139.4,
+        "period": "2026-08",
+        "yoy": 0.042633,
+        "frequency": "M",
+        "series": [
+          {
+            "period": "2015-01",
+            "value": 104.1
+          },
+          {
+            "period": "2015-02",
+            "value": 104.5
+          },
+          {
+            "period": "2015-03",
+            "value": 104.5
+          },
+          {
+            "period": "2015-04",
+            "value": 104.5
+          },
+          {
+            "period": "2015-05",
+            "value": 104.7
+          },
+          {
+            "period": "2015-06",
+            "value": 104.6
+          },
+          {
+            "period": "2015-07",
+            "value": 104.6
+          },
+          {
+            "period": "2015-08",
+            "value": 104.5
+          },
+          {
+            "period": "2015-09",
+            "value": 104.0
+          },
+          {
+            "period": "2015-10",
+            "value": 103.8
+          },
+          {
+            "period": "2015-11",
+            "value": 103.7
+          },
+          {
+            "period": "2015-12",
+            "value": 103.6
+          },
+          {
+            "period": "2016-01",
+            "value": 103.3
+          },
+          {
+            "period": "2016-02",
+            "value": 103.2
+          },
+          {
+            "period": "2016-03",
+            "value": 103.2
+          },
+          {
+            "period": "2016-04",
+            "value": 103.3
+          },
+          {
+            "period": "2016-05",
+            "value": 103.8
+          },
+          {
+            "period": "2016-06",
+            "value": 104.4
+          },
+          {
+            "period": "2016-07",
+            "value": 104.5
+          },
+          {
+            "period": "2016-08",
+            "value": 104.7
+          },
+          {
+            "period": "2016-09",
+            "value": 104.8
+          },
+          {
+            "period": "2016-10",
+            "value": 104.8
+          },
+          {
+            "period": "2016-11",
+            "value": 104.9
+          },
+          {
+            "period": "2016-12",
+            "value": 105.2
+          },
+          {
+            "period": "2017-01",
+            "value": 105.7
+          },
+          {
+            "period": "2017-02",
+            "value": 105.9
+          },
+          {
+            "period": "2017-03",
+            "value": 106.1
+          },
+          {
+            "period": "2017-04",
+            "value": 106.3
+          },
+          {
+            "period": "2017-05",
+            "value": 106.2
+          },
+          {
+            "period": "2017-06",
+            "value": 106.2
+          },
+          {
+            "period": "2017-07",
+            "value": 106.3
+          },
+          {
+            "period": "2017-08",
+            "value": 106.6
+          },
+          {
+            "period": "2017-09",
+            "value": 106.7
+          },
+          {
+            "period": "2017-10",
+            "value": 107.1
+          },
+          {
+            "period": "2017-11",
+            "value": 107.2
+          },
+          {
+            "period": "2017-12",
+            "value": 107.4
+          },
+          {
+            "period": "2018-01",
+            "value": 108.0
+          },
+          {
+            "period": "2018-02",
+            "value": 108.3
+          },
+          {
+            "period": "2018-03",
+            "value": 108.5
+          },
+          {
+            "period": "2018-04",
+            "value": 108.7
+          },
+          {
+            "period": "2018-05",
+            "value": 109.0
+          },
+          {
+            "period": "2018-06",
+            "value": 109.0
+          },
+          {
+            "period": "2018-07",
+            "value": 109.2
+          },
+          {
+            "period": "2018-08",
+            "value": 109.5
+          },
+          {
+            "period": "2018-09",
+            "value": 109.5
+          },
+          {
+            "period": "2018-10",
+            "value": 109.7
+          },
+          {
+            "period": "2018-11",
+            "value": 109.7
+          },
+          {
+            "period": "2018-12",
+            "value": 109.7
+          },
+          {
+            "period": "2019-01",
+            "value": 110.1
+          },
+          {
+            "period": "2019-02",
+            "value": 110.3
+          },
+          {
+            "period": "2019-03",
+            "value": 110.6
+          },
+          {
+            "period": "2019-04",
+            "value": 110.9
+          },
+          {
+            "period": "2019-05",
+            "value": 111.0
+          },
+          {
+            "period": "2019-06",
+            "value": 111.2
+          },
+          {
+            "period": "2019-07",
+            "value": 111.2
+          },
+          {
+            "period": "2019-08",
+            "value": 111.6
+          },
+          {
+            "period": "2019-09",
+            "value": 111.4
+          },
+          {
+            "period": "2019-10",
+            "value": 111.4
+          },
+          {
+            "period": "2019-11",
+            "value": 111.3
+          },
+          {
+            "period": "2019-12",
+            "value": 111.6
+          },
+          {
+            "period": "2020-01",
+            "value": 111.8
+          },
+          {
+            "period": "2020-02",
+            "value": 111.8
+          },
+          {
+            "period": "2020-03",
+            "value": 111.7
+          },
+          {
+            "period": "2020-04",
+            "value": 111.5
+          },
+          {
+            "period": "2020-05",
+            "value": 111.7
+          },
+          {
+            "period": "2020-06",
+            "value": 112.0
+          },
+          {
+            "period": "2020-07",
+            "value": 112.2
+          },
+          {
+            "period": "2020-08",
+            "value": 112.5
+          },
+          {
+            "period": "2020-09",
+            "value": 112.9
+          },
+          {
+            "period": "2020-10",
+            "value": 112.9
+          },
+          {
+            "period": "2020-11",
+            "value": 113.2
+          },
+          {
+            "period": "2020-12",
+            "value": 113.6
+          },
+          {
+            "period": "2021-01",
+            "value": 114.4
+          },
+          {
+            "period": "2021-02",
+            "value": 115.2
+          },
+          {
+            "period": "2021-03",
+            "value": 116.1
+          },
+          {
+            "period": "2021-04",
+            "value": 116.3
+          },
+          {
+            "period": "2021-05",
+            "value": 116.6
+          },
+          {
+            "period": "2021-06",
+            "value": 117.5
+          },
+          {
+            "period": "2021-07",
+            "value": 118.5
+          },
+          {
+            "period": "2021-08",
+            "value": 118.5
+          },
+          {
+            "period": "2021-09",
+            "value": 118.6
+          },
+          {
+            "period": "2021-10",
+            "value": 119.1
+          },
+          {
+            "period": "2021-11",
+            "value": 119.5
+          },
+          {
+            "period": "2021-12",
+            "value": 119.7
+          },
+          {
+            "period": "2022-01",
+            "value": 121.4
+          },
+          {
+            "period": "2022-02",
+            "value": 122.2
+          },
+          {
+            "period": "2022-03",
+            "value": 123.3
+          },
+          {
+            "period": "2022-04",
+            "value": 124.9
+          },
+          {
+            "period": "2022-05",
+            "value": 126.4
+          },
+          {
+            "period": "2022-06",
+            "value": 127.2
+          },
+          {
+            "period": "2022-07",
+            "value": 127.7
+          },
+          {
+            "period": "2022-08",
+            "value": 127.9
+          },
+          {
+            "period": "2022-09",
+            "value": 127.1
+          },
+          {
+            "period": "2022-10",
+            "value": 127.2
+          },
+          {
+            "period": "2022-11",
+            "value": 127.2
+          },
+          {
+            "period": "2022-12",
+            "value": 126.8
+          },
+          {
+            "period": "2023-01",
+            "value": 128.4
+          },
+          {
+            "period": "2023-02",
+            "value": 129.7
+          },
+          {
+            "period": "2023-03",
+            "value": 130.6
+          },
+          {
+            "period": "2023-04",
+            "value": 130.5
+          },
+          {
+            "period": "2023-05",
+            "value": 130.3
+          },
+          {
+            "period": "2023-06",
+            "value": 130.3
+          },
+          {
+            "period": "2023-07",
+            "value": 129.7
+          },
+          {
+            "period": "2023-08",
+            "value": 130.6
+          },
+          {
+            "period": "2023-09",
+            "value": 130.2
+          },
+          {
+            "period": "2023-10",
+            "value": 130.3
+          },
+          {
+            "period": "2023-11",
+            "value": 130.3
+          },
+          {
+            "period": "2023-12",
+            "value": 130.6
+          },
+          {
+            "period": "2024-01",
+            "value": 130.8
+          },
+          {
+            "period": "2024-02",
+            "value": 131.0
+          },
+          {
+            "period": "2024-03",
+            "value": 130.9
+          },
+          {
+            "period": "2024-04",
+            "value": 131.0
+          },
+          {
+            "period": "2024-05",
+            "value": 131.3
+          },
+          {
+            "period": "2024-06",
+            "value": 131.2
+          },
+          {
+            "period": "2024-07",
+            "value": 131.2
+          },
+          {
+            "period": "2024-08",
+            "value": 131.7
+          },
+          {
+            "period": "2024-09",
+            "value": 131.2
+          },
+          {
+            "period": "2024-10",
+            "value": 131.2
+          },
+          {
+            "period": "2024-11",
+            "value": 131.5
+          },
+          {
+            "period": "2024-12",
+            "value": 131.7
+          },
+          {
+            "period": "2025-01",
+            "value": 132.0
+          },
+          {
+            "period": "2025-02",
+            "value": 132.1
+          },
+          {
+            "period": "2025-03",
+            "value": 132.5
+          },
+          {
+            "period": "2025-04",
+            "value": 132.9
+          },
+          {
+            "period": "2025-05",
+            "value": 132.9
+          },
+          {
+            "period": "2025-06",
+            "value": 133.1
+          },
+          {
+            "period": "2025-07",
+            "value": 133.4
+          },
+          {
+            "period": "2025-08",
+            "value": 133.7
+          },
+          {
+            "period": "2025-09",
+            "value": 133.3
+          },
+          {
+            "period": "2025-10",
+            "value": 133.2
+          },
+          {
+            "period": "2025-11",
+            "value": 133.3
+          },
+          {
+            "period": "2025-12",
+            "value": 133.7
+          },
+          {
+            "period": "2026-01",
+            "value": 134.7
+          },
+          {
+            "period": "2026-02",
+            "value": 135.1
+          },
+          {
+            "period": "2026-03",
+            "value": 135.9
+          },
+          {
+            "period": "2026-04",
+            "value": 137.5
+          },
+          {
+            "period": "2026-05",
+            "value": 137.9
+          },
+          {
+            "period": "2026-06",
+            "value": 138.3
+          },
+          {
+            "period": "2026-07",
+            "value": 138.9
+          },
+          {
+            "period": "2026-08",
+            "value": 139.4
+          }
+        ]
+      },
+      "unit": "indice",
+      "source_name": "INSEE BDM - Index bâtiment tous corps d'état (BT01)",
+      "source_url": "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/001710986?startPeriod=2015-01",
+      "data_date": "2026-08",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "Index du bâtiment - BT01 - Tous corps d'état - Base 2010 (idbank 001710986), dernière observation 2026-08 = 139.4, variation sur un an +4.26% ; série mise à jour le 2026-10-15"
+    }
+  ],
+  "index.icc": [
+    {
+      "key": "index.icc",
+      "value": {
+        "last": 2103.0,
+        "period": "2026-Q2",
+        "yoy": 0.00815,
+        "frequency": "T",
+        "series": [
+          {
+            "period": "2015-Q1",
+            "value": 1632.0
+          },
+          {
+            "period": "2015-Q2",
+            "value": 1614.0
+          },
+          {
+            "period": "2015-Q3",
+            "value": 1608.0
+          },
+          {
+            "period": "2015-Q4",
+            "value": 1629.0
+          },
+          {
+            "period": "2016-Q1",
+            "value": 1615.0
+          },
+          {
+            "period": "2016-Q2",
+            "value": 1622.0
+          },
+          {
+            "period": "2016-Q3",
+            "value": 1643.0
+          },
+          {
+            "period": "2016-Q4",
+            "value": 1645.0
+          },
+          {
+            "period": "2017-Q1",
+            "value": 1650.0
+          },
+          {
+            "period": "2017-Q2",
+            "value": 1664.0
+          },
+          {
+            "period": "2017-Q3",
+            "value": 1670.0
+          },
+          {
+            "period": "2017-Q4",
+            "value": 1667.0
+          },
+          {
+            "period": "2018-Q1",
+            "value": 1671.0
+          },
+          {
+            "period": "2018-Q2",
+            "value": 1699.0
+          },
+          {
+            "period": "2018-Q3",
+            "value": 1733.0
+          },
+          {
+            "period": "2018-Q4",
+            "value": 1703.0
+          },
+          {
+            "period": "2019-Q1",
+            "value": 1728.0
+          },
+          {
+            "period": "2019-Q2",
+            "value": 1746.0
+          },
+          {
+            "period": "2019-Q3",
+            "value": 1746.0
+          },
+          {
+            "period": "2019-Q4",
+            "value": 1769.0
+          },
+          {
+            "period": "2020-Q1",
+            "value": 1770.0
+          },
+          {
+            "period": "2020-Q2",
+            "value": 1753.0
+          },
+          {
+            "period": "2020-Q3",
+            "value": 1765.0
+          },
+          {
+            "period": "2020-Q4",
+            "value": 1795.0
+          },
+          {
+            "period": "2021-Q1",
+            "value": 1822.0
+          },
+          {
+            "period": "2021-Q2",
+            "value": 1821.0
+          },
+          {
+            "period": "2021-Q3",
+            "value": 1886.0
+          },
+          {
+            "period": "2021-Q4",
+            "value": 1886.0
+          },
+          {
+            "period": "2022-Q1",
+            "value": 1948.0
+          },
+          {
+            "period": "2022-Q2",
+            "value": 1966.0
+          },
+          {
+            "period": "2022-Q3",
+            "value": 2037.0
+          },
+          {
+            "period": "2022-Q4",
+            "value": 2052.0
+          },
+          {
+            "period": "2023-Q1",
+            "value": 2077.0
+          },
+          {
+            "period": "2023-Q2",
+            "value": 2123.0
+          },
+          {
+            "period": "2023-Q3",
+            "value": 2106.0
+          },
+          {
+            "period": "2023-Q4",
+            "value": 2162.0
+          },
+          {
+            "period": "2024-Q1",
+            "value": 2227.0
+          },
+          {
+            "period": "2024-Q2",
+            "value": 2205.0
+          },
+          {
+            "period": "2024-Q3",
+            "value": 2143.0
+          },
+          {
+            "period": "2024-Q4",
+            "value": 2108.0
+          },
+          {
+            "period": "2025-Q1",
+            "value": 2146.0
+          },
+          {
+            "period": "2025-Q2",
+            "value": 2086.0
+          },
+          {
+            "period": "2025-Q3",
+            "value": 2056.0
+          },
+          {
+            "period": "2025-Q4",
+            "value": 2058.0
+          },
+          {
+            "period": "2026-Q1",
+            "value": 2084.0
+          },
+          {
+            "period": "2026-Q2",
+            "value": 2103.0
+          }
+        ]
+      },
+      "unit": "indice",
+      "source_name": "INSEE BDM - Indice du coût de la construction (ICC)",
+      "source_url": "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/000008630?startPeriod=2015-Q1",
+      "data_date": "2026-Q2",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "Indice du coût de la construction des immeubles à usage d'habitation (ICC) (idbank 000008630), dernière observation 2026-Q2 = 2103.0, variation sur un an +0.81% ; série mise à jour le 2026-09-23"
+    }
+  ],
+  "index.ilat": [
+    {
+      "key": "index.ilat",
+      "value": {
+        "last": 138.01,
+        "period": "2026-Q2",
+        "yoy": 0.006271,
+        "frequency": "T",
+        "series": [
+          {
+            "period": "2015-Q1",
+            "value": 107.69
+          },
+          {
+            "period": "2015-Q2",
+            "value": 107.86
+          },
+          {
+            "period": "2015-Q3",
+            "value": 107.98
+          },
+          {
+            "period": "2015-Q4",
+            "value": 108.16
+          },
+          {
+            "period": "2016-Q1",
+            "value": 108.2
+          },
+          {
+            "period": "2016-Q2",
+            "value": 108.41
+          },
+          {
+            "period": "2016-Q3",
+            "value": 108.69
+          },
+          {
+            "period": "2016-Q4",
+            "value": 108.94
+          },
+          {
+            "period": "2017-Q1",
+            "value": 109.41
+          },
+          {
+            "period": "2017-Q2",
+            "value": 109.89
+          },
+          {
+            "period": "2017-Q3",
+            "value": 110.36
+          },
+          {
+            "period": "2017-Q4",
+            "value": 110.88
+          },
+          {
+            "period": "2018-Q1",
+            "value": 111.45
+          },
+          {
+            "period": "2018-Q2",
+            "value": 112.01
+          },
+          {
+            "period": "2018-Q3",
+            "value": 112.74
+          },
+          {
+            "period": "2018-Q4",
+            "value": 113.3
+          },
+          {
+            "period": "2019-Q1",
+            "value": 113.88
+          },
+          {
+            "period": "2019-Q2",
+            "value": 114.47
+          },
+          {
+            "period": "2019-Q3",
+            "value": 114.85
+          },
+          {
+            "period": "2019-Q4",
+            "value": 115.43
+          },
+          {
+            "period": "2020-Q1",
+            "value": 115.53
+          },
+          {
+            "period": "2020-Q2",
+            "value": 114.33
+          },
+          {
+            "period": "2020-Q3",
+            "value": 114.23
+          },
+          {
+            "period": "2020-Q4",
+            "value": 114.06
+          },
+          {
+            "period": "2021-Q1",
+            "value": 114.87
+          },
+          {
+            "period": "2021-Q2",
+            "value": 116.46
+          },
+          {
+            "period": "2021-Q3",
+            "value": 117.61
+          },
+          {
+            "period": "2021-Q4",
+            "value": 118.97
+          },
+          {
+            "period": "2022-Q1",
+            "value": 120.73
+          },
+          {
+            "period": "2022-Q2",
+            "value": 122.65
+          },
+          {
+            "period": "2022-Q3",
+            "value": 124.53
+          },
+          {
+            "period": "2022-Q4",
+            "value": 126.66
+          },
+          {
+            "period": "2023-Q1",
+            "value": 128.59
+          },
+          {
+            "period": "2023-Q2",
+            "value": 130.64
+          },
+          {
+            "period": "2023-Q3",
+            "value": 132.15
+          },
+          {
+            "period": "2023-Q4",
+            "value": 133.69
+          },
+          {
+            "period": "2024-Q1",
+            "value": 135.13
+          },
+          {
+            "period": "2024-Q2",
+            "value": 136.45
+          },
+          {
+            "period": "2024-Q3",
+            "value": 137.12
+          },
+          {
+            "period": "2024-Q4",
+            "value": 137.29
+          },
+          {
+            "period": "2025-Q1",
+            "value": 137.29
+          },
+          {
+            "period": "2025-Q2",
+            "value": 137.15
+          },
+          {
+            "period": "2025-Q3",
+            "value": 137.07
+          },
+          {
+            "period": "2025-Q4",
+            "value": 137.21
+          },
+          {
+            "period": "2026-Q1",
+            "value": 137.42
+          },
+          {
+            "period": "2026-Q2",
+            "value": 138.01
+          }
+        ]
+      },
+      "unit": "indice",
+      "source_name": "INSEE BDM - Indice des loyers des activités tertiaires (ILAT)",
+      "source_url": "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/001617112?startPeriod=2015-Q1",
+      "data_date": "2026-Q2",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "Indice des loyers des activités tertiaires (ILAT) - Base 100 au 1er trimestre 2010 (idbank 001617112), dernière observation 2026-Q2 = 138.01, variation sur un an +0.63% ; série mise à jour le 2026-09-23"
+    }
+  ],
+  "location.reference_point": [
+    {
+      "key": "location.reference_point",
+      "value": {
+        "lon": 2.340481,
+        "lat": 48.872592,
+        "citycode": "75109",
+        "postcode": "75009",
+        "label": "6 Rue Drouot 75009 Paris",
+        "district": "Paris 9e Arrondissement",
+        "score": 0.97,
+        "match_type": "housenumber"
+      },
+      "unit": null,
+      "source_name": "IGN Géoplateforme - Géocodage",
+      "source_url": "https://data.geopf.fr/geocodage/search?q=6+rue+Drouot%2C+75009+Paris&index=address&limit=1",
+      "data_date": "2026-11-08",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "géocodage de « Mairie du 9e arrondissement » (6 rue Drouot, 75009 Paris) -> « 6 Rue Drouot 75009 Paris », score 0.97"
+    }
+  ],
+  "market.average_rent": [
+    {
+      "key": "market.average_rent",
+      "value": {
+        "last": 779.42,
+        "period": "2026-T3",
+        "yoy": -0.042298,
+        "last_4_quarters": [
+          711.4,
+          756.78,
+          716.69,
+          779.42
+        ],
+        "series": [
+          {
+            "period": "2023-T4",
+            "value": 682.55
+          },
+          {
+            "period": "2024-T1",
+            "value": 708.72
+          },
+          {
+            "period": "2024-T2",
+            "value": 742.14
+          },
+          {
+            "period": "2024-T3",
+            "value": 757.49
+          },
+          {
+            "period": "2024-T4",
+            "value": 747.78
+          },
+          {
+            "period": "2025-T1",
+            "value": 755.79
+          },
+          {
+            "period": "2025-T2",
+            "value": 742.54
+          },
+          {
+            "period": "2025-T3",
+            "value": 813.85
+          },
+          {
+            "period": "2025-T4",
+            "value": 711.4
+          },
+          {
+            "period": "2026-T1",
+            "value": 756.78
+          },
+          {
+            "period": "2026-T2",
+            "value": 716.69
+          },
+          {
+            "period": "2026-T3",
+            "value": 779.42
+          }
+        ]
+      },
+      "unit": "€/m²/an",
+      "source_name": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+      "source_url": "https://www.immostat.com/wp-content/uploads/2026/10/2026_10_06-ImmoStatoutputwebindic-1.xlsx",
+      "data_date": "2026-T3",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "ImmoStat, zone « Paris Centre Ouest » utilisée pour le sous-marché « Paris QCA » (correspondance approximative, voir defaults.yaml) ; loyer moyen de SECONDE MAIN : borne basse pour un immeuble restructuré ; unité €/m²/an selon les conventions ImmoStat (non écrite dans le fichier) ; T3 2026 = 779, -4.2% sur un an"
+    }
+  ],
+  "market.dvf_price_per_sqm": [
+    {
+      "key": "market.dvf_price_per_sqm",
+      "value": {
+        "median": 8744,
+        "q1": 5000,
+        "q3": 11501,
+        "n": 434,
+        "radius_m": 500,
+        "bbox": "2.33365,48.86810,2.34731,48.87708",
+        "since": "2021",
+        "received": 488,
+        "count_api": 488,
+        "dropped": {
+          "nature": 6,
+          "doublon": 0,
+          "hors_p5_p95": 48
+        },
+        "by_year": {
+          "2021": {
+            "median": 7562,
+            "n": 84
+          },
+          "2022": {
+            "median": 9129,
+            "n": 76
+          },
+          "2023": {
+            "median": 10170,
+            "n": 80
+          },
+          "2024": {
+            "median": 7865,
+            "n": 95
+          },
+          "2025": {
+            "median": 7947,
+            "n": 99
+          }
+        },
+        "large_lots": {
+          "median": 8416,
+          "q1": 5241,
+          "q3": 12405,
+          "n": 40,
+          "min_sqm": 500.0
+        }
+      },
+      "unit": "€/m²",
+      "source_name": "DVF+ open data (Cerema, API données foncières)",
+      "source_url": "https://apidf-preprod.cerema.fr/dvf_opendata/mutations/?anneemut_min=2021&codtypbien=14&in_bbox=2.33365%2C48.86810%2C2.34731%2C48.87708&page=3&page_size=200",
+      "data_date": "2025-12-31",
+      "retrieved_at": "2026-11-08T14:56:34+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "DVF+ open data, locaux d'ACTIVITÉ (codtypbien ['14']), ventes hors VEFA depuis 2021, carré de ~1000 m de côté autour du point de référence ; 434 transactions retenues sur 488 reçues ({'nature': 6, 'doublon': 0, 'hors_p5_p95': 48}) ; mélange bureaux et commerces, état des immeubles inconnu, pas de loyers"
+    },
+    {
+      "key": "market.dvf_price_per_sqm",
+      "value": {
+        "median": 9059.0,
+        "n": 25036,
+        "n_companies": 13545,
+        "n_variants": 4,
+        "variants_range": [
+          8670.0,
+          9568.0
+        ],
+        "variants": [
+          {
+            "label": "PARIS",
+            "postcode": "75009",
+            "median": 9059.0,
+            "n_transactions": 25036,
+            "n_companies": 13545
+          },
+          {
+            "label": "PARIS 09",
+            "postcode": "75009",
+            "median": 9509.0,
+            "n_transactions": 156,
+            "n_companies": 72
+          },
+          {
+            "label": "PARIS",
+            "postcode": null,
+            "median": 9568.0,
+            "n_transactions": 17,
+            "n_companies": 8
+          },
+          {
+            "label": "PARIS 9",
+            "postcode": "75009",
+            "median": 8670.0,
+            "n_transactions": 16,
+            "n_companies": 11
+          }
+        ]
+      },
+      "unit": "€/m²",
+      "source_name": "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF",
+      "source_url": "https://static.data.gouv.fr/resources/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/20261003-050036/prix-immobilier-locaux-entreprises-communes.csv",
+      "data_date": "2026-10-03",
+      "retrieved_at": "2026-11-08T14:56:34+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "low",
+      "notes": "Firmio  millésime 2026-10-03  commune 75109 : 4 lignes pour le même code (médianes de 8 670 à 9 568 €/m²)  ligne retenue « PARIS » (25036 transactions déclarées  compteur incohérent avec les volumes DVF) ; MÉLANGE bureaux  commerces et entrepôts ; ventes rattachées à un SIREN uniquement ; période non précisée ; niveau relatif  pas une valeur d'expertise"
+    }
+  ],
+  "market.future_supply": [
+    {
+      "key": "market.future_supply",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['market_reports']"
+    }
+  ],
+  "market.immediate_supply": [
+    {
+      "key": "market.immediate_supply",
+      "value": {
+        "last": 680000.0,
+        "period": "2026-T3",
+        "yoy": 0.325536,
+        "last_4_quarters": [
+          540000.0,
+          572000.0,
+          674000.0,
+          680000.0
+        ],
+        "series": [
+          {
+            "period": "2023-T4",
+            "value": 241000.0
+          },
+          {
+            "period": "2024-T1",
+            "value": 247000.0
+          },
+          {
+            "period": "2024-T2",
+            "value": 282000.0
+          },
+          {
+            "period": "2024-T3",
+            "value": 316000.0
+          },
+          {
+            "period": "2024-T4",
+            "value": 376000.0
+          },
+          {
+            "period": "2025-T1",
+            "value": 425000.0
+          },
+          {
+            "period": "2025-T2",
+            "value": 467000.0
+          },
+          {
+            "period": "2025-T3",
+            "value": 513000.0
+          },
+          {
+            "period": "2025-T4",
+            "value": 540000.0
+          },
+          {
+            "period": "2026-T1",
+            "value": 572000.0
+          },
+          {
+            "period": "2026-T2",
+            "value": 674000.0
+          },
+          {
+            "period": "2026-T3",
+            "value": 680000.0
+          }
+        ]
+      },
+      "unit": "m²",
+      "source_name": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+      "source_url": "https://www.immostat.com/wp-content/uploads/2026/10/2026_10_06-ImmoStatoutputwebindic-1.xlsx",
+      "data_date": "2026-T3",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "ImmoStat, zone « Paris Centre Ouest » utilisée pour le sous-marché « Paris QCA » (correspondance approximative, voir defaults.yaml) ; offre immédiate (définition ImmoStat) ; unité m² selon les conventions ImmoStat (non écrite dans le fichier) ; T3 2026 = 680,000, +32.6% sur un an"
+    }
+  ],
+  "market.incentives": [
+    {
+      "key": "market.incentives",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['market_reports']"
+    }
+  ],
+  "market.investment_price_per_sqm": [
+    {
+      "key": "market.investment_price_per_sqm",
+      "value": {
+        "last": 13812.0,
+        "period": "2026-T3",
+        "yoy": -0.096605,
+        "last_4_quarters": [
+          14539.0,
+          14225.0,
+          14170.0,
+          13812.0
+        ],
+        "series": [
+          {
+            "period": "2023-T4",
+            "value": 16958.0
+          },
+          {
+            "period": "2024-T1",
+            "value": 15912.0
+          },
+          {
+            "period": "2024-T2",
+            "value": 14903.0
+          },
+          {
+            "period": "2024-T3",
+            "value": 14637.0
+          },
+          {
+            "period": "2024-T4",
+            "value": 15491.0
+          },
+          {
+            "period": "2025-T1",
+            "value": 15083.0
+          },
+          {
+            "period": "2025-T2",
+            "value": 14888.0
+          },
+          {
+            "period": "2025-T3",
+            "value": 15289.0
+          },
+          {
+            "period": "2025-T4",
+            "value": 14539.0
+          },
+          {
+            "period": "2026-T1",
+            "value": 14225.0
+          },
+          {
+            "period": "2026-T2",
+            "value": 14170.0
+          },
+          {
+            "period": "2026-T3",
+            "value": 13812.0
+          }
+        ]
+      },
+      "unit": "€/m²",
+      "source_name": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+      "source_url": "https://www.immostat.com/wp-content/uploads/2026/10/2026_10_06-ImmoStatoutputwebindic-1.xlsx",
+      "data_date": "2026-T3",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "ImmoStat, zone « Paris Centre Ouest » utilisée pour le sous-marché « Paris QCA » (correspondance approximative, voir defaults.yaml) ; prix moyen des transactions d'investissement en bureaux ; unité €/m² selon les conventions ImmoStat (non écrite dans le fichier) ; T3 2026 = 13,812, -9.7% sur un an"
+    }
+  ],
+  "market.prime_rent": [
+    {
+      "key": "market.prime_rent",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['market_reports']"
+    }
+  ],
+  "market.prime_yield": [
+    {
+      "key": "market.prime_yield",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['market_reports']"
+    }
+  ],
+  "market.take_up": [
+    {
+      "key": "market.take_up",
+      "value": {
+        "last": 99323.0,
+        "period": "2026-T3",
+        "yoy": -0.07499,
+        "last_4_quarters": [
+          111501.0,
+          89155.0,
+          108052.0,
+          99323.0
+        ],
+        "series": [
+          {
+            "period": "2023-T4",
+            "value": 191132.0
+          },
+          {
+            "period": "2024-T1",
+            "value": 124196.0
+          },
+          {
+            "period": "2024-T2",
+            "value": 98490.0
+          },
+          {
+            "period": "2024-T3",
+            "value": 117077.0
+          },
+          {
+            "period": "2024-T4",
+            "value": 122646.0
+          },
+          {
+            "period": "2025-T1",
+            "value": 120013.0
+          },
+          {
+            "period": "2025-T2",
+            "value": 95105.0
+          },
+          {
+            "period": "2025-T3",
+            "value": 107375.0
+          },
+          {
+            "period": "2025-T4",
+            "value": 111501.0
+          },
+          {
+            "period": "2026-T1",
+            "value": 89155.0
+          },
+          {
+            "period": "2026-T2",
+            "value": 108052.0
+          },
+          {
+            "period": "2026-T3",
+            "value": 99323.0
+          }
+        ],
+        "rolling_12m": 408031.0
+      },
+      "unit": "m²",
+      "source_name": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+      "source_url": "https://www.immostat.com/wp-content/uploads/2026/10/2026_10_06-ImmoStatoutputwebindic-1.xlsx",
+      "data_date": "2026-T3",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "ImmoStat, zone « Paris Centre Ouest » utilisée pour le sous-marché « Paris QCA » (correspondance approximative, voir defaults.yaml) ; surface placée sur le trimestre ; unité m² selon les conventions ImmoStat (non écrite dans le fichier) ; T3 2026 = 99,323, -7.5% sur un an"
+    }
+  ],
+  "market.vacancy": [
+    {
+      "key": "market.vacancy",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['market_reports']"
+    }
+  ],
+  "rates.euribor_3m": [
+    {
+      "key": "rates.euribor_3m",
+      "value": {
+        "last": 0.026346818,
+        "period": "2026-10",
+        "avg_12m": 0.022655980416666666,
+        "min_12m": 0.020113,
+        "max_12m": 0.026350455,
+        "series": [
+          {
+            "period": "2015-01",
+            "value": 0.000626667
+          },
+          {
+            "period": "2015-02",
+            "value": 0.000482
+          },
+          {
+            "period": "2015-03",
+            "value": 0.000271818
+          },
+          {
+            "period": "2015-04",
+            "value": 4.7000000000000004e-05
+          },
+          {
+            "period": "2015-05",
+            "value": -0.00010368399999999999
+          },
+          {
+            "period": "2015-06",
+            "value": -0.00013909100000000001
+          },
+          {
+            "period": "2015-07",
+            "value": -0.00018739100000000002
+          },
+          {
+            "period": "2015-08",
+            "value": -0.00027666699999999997
+          },
+          {
+            "period": "2015-09",
+            "value": -0.000370455
+          },
+          {
+            "period": "2015-10",
+            "value": -0.000535909
+          },
+          {
+            "period": "2015-11",
+            "value": -0.00087619
+          },
+          {
+            "period": "2015-12",
+            "value": -0.0012631819999999998
+          },
+          {
+            "period": "2016-01",
+            "value": -0.0014615000000000001
+          },
+          {
+            "period": "2016-02",
+            "value": -0.001835714
+          },
+          {
+            "period": "2016-03",
+            "value": -0.002285238
+          },
+          {
+            "period": "2016-04",
+            "value": -0.002491905
+          },
+          {
+            "period": "2016-05",
+            "value": -0.002571818
+          },
+          {
+            "period": "2016-06",
+            "value": -0.002679091
+          },
+          {
+            "period": "2016-07",
+            "value": -0.002945238
+          },
+          {
+            "period": "2016-08",
+            "value": -0.002982174
+          },
+          {
+            "period": "2016-09",
+            "value": -0.003016364
+          },
+          {
+            "period": "2016-10",
+            "value": -0.00309
+          },
+          {
+            "period": "2016-11",
+            "value": -0.003126818
+          },
+          {
+            "period": "2016-12",
+            "value": -0.003157619
+          },
+          {
+            "period": "2017-01",
+            "value": -0.003255455
+          },
+          {
+            "period": "2017-02",
+            "value": -0.003286
+          },
+          {
+            "period": "2017-03",
+            "value": -0.0032934780000000003
+          },
+          {
+            "period": "2017-04",
+            "value": -0.003303889
+          },
+          {
+            "period": "2017-05",
+            "value": -0.003294545
+          },
+          {
+            "period": "2017-06",
+            "value": -0.0033
+          },
+          {
+            "period": "2017-07",
+            "value": -0.003304286
+          },
+          {
+            "period": "2017-08",
+            "value": -0.00329087
+          },
+          {
+            "period": "2017-09",
+            "value": -0.00329381
+          },
+          {
+            "period": "2017-10",
+            "value": -0.003295455
+          },
+          {
+            "period": "2017-11",
+            "value": -0.00329
+          },
+          {
+            "period": "2017-12",
+            "value": -0.003278947
+          },
+          {
+            "period": "2018-01",
+            "value": -0.003284545
+          },
+          {
+            "period": "2018-02",
+            "value": -0.003285
+          },
+          {
+            "period": "2018-03",
+            "value": -0.003279048
+          },
+          {
+            "period": "2018-04",
+            "value": -0.0032845
+          },
+          {
+            "period": "2018-05",
+            "value": -0.003252273
+          },
+          {
+            "period": "2018-06",
+            "value": -0.003220476
+          },
+          {
+            "period": "2018-07",
+            "value": -0.003207273
+          },
+          {
+            "period": "2018-08",
+            "value": -0.00319
+          },
+          {
+            "period": "2018-09",
+            "value": -0.0031885000000000004
+          },
+          {
+            "period": "2018-10",
+            "value": -0.0031769570000000002
+          },
+          {
+            "period": "2018-11",
+            "value": -0.003163636
+          },
+          {
+            "period": "2018-12",
+            "value": -0.0031189470000000004
+          },
+          {
+            "period": "2019-01",
+            "value": -0.00308
+          },
+          {
+            "period": "2019-02",
+            "value": -0.0030845
+          },
+          {
+            "period": "2019-03",
+            "value": -0.003091905
+          },
+          {
+            "period": "2019-04",
+            "value": -0.0031045
+          },
+          {
+            "period": "2019-05",
+            "value": -0.003118636
+          },
+          {
+            "period": "2019-06",
+            "value": -0.0032890000000000003
+          },
+          {
+            "period": "2019-07",
+            "value": -0.0036486960000000003
+          },
+          {
+            "period": "2019-08",
+            "value": -0.004076817999999999
+          },
+          {
+            "period": "2019-09",
+            "value": -0.004175714
+          },
+          {
+            "period": "2019-10",
+            "value": -0.004128696
+          },
+          {
+            "period": "2019-11",
+            "value": -0.004012857
+          },
+          {
+            "period": "2019-12",
+            "value": -0.003947
+          },
+          {
+            "period": "2020-01",
+            "value": -0.003911364
+          },
+          {
+            "period": "2020-02",
+            "value": -0.0040885
+          },
+          {
+            "period": "2020-03",
+            "value": -0.0041663640000000005
+          },
+          {
+            "period": "2020-04",
+            "value": -0.0025405
+          },
+          {
+            "period": "2020-05",
+            "value": -0.0027195
+          },
+          {
+            "period": "2020-06",
+            "value": -0.00376
+          },
+          {
+            "period": "2020-07",
+            "value": -0.004441304
+          },
+          {
+            "period": "2020-08",
+            "value": -0.004797143
+          },
+          {
+            "period": "2020-09",
+            "value": -0.004913636
+          },
+          {
+            "period": "2020-10",
+            "value": -0.005091364
+          },
+          {
+            "period": "2020-11",
+            "value": -0.0052085709999999995
+          },
+          {
+            "period": "2020-12",
+            "value": -0.0053809090000000006
+          },
+          {
+            "period": "2021-01",
+            "value": -0.005471500000000001
+          },
+          {
+            "period": "2021-02",
+            "value": -0.005411
+          },
+          {
+            "period": "2021-03",
+            "value": -0.00539087
+          },
+          {
+            "period": "2021-04",
+            "value": -0.0053815
+          },
+          {
+            "period": "2021-05",
+            "value": -0.005400952
+          },
+          {
+            "period": "2021-06",
+            "value": -0.0054290910000000005
+          },
+          {
+            "period": "2021-07",
+            "value": -0.005448182
+          },
+          {
+            "period": "2021-08",
+            "value": -0.005475909
+          },
+          {
+            "period": "2021-09",
+            "value": -0.005450455
+          },
+          {
+            "period": "2021-10",
+            "value": -0.005498095
+          },
+          {
+            "period": "2021-11",
+            "value": -0.005673635999999999
+          },
+          {
+            "period": "2021-12",
+            "value": -0.005819565
+          },
+          {
+            "period": "2022-01",
+            "value": -0.005601429
+          },
+          {
+            "period": "2022-02",
+            "value": -0.005314999999999999
+          },
+          {
+            "period": "2022-03",
+            "value": -0.004954348
+          },
+          {
+            "period": "2022-04",
+            "value": -0.004478947
+          },
+          {
+            "period": "2022-05",
+            "value": -0.003857273
+          },
+          {
+            "period": "2022-06",
+            "value": -0.002392273
+          },
+          {
+            "period": "2022-07",
+            "value": 0.00036618999999999996
+          },
+          {
+            "period": "2022-08",
+            "value": 0.003947391
+          },
+          {
+            "period": "2022-09",
+            "value": 0.010108635999999999
+          },
+          {
+            "period": "2022-10",
+            "value": 0.014276667
+          },
+          {
+            "period": "2022-11",
+            "value": 0.018252273
+          },
+          {
+            "period": "2022-12",
+            "value": 0.020634762
+          },
+          {
+            "period": "2023-01",
+            "value": 0.023448636000000002
+          },
+          {
+            "period": "2023-02",
+            "value": 0.026403500000000003
+          },
+          {
+            "period": "2023-03",
+            "value": 0.029105652000000003
+          },
+          {
+            "period": "2023-04",
+            "value": 0.031794444
+          },
+          {
+            "period": "2023-05",
+            "value": 0.033717273
+          },
+          {
+            "period": "2023-06",
+            "value": 0.035358636
+          },
+          {
+            "period": "2023-07",
+            "value": 0.036718095
+          },
+          {
+            "period": "2023-08",
+            "value": 0.037803043
+          },
+          {
+            "period": "2023-09",
+            "value": 0.038800476
+          },
+          {
+            "period": "2023-10",
+            "value": 0.039676364
+          },
+          {
+            "period": "2023-11",
+            "value": 0.039716364
+          },
+          {
+            "period": "2023-12",
+            "value": 0.039348947
+          },
+          {
+            "period": "2024-01",
+            "value": 0.039252727
+          },
+          {
+            "period": "2024-02",
+            "value": 0.039231905
+          },
+          {
+            "period": "2024-03",
+            "value": 0.039230999999999995
+          },
+          {
+            "period": "2024-04",
+            "value": 0.038853333000000004
+          },
+          {
+            "period": "2024-05",
+            "value": 0.038126818
+          },
+          {
+            "period": "2024-06",
+            "value": 0.037245
+          },
+          {
+            "period": "2024-07",
+            "value": 0.036848261
+          },
+          {
+            "period": "2024-08",
+            "value": 0.035475909
+          },
+          {
+            "period": "2024-09",
+            "value": 0.034337143
+          },
+          {
+            "period": "2024-10",
+            "value": 0.031666086999999996
+          },
+          {
+            "period": "2024-11",
+            "value": 0.030067619
+          },
+          {
+            "period": "2024-12",
+            "value": 0.028246000000000004
+          },
+          {
+            "period": "2025-01",
+            "value": 0.027042727000000003
+          },
+          {
+            "period": "2025-02",
+            "value": 0.0252495
+          },
+          {
+            "period": "2025-03",
+            "value": 0.024424286
+          },
+          {
+            "period": "2025-04",
+            "value": 0.022494
+          },
+          {
+            "period": "2025-05",
+            "value": 0.020872381
+          },
+          {
+            "period": "2025-06",
+            "value": 0.01983619
+          },
+          {
+            "period": "2025-07",
+            "value": 0.019863478
+          },
+          {
+            "period": "2025-08",
+            "value": 0.020210952
+          },
+          {
+            "period": "2025-09",
+            "value": 0.020272727
+          },
+          {
+            "period": "2025-10",
+            "value": 0.020344348
+          },
+          {
+            "period": "2025-11",
+            "value": 0.0204165
+          },
+          {
+            "period": "2025-12",
+            "value": 0.020484285999999997
+          },
+          {
+            "period": "2026-01",
+            "value": 0.020277273
+          },
+          {
+            "period": "2026-02",
+            "value": 0.020113
+          },
+          {
+            "period": "2026-03",
+            "value": 0.021094091000000002
+          },
+          {
+            "period": "2026-04",
+            "value": 0.021753
+          },
+          {
+            "period": "2026-05",
+            "value": 0.022261000000000003
+          },
+          {
+            "period": "2026-06",
+            "value": 0.02339
+          },
+          {
+            "period": "2026-07",
+            "value": 0.024253913
+          },
+          {
+            "period": "2026-08",
+            "value": 0.025131429
+          },
+          {
+            "period": "2026-09",
+            "value": 0.026350455
+          },
+          {
+            "period": "2026-10",
+            "value": 0.026346818
+          }
+        ]
+      },
+      "unit": "fraction",
+      "source_name": "BCE - Euribor 3 mois",
+      "source_url": "https://data-api.ecb.europa.eu/service/data/FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA?format=csvdata&startPeriod=2015-01",
+      "data_date": "2026-10",
+      "retrieved_at": "2026-11-08T14:56:32+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "high",
+      "notes": "Euribor 3-month - Historical close, average of observations through period ; 2026-10 = 2.6347% (valeur publiée 2.6347 en PCPA, convertie en fraction) ; moyenne MENSUELLE historique, pas une prévision ; vérifier la convention du contrat de crédit"
+    }
+  ],
+  "risk.catnat": [
+    {
+      "key": "risk.catnat",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['georisques']"
+    }
+  ],
+  "risk.natural_risks": [
+    {
+      "key": "risk.natural_risks",
+      "value": null,
+      "unit": null,
+      "source_name": "Agent - recherche",
+      "source_url": null,
+      "data_date": null,
+      "retrieved_at": "2026-11-08T16:26:28+00:00",
+      "method": "none",
+      "status": "missing",
+      "confidence": "low",
+      "notes": "connecteur non implémenté pour ['georisques']"
+    }
+  ],
+  "urbanism.plu_constraints": [
+    {
+      "key": "urbanism.plu_constraints",
+      "value": {
+        "arrondissement": 9,
+        "n_polygons": 53,
+        "n_with_height": 22,
+        "max_height": 12.0,
+        "median_height": 3.0,
+        "n_with_footprint": 0,
+        "median_footprint_pct": null
+      },
+      "unit": null,
+      "source_name": "Paris Open Data - PLU bioclimatique, emprises et hauteurs constructibles",
+      "source_url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_ecm/records?where=n_sq_ca%3D9&select=hauteur%2Cemprise%2Cn_sq_ca&limit=100&offset=0",
+      "data_date": "2026-11-08",
+      "retrieved_at": "2026-11-08T14:56:34+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "PLU bioclimatique, emprises constructibles maximales, 9e arrondissement (périmètre arrondissement : filtre par rayon non validé) ; 53 polygones dont 22 avec une hauteur indiquée (unité non précisée par le jeu de données) ; contrainte réglementaire générale, PAS la règle applicable à la parcelle : ne confirme ni l'extension ni le rooftop"
+    }
+  ],
+  "urbanism.protected_buildings": [
+    {
+      "key": "urbanism.protected_buildings",
+      "value": {
+        "arrondissement": 9,
+        "count": 216,
+        "total_area_sqm": 138397.3
+      },
+      "unit": "bâtiments",
+      "source_name": "Paris Open Data - PLU bioclimatique, bâtiments protégés",
+      "source_url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records?where=n_sq_ca%3D9&select=n_sq_ca%2Cst_area_shape&limit=100&offset=200",
+      "data_date": "2026-11-08",
+      "retrieved_at": "2026-11-08T14:56:35+00:00",
+      "method": "api",
+      "status": "ok",
+      "confidence": "medium",
+      "notes": "PLU bioclimatique, bâtiments protégés (protections patrimoniales), 9e arrondissement : 216 emprises protégées ; indicateur de contexte, ne dit pas si l'immeuble lui-même est protégé"
+    }
+  ]
+}

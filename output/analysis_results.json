@@ -1,0 +1,4361 @@
+{
+  "analysis_date": "2026-11-08",
+  "asset": "Hélios",
+  "financials": {
+    "status": "complete",
+    "missing_inputs": [],
+    "inputs": [
+      {
+        "name": "price",
+        "value": 28000000.0,
+        "unit": "€",
+        "origin": "config",
+        "reference": "asset_config.json:operation.asking_price_eur",
+        "note": null
+      },
+      {
+        "name": "surface_before",
+        "value": 3000.0,
+        "unit": "m²",
+        "origin": "config",
+        "reference": "asset_config.json:asset.surface_before_sqm",
+        "note": null
+      },
+      {
+        "name": "surface_after",
+        "value": 3200.0,
+        "unit": "m²",
+        "origin": "config",
+        "reference": "asset_config.json:asset.surface_after_sqm",
+        "note": null
+      },
+      {
+        "name": "capex_per_sqm",
+        "value": 4000.0,
+        "unit": "€/m²",
+        "origin": "config",
+        "reference": "asset_config.json:operation.capex_eur_per_sqm_after",
+        "note": null
+      },
+      {
+        "name": "fees_contingency_pct",
+        "value": 0.15,
+        "unit": "fraction",
+        "origin": "config",
+        "reference": "asset_config.json:operation.fees_and_contingency_pct_of_capex",
+        "note": null
+      },
+      {
+        "name": "ltv",
+        "value": 0.6,
+        "unit": "fraction",
+        "origin": "config",
+        "reference": "asset_config.json:operation.financing.ltv",
+        "note": null
+      },
+      {
+        "name": "margin_bps",
+        "value": 300.0,
+        "unit": "bps",
+        "origin": "config",
+        "reference": "asset_config.json:operation.financing.margin_bps",
+        "note": null
+      },
+      {
+        "name": "current_leases",
+        "value": [
+          {
+            "surface_sqm": 1200.0,
+            "rent_eur_sqm_year": 520.0,
+            "end_date": "2027-06-30"
+          }
+        ],
+        "unit": null,
+        "origin": "config",
+        "reference": "asset_config.json:operation.current_leases",
+        "note": null
+      },
+      {
+        "name": "exit_quarter",
+        "value": 4.0,
+        "unit": "trimestre",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.exit_quarter",
+        "note": "Cession au dernier trimestre de l'année de sortie du case, une fois l'actif loué."
+      },
+      {
+        "name": "exit_date",
+        "value": "2029-12-31",
+        "unit": null,
+        "origin": "computed",
+        "reference": "timeline.exit_year + exit_quarter",
+        "note": null
+      },
+      {
+        "name": "acq_fees_pct",
+        "value": 0.075,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "deal.acquisition_fees_pct",
+        "note": "Hypothèse de l'agent (config/defaults.yaml) (None)"
+      },
+      {
+        "name": "euribor",
+        "value": 0.026346818,
+        "unit": "fraction",
+        "origin": "registry",
+        "reference": "rates.euribor_3m",
+        "note": "dernière valeur observée, supposée constante (pas de courbe à terme)"
+      },
+      {
+        "name": "relet_rent",
+        "value": 779.42,
+        "unit": "€/m²/an",
+        "origin": "registry",
+        "reference": "market.average_rent",
+        "note": "Sans loyer prime sourcé, le loyer de relocation est le loyer moyen du sous-marché publié par ImmoStat (seconde main) : référence prudente pour un immeuble restructuré."
+      },
+      {
+        "name": "exit_yield",
+        "value": 0.056430640023168256,
+        "unit": "fraction",
+        "origin": "computed",
+        "reference": "market.average_rent / market.investment_price_per_sqm",
+        "note": "rendement implicite 779 / 13812 = 0.0564 ; Sans taux de rendement prime sourcé, le taux de sortie est le rendement implicite du marché : loyer moyen / prix moyen d'investissement bureaux du même sous-marché (ImmoStat), deux données sourcées. C'est un rendement BRUT moyen (seconde main), donc prudent pour un immeuble restructuré."
+      },
+      {
+        "name": "firm_lease_term_months",
+        "value": 72.0,
+        "unit": "mois",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.firm_lease_term_months",
+        "note": "Bail 3/6/9 avec engagement ferme de 6 ans : base de conversion des mesures d'accompagnement en mois de franchise."
+      },
+      {
+        "name": "incentives_if_missing",
+        "value": 0.2,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.incentives_if_missing",
+        "note": "Utilisée SEULEMENT si market.incentives (donnée P2) est introuvable : mesures d'accompagnement en part de la valeur du bail ferme, niveau usuel pour des bureaux parisiens, à remplacer par la donnée de marché."
+      },
+      {
+        "name": "rent_free_months",
+        "value": 14.4,
+        "unit": "mois",
+        "origin": "computed",
+        "reference": "incentives x bail ferme",
+        "note": "20% x 72 mois"
+      },
+      {
+        "name": "letting_void_months",
+        "value": 6.0,
+        "unit": "mois",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.letting_void_months",
+        "note": "Délai de commercialisation entre la livraison des travaux et la prise d'effet du bail (plan : +6 / +12 mois en sensibilité)."
+      },
+      {
+        "name": "stabilised_occupancy",
+        "value": 0.95,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.stabilised_occupancy",
+        "note": "Taux d'occupation à la stabilisation (plan : 95 % central, 85-100 % en sensibilité)."
+      },
+      {
+        "name": "non_recoverable_pct",
+        "value": 0.05,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.non_recoverable_pct",
+        "note": "Charges non refacturables au locataire (gestion, gros travaux, part non récupérable), en % du loyer."
+      },
+      {
+        "name": "vacant_holding_cost_eur_sqm_year",
+        "value": 70.0,
+        "unit": "€/m²/an",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.vacant_holding_cost_eur_sqm_year",
+        "note": "Coût de portage des surfaces vides : taxe foncière, taxe annuelle sur les bureaux en Île-de-France, assurance, charges d'un immeuble vacant. À confirmer par l'historique de charges demandé au vendeur."
+      },
+      {
+        "name": "marketing_fees_pct_annual_rent",
+        "value": 0.15,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.marketing_fees_pct_annual_rent",
+        "note": "Honoraires de commercialisation, en % du loyer facial annuel du bail signé."
+      },
+      {
+        "name": "sale_costs_pct",
+        "value": 0.015,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.sale_costs_pct",
+        "note": "Frais de cession (honoraires d'arrangement, conseils), en % de la valeur brute de sortie."
+      },
+      {
+        "name": "debt_arrangement_fee_pct",
+        "value": 0.01,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.debt_arrangement_fee_pct",
+        "note": "Commission d'arrangement de la dette, en % du montant de la facilité."
+      },
+      {
+        "name": "euribor_floor",
+        "value": 0.0,
+        "unit": "fraction",
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.euribor_floor",
+        "note": "Plancher usuel des contrats de crédit : l'Euribor retenu n'est jamais négatif."
+      },
+      {
+        "name": "ltv_basis",
+        "value": "total_cost",
+        "unit": null,
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.ltv_basis",
+        "note": "« Environ 60 % de dette » (case) appliqué au coût total (acquisition et travaux), financé au fur et à mesure des décaissements ; variante « price » (60 % du seul prix d'acquisition) testée en sensibilité."
+      },
+      {
+        "name": "interest_mode",
+        "value": "capitalised",
+        "unit": null,
+        "origin": "assumption",
+        "reference": "defaults.yaml:financial_assumptions.interest_mode",
+        "note": "Intérêts capitalisés pendant l'opération et remboursés à la cession (crédit de restructuration)."
+      }
+    ],
+    "targets": {
+      "levered_irr": 0.15,
+      "margin_on_cost": 0.15
+    },
+    "results": {
+      "timeline": {
+        "acquisition": "2027-01-01",
+        "works_start": "2027-07-01",
+        "delivery": "2029-01-01",
+        "lease_start": "2029-07-01",
+        "rent_free_months": 14.4,
+        "exit": "2029-12-31",
+        "months": 36,
+        "quarters": 12,
+        "let_at_exit": true
+      },
+      "acquisition": {
+        "price": 28000000.0,
+        "acquisition_fees": 2100000.0,
+        "acquisition_cost": 30100000.0,
+        "price_per_sqm_before": 9333.333333333334,
+        "price_per_sqm_after": 8750.0
+      },
+      "revenue": {
+        "current_leases_income": 312000.0,
+        "relet_rent_eur_sqm_year": 779.42,
+        "let_rent_annual_headline": 2369436.8,
+        "let_rent_annual_effective": 1895549.44,
+        "noi_stabilised": 2239764.9599999995,
+        "noi_effective": 1789571.9679999999,
+        "new_lease_income_before_exit": 0.0
+      },
+      "cost": {
+        "acquisition_price": 28000000.0,
+        "acquisition_fees": 2100000.0,
+        "capex": 12800000.0,
+        "fees_contingency": 1920000.0,
+        "holding_costs": 495600.0,
+        "marketing_fees": 355415.51999999996,
+        "interest": 4168031.9526604656,
+        "arrangement_fee": 274003.50864,
+        "total_cost": 50113050.981300466,
+        "total_cost_per_sqm_after": 15660.328431656395,
+        "income_during_operation": 252764.08
+      },
+      "exit": {
+        "gross_value": 39690582.26311872,
+        "deductions": {
+          "remaining_rent_free": 1658605.7599999995,
+          "remaining_void_rent": 0.0,
+          "remaining_void_holding": 0.0,
+          "unspent_marketing": 0.0
+        },
+        "deductions_total": 1658605.7599999995,
+        "sale_costs": 595358.7339467808,
+        "net_value": 37436617.769171946,
+        "gross_value_per_sqm": 12403.3069572246,
+        "exit_yield": 0.056430640023168256
+      },
+      "profitability": {
+        "yield_on_cost": 0.04469424463570899,
+        "yield_on_cost_effective": 0.03571069677373611,
+        "exit_yield": 0.056430640023168256,
+        "spread_bps": -117.36395387459262,
+        "margin": -12676433.21212852,
+        "margin_on_cost": -0.2529567241247932
+      },
+      "returns": {
+        "unlevered_irr": -0.0745593812566353,
+        "levered_irr": -0.3801404639022852,
+        "equity_multiple": 0.32946289709679594,
+        "equity_profit": -12423669.132128518,
+        "peak_equity": 18278936.900640003,
+        "max_debt": 31568382.81666046,
+        "debt_repaid_at_exit": 31568382.81666046,
+        "ltv_at_exit": 0.7953620485430477,
+        "interest_rate": 0.056346818
+      },
+      "cashflows": [
+        {
+          "period": "T0",
+          "date": "2027-01-01",
+          "unlevered": -30100000.0,
+          "debt_draw": 18060000.0,
+          "interest": 0.0,
+          "debt_balance": 18060000.0,
+          "equity": -12314003.50864
+        },
+        {
+          "period": "2027-T1",
+          "date": "2027-04-01",
+          "unlevered": 124500.0,
+          "debt_draw": 0.0,
+          "interest": 254405.88327,
+          "debt_balance": 18314405.88327,
+          "equity": 124500.0
+        },
+        {
+          "period": "2027-T2",
+          "date": "2027-07-01",
+          "unlevered": 124500.0,
+          "debt_draw": 0.0,
+          "interest": 257989.62377068598,
+          "debt_balance": 18572395.507040687,
+          "equity": 124500.0
+        },
+        {
+          "period": "2027-T3",
+          "date": "2027-10-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 261623.84736480983,
+          "debt_balance": 20337519.354405496,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2027-T4",
+          "date": "2028-01-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 286488.625408541,
+          "debt_balance": 22127507.979814038,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2028-T1",
+          "date": "2028-04-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 311703.6662330323,
+          "debt_balance": 23942711.64604707,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2028-T2",
+          "date": "2028-07-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 337273.9038865737,
+          "debt_balance": 25783485.549933642,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2028-T3",
+          "date": "2028-10-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 363204.3419219352,
+          "debt_balance": 27650189.891855575,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2028-T4",
+          "date": "2029-01-01",
+          "unlevered": -2505833.333333333,
+          "debt_draw": 1503499.9999999998,
+          "interest": 389500.0543754565,
+          "debt_balance": 29543189.94623103,
+          "equity": -1002333.3333333333
+        },
+        {
+          "period": "2029-T1",
+          "date": "2029-04-01",
+          "unlevered": -56000.0,
+          "debt_draw": 33600.0,
+          "interest": 416166.1867599274,
+          "debt_balance": 29992956.132990956,
+          "equity": -22400.0
+        },
+        {
+          "period": "2029-T2",
+          "date": "2029-07-01",
+          "unlevered": -56000.0,
+          "debt_draw": 33600.0,
+          "interest": 422501.9101269063,
+          "debt_balance": 30449058.043117862,
+          "equity": -22400.0
+        },
+        {
+          "period": "2029-T3",
+          "date": "2029-10-01",
+          "unlevered": -387833.48000000004,
+          "debt_draw": 232700.08800000002,
+          "interest": 428926.8829567496,
+          "debt_balance": 31110685.014074612,
+          "equity": -155133.39200000002
+        },
+        {
+          "period": "2029-T4",
+          "date": "2030-01-01",
+          "unlevered": 37404199.809171945,
+          "debt_draw": 19450.776,
+          "interest": 438247.02658584743,
+          "debt_balance": 31568382.81666046,
+          "equity": 5855267.768511485
+        }
+      ],
+      "checks": {
+        "profit_identity": true,
+        "debt_balance_identity": true,
+        "equity_shortfall_at_exit": false
+      }
+    },
+    "max_price": {
+      "by_target": {
+        "levered_irr": {
+          "metric": "levered_irr",
+          "target": 0.15,
+          "price": 13781891.705070496,
+          "status": "ok",
+          "value_at_price": 0.15002435631204625
+        },
+        "margin_on_cost": {
+          "metric": "margin_on_cost",
+          "target": 0.15,
+          "price": 13358918.077293396,
+          "status": "ok",
+          "value_at_price": 0.1500047871459847
+        }
+      },
+      "max_price": 13358918.077293396,
+      "binding_target": "margin_on_cost",
+      "asking_price": 28000000.0,
+      "gap_to_asking": -14641081.922706604,
+      "gap_to_asking_pct": -0.5228957829538072
+    },
+    "price_comparison": {
+      "asking_price_per_sqm_before": 9333.333333333334,
+      "asking_price_per_sqm_after": 8750.0,
+      "references": [
+        {
+          "key": "market.dvf_price_per_sqm",
+          "label": "médiane DVF des comparables",
+          "source": "DVF+ open data (Cerema, API données foncières)",
+          "data_date": "2025-12-31",
+          "confidence": "medium",
+          "value_per_sqm": 8744.0,
+          "basis": "surface_before",
+          "gap_pct": 0.06739859713327245,
+          "value_range": [
+            15000000.0,
+            34503000.0
+          ]
+        },
+        {
+          "key": "market.dvf_price_per_sqm",
+          "label": "médiane DVF des comparables",
+          "source": "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF",
+          "data_date": "2026-10-03",
+          "confidence": "low",
+          "value_per_sqm": 9059.0,
+          "basis": "surface_before",
+          "gap_pct": 0.03028295985576035
+        },
+        {
+          "key": "market.investment_price_per_sqm",
+          "label": "prix moyen d'investissement bureaux du sous-marché",
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "data_date": "2026-T3",
+          "confidence": "medium",
+          "value_per_sqm": 13812.0,
+          "basis": "surface_after",
+          "gap_pct": -0.36649290472053286
+        }
+      ],
+      "note": "bâtiment obsolète (DPE F) : une décote est attendue face à des références d'immeubles en état d'usage ou restructurés"
+    },
+    "market_context": {
+      "supply_yoy": {
+        "value": 0.325536,
+        "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+        "date": "2026-T3"
+      },
+      "investment_price_yoy": {
+        "value": -0.096605,
+        "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+        "date": "2026-T3"
+      },
+      "investment_price_per_sqm": {
+        "value": 13812.0,
+        "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+        "date": "2026-T3"
+      },
+      "average_rent": {
+        "value": 779.42,
+        "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+        "date": "2026-T3"
+      }
+    },
+    "required_data": {
+      "market.dvf_price_per_sqm": true,
+      "market.average_rent": true,
+      "market.investment_price_per_sqm": true
+    },
+    "data_quality": {
+      "missing": [
+        "market.future_supply",
+        "market.incentives",
+        "market.prime_rent",
+        "market.prime_yield",
+        "market.vacancy",
+        "risk.catnat",
+        "risk.natural_risks"
+      ],
+      "rejected": [],
+      "assumptions": [
+        "deal.acquisition_fees_pct"
+      ]
+    },
+    "targets_full": {
+      "levered_irr": 0.15,
+      "margin_on_cost": 0.15,
+      "spread_bps": 150.0,
+      "equity_multiple": 1.5,
+      "status": {
+        "levered_irr_min": "assumption",
+        "equity_multiple_min": "assumption",
+        "margin_on_cost_min": "assumption",
+        "yoc_spread_min_bps": "assumption"
+      }
+    },
+    "asking_price": 28000000.0,
+    "asset": "Hélios",
+    "report": {
+      "node": "financial_analysis",
+      "figures": [
+        {
+          "id": "asking_price",
+          "label": "prix demandé",
+          "value": "28,0 M€",
+          "raw": 28000000.0,
+          "source": "case"
+        },
+        {
+          "id": "asking_price_sqm",
+          "label": "prix demandé au m² (surface actuelle)",
+          "value": "9 333 €/m²",
+          "raw": 9333.333333333334,
+          "source": "calcul"
+        },
+        {
+          "id": "dvf_median",
+          "label": "médiane DVF des locaux d'activité du secteur",
+          "value": "8 744 €/m²",
+          "raw": 8744,
+          "source": "DVF+ open data (Cerema, API données foncières), 2025-12-31"
+        },
+        {
+          "id": "dvf_n",
+          "label": "transactions retenues",
+          "value": "434",
+          "raw": 434,
+          "source": "DVF+ open data (Cerema, API données foncières)"
+        },
+        {
+          "id": "gap_dvf",
+          "label": "écart du prix demandé à la médiane DVF",
+          "value": "6,7 %",
+          "raw": 0.06739859713327245,
+          "source": "calcul"
+        },
+        {
+          "id": "dvf_large",
+          "label": "médiane DVF des grandes surfaces",
+          "value": "8 416 €/m²",
+          "raw": 8416,
+          "source": "DVF+ open data (Cerema, API données foncières)"
+        },
+        {
+          "id": "firmio_median",
+          "label": "médiane Firmio (recoupement, confiance faible)",
+          "value": "9 059 €/m²",
+          "raw": 9059.0,
+          "source": "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF, 2026-10-03"
+        },
+        {
+          "id": "relet_rent",
+          "label": "loyer de relocation retenu",
+          "value": "779 €/m²/an",
+          "raw": 779.42,
+          "source": "market.average_rent"
+        },
+        {
+          "id": "immostat_rent",
+          "label": "loyer moyen de seconde main du sous-marché",
+          "value": "779 €/m²/an",
+          "raw": 779.42,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3"
+        },
+        {
+          "id": "immostat_rent_yoy",
+          "label": "variation annuelle du loyer moyen",
+          "value": "-4,2 %",
+          "raw": -0.042298,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France"
+        },
+        {
+          "id": "investment_price_sqm",
+          "label": "prix moyen d'investissement bureaux du sous-marché",
+          "value": "13 812 €/m²",
+          "raw": 13812.0,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3"
+        },
+        {
+          "id": "total_cost",
+          "label": "coût total",
+          "value": "50,1 M€",
+          "raw": 50113050.981300466,
+          "source": "moteur"
+        },
+        {
+          "id": "total_cost_sqm",
+          "label": "coût total au m² après travaux",
+          "value": "15 660 €/m²",
+          "raw": 15660.328431656395,
+          "source": "moteur"
+        },
+        {
+          "id": "exit_value_sqm",
+          "label": "valeur de sortie brute au m²",
+          "value": "12 403 €/m²",
+          "raw": 12403.3069572246,
+          "source": "moteur"
+        },
+        {
+          "id": "gap_cost_value",
+          "label": "écart du coût au m² au prix d'investissement du secteur",
+          "value": "13,4 %",
+          "raw": 0.1338204772412681,
+          "source": "calcul"
+        },
+        {
+          "id": "yoc",
+          "label": "yield on cost",
+          "value": "4,47 %",
+          "raw": 0.04469424463570899,
+          "source": "moteur"
+        },
+        {
+          "id": "exit_yield",
+          "label": "taux de sortie",
+          "value": "5,64 %",
+          "raw": 0.056430640023168256,
+          "source": "rendement implicite 779 / 13812 = 0.0564 ; Sans taux de rendement prime sourcé, le taux de sortie est le rendement implicite du marché : loyer moyen / prix moyen d'investissement bureaux du même sous-marché (ImmoStat), deux données sourcées. C'est un rendement BRUT moyen (seconde main), donc prudent pour un immeuble restructuré."
+        },
+        {
+          "id": "spread",
+          "label": "spread yield on cost / taux de sortie",
+          "value": "-117 pb",
+          "raw": -117.36395387459262,
+          "source": "moteur"
+        },
+        {
+          "id": "spread_target",
+          "label": "spread minimal visé par le fonds",
+          "value": "150 pb",
+          "raw": 150.0,
+          "source": "config/investor_targets.yaml"
+        },
+        {
+          "id": "debt_rate",
+          "label": "coût de la dette (Euribor + marge)",
+          "value": "5,63 %",
+          "raw": 0.056346818,
+          "source": "BCE + case"
+        },
+        {
+          "id": "yoc_vs_debt",
+          "label": "écart yield on cost / coût de la dette",
+          "value": "-117 pb",
+          "raw": -116.52573364291007,
+          "source": "calcul"
+        },
+        {
+          "id": "margin",
+          "label": "marge sur coût",
+          "value": "-25,3 %",
+          "raw": -0.2529567241247932,
+          "source": "moteur"
+        },
+        {
+          "id": "levered_irr",
+          "label": "TRI fonds propres",
+          "value": "-38,0 %",
+          "raw": -0.3801404639022852,
+          "source": "moteur"
+        },
+        {
+          "id": "unlevered_irr",
+          "label": "TRI projet",
+          "value": "-7,5 %",
+          "raw": -0.0745593812566353,
+          "source": "moteur"
+        },
+        {
+          "id": "multiple",
+          "label": "multiple de fonds propres",
+          "value": "0,33x",
+          "raw": 0.32946289709679594,
+          "source": "moteur"
+        },
+        {
+          "id": "max_price",
+          "label": "prix maximum (objectifs du fonds)",
+          "value": "13,4 M€",
+          "raw": 13358918.077293396,
+          "source": "moteur"
+        }
+      ],
+      "questions": {
+        "q1": "Le prix demandé est-il cohérent avec les transactions du quartier ?",
+        "q2": "Quel loyer peut-on espérer après restructuration, au regard du marché ?",
+        "q3": "Quel est le coût total au m² après travaux, et comment se compare-t-il à la valeur d'un immeuble restructuré dans ce secteur ?",
+        "q4": "Le rendement sur coût total (yield on cost) dégage-t-il une marge suffisante par rapport au taux de rendement de sortie et au niveau actuel des taux ?"
+      },
+      "summary": "Au prix demandé de 28,0 M€, le scénario central donne un yield on cost de 4,47 %, une marge de -25,3 % et un TRI fonds propres de -38,0 %. Le prix maximum compatible avec les objectifs du fonds est de 13,4 M€.",
+      "answers": {
+        "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+        "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+        "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+        "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %."
+      },
+      "reference_summary": "Au prix demandé de 28,0 M€, le scénario central donne un yield on cost de 4,47 %, une marge de -25,3 % et un TRI fonds propres de -38,0 %. Le prix maximum compatible avec les objectifs du fonds est de 13,4 M€.",
+      "reference_answers": {
+        "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+        "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+        "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+        "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %."
+      },
+      "drafting": {
+        "mode": "template",
+        "status": "rejeté : nombres absents des chiffres du nœud [40.0]",
+        "model": "gpt-4o-mini"
+      }
+    }
+  },
+  "risks": {
+    "risks": [
+      {
+        "id": "R3",
+        "category": "travaux",
+        "title": "Dépassement du budget travaux",
+        "description": "Le coût de la restructuration dépasse le budget prévu et sa provision pour aléas.",
+        "evidence": [
+          {
+            "key": "asset_config.json:operation.capex_eur_per_sqm_after",
+            "label": "budget travaux (€/m²)",
+            "value": 4000.0,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.surface_after_sqm",
+            "label": "surface après travaux",
+            "value": 3200.0,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.dpe_current",
+            "label": "DPE actuel / cible",
+            "value": "F -> B",
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.year_built_decade",
+            "label": "décennie de construction",
+            "value": 1970,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "index.bt01.yoy",
+            "label": "inflation annuelle BT01",
+            "value": 0.042633,
+            "source": "INSEE BDM - Index bâtiment tous corps d'état (BT01)",
+            "data_date": "2026-08"
+          }
+        ],
+        "probability": 5,
+        "probability_rationale": "base 1 ; extension de surface : +1 ; saut de 4 classes DPE (F -> B) : +1 ; construit dans les années 1970, avant l'interdiction de l'amiante : +1 ; coûts de travaux +4.3% sur un an (> 2%) : +1",
+        "impact": 5,
+        "impact_rationale": "dégradation de 9.5 pt (TRI fonds propres ; TRI -9.5 pt, marge -3.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "capex_overrun",
+          "shock_rationale": "travaux +15 % (plan : pessimiste +15 %)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.4755308182080473,
+          "delta_irr_pts": -9.539035430576215,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.28638895563591255,
+          "delta_margin_pts": -3.3432231511119346,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -15024198.336235218
+        },
+        "criticality": 25,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [
+          "benchmark du coût de restructuration lourde au m² (économiste de la construction, devis)"
+        ],
+        "mitigations": [
+          "contrat de travaux à prix global et forfaitaire",
+          "audit technique et repérage amiante avant signature",
+          "provision pour aléas maintenue jusqu'à la réception",
+          "économiste de la construction"
+        ],
+        "seller_requests": [
+          "audit technique complet",
+          "diagnostic amiante avant travaux",
+          "plans de l'immeuble"
+        ],
+        "financial_link": [
+          "coût total",
+          "YoC",
+          "TRI",
+          "marge"
+        ]
+      },
+      {
+        "id": "R2",
+        "category": "marché_locatif",
+        "title": "Loyer de relocation inférieur à l'hypothèse",
+        "description": "Le loyer obtenu à la relocation est inférieur au loyer retenu dans le scénario central.",
+        "evidence": [
+          {
+            "key": "market.immediate_supply.yoy",
+            "label": "variation annuelle de l'offre",
+            "value": 0.325536,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          },
+          {
+            "key": "market.average_rent.yoy",
+            "label": "variation annuelle du loyer moyen",
+            "value": -0.042298,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "base 2 : loyer de relocation estimé, pas encore confronté à des offres réelles ; offre en hausse de 33% sur un an (> 20%) : +1 ; loyer moyen en baisse de -4.2% sur un an : +1",
+        "impact": 5,
+        "impact_rationale": "dégradation de 24.3 pt (TRI fonds propres ; TRI -24.3 pt, marge -7.5 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "rent_level",
+          "shock_rationale": "loyer de relocation inférieur de 10 % à l'hypothèse (plan : -10 % en sensibilité)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.6227980260554145,
+          "delta_irr_pts": -24.265756215312926,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.3275665495542025,
+          "delta_margin_pts": -7.460982542940931,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -16403528.878093205
+        },
+        "criticality": 20,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [],
+        "mitigations": [
+          "références locatives récentes d'immeubles restructurés comparables",
+          "pré-commercialisation",
+          "fixer le prix d'acquisition sur un loyer prudent"
+        ],
+        "seller_requests": [],
+        "financial_link": [
+          "NOI",
+          "YoC",
+          "valeur de sortie",
+          "TRI",
+          "marge"
+        ]
+      },
+      {
+        "id": "R6",
+        "category": "financier",
+        "title": "Baisse de la valeur de sortie",
+        "description": "Le taux de rendement attendu par les acquéreurs à la sortie est plus élevé que prévu.",
+        "evidence": [
+          {
+            "key": "market.investment_price_per_sqm.yoy",
+            "label": "variation annuelle du prix d'investissement",
+            "value": -0.096605,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "prix d'investissement -9.7% sur un an (<= -5%) : P 4",
+        "impact": 5,
+        "impact_rationale": "dégradation de 19.5 pt (TRI fonds propres ; TRI -19.5 pt, marge -6.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "exit_yield_up",
+          "shock_rationale": "taux de sortie +50 points de base (plan : pessimiste +0,50 pt)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.5747003161331319,
+          "delta_irr_pts": -19.45598522308467,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.31645439867105574,
+          "delta_margin_pts": -6.349767454626254,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -15858495.413859397
+        },
+        "criticality": 20,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [
+          "taux de rendement prime et son évolution (rapports de marché)"
+        ],
+        "mitigations": [
+          "prix d'acquisition fixé sur un taux de sortie prudent",
+          "flexibilité sur la date de cession"
+        ],
+        "seller_requests": [],
+        "financial_link": [
+          "valeur de sortie",
+          "marge",
+          "TRI"
+        ]
+      },
+      {
+        "id": "R7",
+        "category": "réglementaire",
+        "title": "Extension ou rooftop non autorisés",
+        "description": "Les surfaces supplémentaires et le rooftop ne sont pas autorisés par la Ville ou l'ABF.",
+        "evidence": [
+          {
+            "key": "asset_config.json:asset.surface_after_sqm",
+            "label": "surface après travaux (extension)",
+            "value": 3200.0,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "urbanism.plu_constraints.max_height",
+            "label": "hauteur maximale indiquée au PLU (arrondissement)",
+            "value": 12.0,
+            "source": "Paris Open Data - PLU bioclimatique, emprises et hauteurs constructibles",
+            "data_date": "2026-11-08"
+          },
+          {
+            "key": "urbanism.protected_buildings.count",
+            "label": "bâtiments protégés dans l'arrondissement",
+            "value": 216,
+            "source": "Paris Open Data - PLU bioclimatique, bâtiments protégés",
+            "data_date": "2026-11-08"
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "base 3 : extension et rooftop soumis à autorisation d'urbanisme ; 216 bâtiments protégés dans l'arrondissement : +1",
+        "impact": 5,
+        "impact_rationale": "dégradation de 8.3 pt (TRI fonds propres ; TRI -8.3 pt, marge -3.2 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "no_extension",
+          "shock_rationale": "extension et rooftop refusés : surface finale égale à la surface actuelle",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.4628620197801607,
+          "delta_irr_pts": -8.272155587787555,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.285265349470809,
+          "delta_margin_pts": -3.230862534601581,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -14007868.833324507
+        },
+        "criticality": 20,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [
+          "règle PLU applicable à LA parcelle et étude de faisabilité (architecte)"
+        ],
+        "mitigations": [
+          "consultation préalable du service urbanisme et de l'ABF",
+          "condition suspensive d'obtention du permis",
+          "étude de faisabilité par un architecte"
+        ],
+        "seller_requests": [
+          "autorisations d'urbanisme existantes",
+          "plans et relevés de géomètre"
+        ],
+        "financial_link": [
+          "surface louable",
+          "NOI",
+          "valeur de sortie",
+          "marge"
+        ]
+      },
+      {
+        "id": "R8",
+        "category": "environnemental",
+        "title": "Objectif DPE non atteint",
+        "description": "La restructuration n'atteint pas la classe énergétique visée.",
+        "evidence": [
+          {
+            "key": "asset_config.json:asset.dpe_current",
+            "label": "DPE actuel / cible",
+            "value": "F -> B",
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "energy.dpe_comparables.share_b_or_better",
+            "label": "part des DPE A-B à proximité",
+            "value": 0.1759,
+            "source": "ADEME - DPE tertiaire (depuis juillet 2021)",
+            "data_date": "2026-11-08"
+          }
+        ],
+        "probability": 3,
+        "probability_rationale": "4 classes à gagner (F -> B) : P 3",
+        "impact": 5,
+        "impact_rationale": "dégradation de 13.9 pt (TRI fonds propres ; TRI -13.9 pt, marge -4.8 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "dpe_target_missed",
+          "shock_rationale": "objectif DPE non atteint : décote de loyer de 5 % et 5 % de travaux énergétiques supplémentaires",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.5188602741468986,
+          "delta_irr_pts": -13.871981024461345,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.3011654441387656,
+          "delta_margin_pts": -4.820872001397242,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -15322569.419813111
+        },
+        "criticality": 15,
+        "level": "élevé",
+        "uncertain": false,
+        "missing_information": [
+          "audit énergétique de l'immeuble"
+        ],
+        "mitigations": [
+          "audit énergétique et simulation thermique avant acquisition",
+          "engagement de performance dans le marché de travaux"
+        ],
+        "seller_requests": [
+          "DPE actuel et factures d'énergie",
+          "audit énergétique s'il existe"
+        ],
+        "financial_link": [
+          "loyer",
+          "travaux",
+          "liquidité à la sortie"
+        ]
+      },
+      {
+        "id": "R5",
+        "category": "financier",
+        "title": "Hausse des taux d'intérêt",
+        "description": "La hausse de l'Euribor renchérit la dette à taux variable pendant l'opération.",
+        "evidence": [
+          {
+            "key": "rates.euribor_3m.last",
+            "label": "Euribor 3 mois (dernier)",
+            "value": 0.026346818,
+            "source": "BCE - Euribor 3 mois",
+            "data_date": "2026-10"
+          },
+          {
+            "key": "rates.euribor_3m.avg_12m",
+            "label": "Euribor 3 mois (moyenne 12 mois)",
+            "value": 0.022655980416666666,
+            "source": "BCE - Euribor 3 mois",
+            "data_date": "2026-10"
+          },
+          {
+            "key": "asset_config.json:operation.financing.reference_rate",
+            "label": "taux de référence",
+            "value": "Euribor3M",
+            "source": "Case Braxton AM",
+            "data_date": null
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "base 3 : dette à taux variable, aucune couverture prévue au case ; Euribor 2.63% au-dessus de sa moyenne 12 mois 2.27% : tendance haussière : +1",
+        "impact": 3,
+        "impact_rationale": "dégradation de 4.0 pt (TRI fonds propres ; TRI -4.0 pt, marge -1.2 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 3",
+        "financial_effect": {
+          "shock": "rates_up",
+          "shock_rationale": "Euribor +1 point sur toute l'opération (plan : pessimiste +1 pt)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.4203326291965417,
+          "delta_irr_pts": -4.019216529425651,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.2647255379304433,
+          "delta_margin_pts": -1.1768813805650091,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -13478543.439882062
+        },
+        "criticality": 12,
+        "level": "élevé",
+        "uncertain": false,
+        "missing_information": [],
+        "mitigations": [
+          "couverture de taux (cap ou swap) dès le tirage",
+          "négociation de la marge et du plancher"
+        ],
+        "seller_requests": [],
+        "financial_link": [
+          "frais financiers",
+          "TRI fonds propres"
+        ]
+      },
+      {
+        "id": "R4",
+        "category": "travaux",
+        "title": "Retard du chantier",
+        "description": "Le chantier dépasse la durée prévue (désamiantage, autorisations, aléas).",
+        "evidence": [
+          {
+            "key": "asset_config.json:operation.timeline.works_duration_months",
+            "label": "durée des travaux (mois)",
+            "value": 18,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "urbanism.protected_buildings.count",
+            "label": "bâtiments protégés dans l'arrondissement",
+            "value": 216,
+            "source": "Paris Open Data - PLU bioclimatique, bâtiments protégés",
+            "data_date": "2026-11-08"
+          },
+          {
+            "key": "asset_config.json:operation.current_leases.end_date",
+            "label": "fin du bail en place",
+            "value": "2027-06-30",
+            "source": "Case Braxton AM",
+            "data_date": null
+          }
+        ],
+        "probability": 5,
+        "probability_rationale": "base 1 ; extension : permis de construire et délai de recours des tiers : +1 ; désamiantage probable (construction antérieure à 1997) : +1 ; 216 bâtiments protégés dans l'arrondissement (secteur patrimonial, avis ABF possible) : +1 ; bail en place libéré 1 jour(s) avant le chantier : aucune marge : +1",
+        "impact": 2,
+        "impact_rationale": "dégradation de 1.3 pt (marge sur coût ; TRI +0.2 pt, marge -1.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 2",
+        "financial_effect": {
+          "shock": "works_delay",
+          "shock_rationale": "chantier de 24 mois au lieu de 18 (plan : pessimiste 24 mois) ; cession décalée d'autant",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.3776618532162408,
+          "delta_irr_pts": 0.24786106860443802,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.2655631962940532,
+          "delta_margin_pts": -1.260647216926003,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -13536614.482082158
+        },
+        "criticality": 10,
+        "level": "élevé",
+        "uncertain": false,
+        "missing_information": [],
+        "mitigations": [
+          "planning avec pénalités de retard",
+          "désamiantage traité en lot préalable",
+          "condition suspensive de libération des locaux"
+        ],
+        "seller_requests": [
+          "calendrier de libération du locataire en place",
+          "historique des autorisations d'urbanisme"
+        ],
+        "financial_link": [
+          "portage",
+          "frais financiers",
+          "TRI"
+        ]
+      },
+      {
+        "id": "R1",
+        "category": "marché_locatif",
+        "title": "Relocation retardée",
+        "description": "Les surfaces restructurées ne trouvent pas preneur dans le délai prévu après la livraison.",
+        "evidence": [
+          {
+            "key": "market.immediate_supply.last",
+            "label": "offre immédiate (m²)",
+            "value": 680000.0,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          },
+          {
+            "key": "market.take_up.rolling_12m",
+            "label": "demande placée sur 12 mois (m²)",
+            "value": 408031.0,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          },
+          {
+            "key": "computed.months_of_supply",
+            "label": "mois d'offre",
+            "value": 20.0,
+            "source": null,
+            "data_date": null
+          }
+        ],
+        "probability": 3,
+        "probability_rationale": "20 mois d'offre disponible au rythme de la demande (seuils [6.0, 12.0, 24.0, 36.0]) : P 3",
+        "impact": 2,
+        "impact_rationale": "dégradation de 1.5 pt (marge sur coût ; TRI +1.1 pt, marge -1.5 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 2",
+        "financial_effect": {
+          "shock": "letting_delay",
+          "shock_rationale": "relocation retardée de 6 mois ; la cession, prévue une fois l'actif loué, glisse d'autant",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.36921244687179255,
+          "delta_irr_pts": 1.092801703049262,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.2676219763951838,
+          "delta_margin_pts": -1.4665252270390616,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -13679904.795099273
+        },
+        "criticality": 6,
+        "level": "modéré",
+        "uncertain": false,
+        "missing_information": [
+          "taux de vacance du sous-marché (rapports de marché)"
+        ],
+        "mitigations": [
+          "pré-commercialisation dès le lancement des travaux",
+          "promesse de bail avant l'acquisition définitive",
+          "étude d'absorption du sous-marché par un conseil"
+        ],
+        "seller_requests": [
+          "état locatif et calendrier de départ du locataire en place"
+        ],
+        "financial_link": [
+          "NOI",
+          "TRI",
+          "marge"
+        ]
+      }
+    ],
+    "matrix": [
+      [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      [
+        [],
+        [],
+        [
+          "R1"
+        ],
+        [],
+        [
+          "R4"
+        ]
+      ],
+      [
+        [],
+        [],
+        [],
+        [
+          "R5"
+        ],
+        []
+      ],
+      [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      [
+        [],
+        [],
+        [
+          "R8"
+        ],
+        [
+          "R2",
+          "R6",
+          "R7"
+        ],
+        [
+          "R3"
+        ]
+      ]
+    ],
+    "excluded": [
+      {
+        "id": "R9",
+        "title": "Risques naturels et pollution",
+        "reason": [
+          "risques naturels et arrêtés CatNat (Géorisques : connecteur à écrire)",
+          "études de sols et diagnostic de pollution (vendeur)",
+          "aucun choc financier défini pour ce risque"
+        ]
+      }
+    ],
+    "financial_inputs_complete": true,
+    "seller_requests": [
+      "DPE actuel et factures d'énergie",
+      "audit technique complet",
+      "audit énergétique s'il existe",
+      "autorisations d'urbanisme existantes",
+      "calendrier de libération du locataire en place",
+      "diagnostic amiante avant travaux",
+      "diagnostics environnementaux",
+      "historique des autorisations d'urbanisme",
+      "plans de l'immeuble",
+      "plans et relevés de géomètre",
+      "état des risques et pollutions (ERP)",
+      "état locatif et calendrier de départ du locataire en place"
+    ],
+    "missing_information": [
+      "audit énergétique de l'immeuble",
+      "benchmark du coût de restructuration lourde au m² (économiste de la construction, devis)",
+      "règle PLU applicable à LA parcelle et étude de faisabilité (architecte)",
+      "taux de rendement prime et son évolution (rapports de marché)",
+      "taux de vacance du sous-marché (rapports de marché)"
+    ],
+    "report": {
+      "node": "risk_analysis",
+      "figures": [
+        {
+          "id": "R3",
+          "label": "Dépassement du budget travaux",
+          "value": "P 5/5 x I 5/5 = 25/25, critique",
+          "raw": 25,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R3_margin",
+          "label": "effet sur la marge : Dépassement du budget travaux",
+          "value": "-3,3 pt",
+          "raw": -3.3432231511119346,
+          "source": "moteur"
+        },
+        {
+          "id": "R3_irr",
+          "label": "effet sur le TRI fonds propres : Dépassement du budget travaux",
+          "value": "-9,5 pt",
+          "raw": -9.539035430576215,
+          "source": "moteur"
+        },
+        {
+          "id": "R2",
+          "label": "Loyer de relocation inférieur à l'hypothèse",
+          "value": "P 4/5 x I 5/5 = 20/25, critique",
+          "raw": 20,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R2_margin",
+          "label": "effet sur la marge : Loyer de relocation inférieur à l'hypothèse",
+          "value": "-7,5 pt",
+          "raw": -7.460982542940931,
+          "source": "moteur"
+        },
+        {
+          "id": "R2_irr",
+          "label": "effet sur le TRI fonds propres : Loyer de relocation inférieur à l'hypothèse",
+          "value": "-24,3 pt",
+          "raw": -24.265756215312926,
+          "source": "moteur"
+        },
+        {
+          "id": "R6",
+          "label": "Baisse de la valeur de sortie",
+          "value": "P 4/5 x I 5/5 = 20/25, critique",
+          "raw": 20,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R6_margin",
+          "label": "effet sur la marge : Baisse de la valeur de sortie",
+          "value": "-6,3 pt",
+          "raw": -6.349767454626254,
+          "source": "moteur"
+        },
+        {
+          "id": "R6_irr",
+          "label": "effet sur le TRI fonds propres : Baisse de la valeur de sortie",
+          "value": "-19,5 pt",
+          "raw": -19.45598522308467,
+          "source": "moteur"
+        },
+        {
+          "id": "R7",
+          "label": "Extension ou rooftop non autorisés",
+          "value": "P 4/5 x I 5/5 = 20/25, critique",
+          "raw": 20,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R7_margin",
+          "label": "effet sur la marge : Extension ou rooftop non autorisés",
+          "value": "-3,2 pt",
+          "raw": -3.230862534601581,
+          "source": "moteur"
+        },
+        {
+          "id": "R7_irr",
+          "label": "effet sur le TRI fonds propres : Extension ou rooftop non autorisés",
+          "value": "-8,3 pt",
+          "raw": -8.272155587787555,
+          "source": "moteur"
+        },
+        {
+          "id": "R8",
+          "label": "Objectif DPE non atteint",
+          "value": "P 3/5 x I 5/5 = 15/25, élevé",
+          "raw": 15,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R8_margin",
+          "label": "effet sur la marge : Objectif DPE non atteint",
+          "value": "-4,8 pt",
+          "raw": -4.820872001397242,
+          "source": "moteur"
+        },
+        {
+          "id": "R8_irr",
+          "label": "effet sur le TRI fonds propres : Objectif DPE non atteint",
+          "value": "-13,9 pt",
+          "raw": -13.871981024461345,
+          "source": "moteur"
+        },
+        {
+          "id": "R5",
+          "label": "Hausse des taux d'intérêt",
+          "value": "P 4/5 x I 3/5 = 12/25, élevé",
+          "raw": 12,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R5_margin",
+          "label": "effet sur la marge : Hausse des taux d'intérêt",
+          "value": "-1,2 pt",
+          "raw": -1.1768813805650091,
+          "source": "moteur"
+        },
+        {
+          "id": "R5_irr",
+          "label": "effet sur le TRI fonds propres : Hausse des taux d'intérêt",
+          "value": "-4,0 pt",
+          "raw": -4.019216529425651,
+          "source": "moteur"
+        },
+        {
+          "id": "R4",
+          "label": "Retard du chantier",
+          "value": "P 5/5 x I 2/5 = 10/25, élevé",
+          "raw": 10,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R4_margin",
+          "label": "effet sur la marge : Retard du chantier",
+          "value": "-1,3 pt",
+          "raw": -1.260647216926003,
+          "source": "moteur"
+        },
+        {
+          "id": "R4_irr",
+          "label": "effet sur le TRI fonds propres : Retard du chantier",
+          "value": "0,2 pt",
+          "raw": 0.24786106860443802,
+          "source": "moteur"
+        },
+        {
+          "id": "R1",
+          "label": "Relocation retardée",
+          "value": "P 3/5 x I 2/5 = 6/25, modéré",
+          "raw": 6,
+          "source": "règles de notation"
+        },
+        {
+          "id": "R1_margin",
+          "label": "effet sur la marge : Relocation retardée",
+          "value": "-1,5 pt",
+          "raw": -1.4665252270390616,
+          "source": "moteur"
+        },
+        {
+          "id": "R1_irr",
+          "label": "effet sur le TRI fonds propres : Relocation retardée",
+          "value": "1,1 pt",
+          "raw": 1.092801703049262,
+          "source": "moteur"
+        }
+      ],
+      "questions": {
+        "q6": "Quels sont les principaux risques : marché locatif, travaux, taux, réglementation, environnement ?"
+      },
+      "summary": "Les principaux risques identifiés sont classés par catégorie. Dans la catégorie des travaux, le dépassement du budget travaux est noté critique avec une criticité de 25/25 et un impact sur la marge de -3,3 pt. Pour le marché locatif, le loyer de relocation inférieur à l'hypothèse est également critique avec une criticité de 20/25 et un impact sur la marge de -7,5 pt. La réglementation présente un risque critique avec l'extension ou rooftop non autorisés, noté 20/25 et un impact de -3,2 pt. Enfin, la hausse des taux d'intérêt est un risque élevé dans la catégorie taux, avec une criticité de 12/25 et un impact de -1,2 pt.",
+      "answers": {
+        "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt)."
+      },
+      "reference_summary": "8 risques sont caractérisés par des données ; les plus critiques sont : Dépassement du budget travaux, Loyer de relocation inférieur à l'hypothèse, Baisse de la valeur de sortie.",
+      "reference_answers": {
+        "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt)."
+      },
+      "drafting": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      }
+    }
+  },
+  "sensitivity": {
+    "status": "complete",
+    "tornado": {
+      "central": {
+        "levered_irr": -0.3801404639022852,
+        "unlevered_irr": -0.0745593812566353,
+        "equity_multiple": 0.32946289709679594,
+        "peak_equity": 18278936.900640003,
+        "yield_on_cost": 0.04469424463570899,
+        "spread_bps": -117.36395387459262,
+        "margin": -12676433.21212852,
+        "margin_on_cost": -0.2529567241247932,
+        "total_cost": 50113050.981300466,
+        "net_exit_value": 37436617.769171946,
+        "exit_date": "2029-12-31"
+      },
+      "rows": [
+        {
+          "variable": "occupancy",
+          "label": "Occupation stabilisée",
+          "optimistic": {
+            "levered_irr": -0.28819719797376153,
+            "unlevered_irr": -0.053378387485495504,
+            "equity_multiple": 0.4462372578607381,
+            "peak_equity": 18286020.2112,
+            "yield_on_cost": 0.04726923746014051,
+            "spread_bps": -91.61402563027748,
+            "margin": -10513650.017760761,
+            "margin_on_cost": -0.20974276218818916,
+            "total_cost": 50126402.01776076,
+            "net_exit_value": 39612752.0,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.6867874468621612,
+            "unlevered_irr": -0.11959805967367532,
+            "equity_multiple": 0.09564611053939695,
+            "peak_equity": 18264770.27952,
+            "yield_on_cost": 0.03954014064037034,
+            "spread_bps": -168.90499382797915,
+            "margin": -17001999.60086403,
+            "margin_on_cost": -0.3394537627800506,
+            "total_cost": 50086348.908379875,
+            "net_exit_value": 33084349.307515845,
+            "exit_date": "2029-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 9.194326592852365,
+            "pessimistic": -30.664698295987602
+          },
+          "delta_margin_pts": {
+            "optimistic": 4.321396193660404,
+            "pessimistic": -8.649703865525742
+          },
+          "irr_range_pts": 39.85902488883997,
+          "rank": 1
+        },
+        {
+          "variable": "rent",
+          "label": "Loyer de relocation",
+          "optimistic": {
+            "levered_irr": -0.2320117115319642,
+            "unlevered_irr": -0.038553352302621025,
+            "equity_multiple": 0.5307004495001718,
+            "peak_equity": 18294587.030704,
+            "yield_on_cost": 0.04915059642018366,
+            "spread_bps": -72.80043602984593,
+            "margin": -8949337.546163827,
+            "margin_on_cost": -0.17845436176088877,
+            "total_cost": 50149166.75533578,
+            "net_exit_value": 41199829.20917195,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.6227980260554145,
+            "unlevered_irr": -0.11313175889518612,
+            "equity_multiple": 0.12788509565688524,
+            "peak_equity": 18263286.770576,
+            "yield_on_cost": 0.04023146495809735,
+            "spread_bps": -161.99175065070904,
+            "margin": -16403528.878093205,
+            "margin_on_cost": -0.3275665495542025,
+            "total_cost": 50076935.207265146,
+            "net_exit_value": 33673406.32917194,
+            "exit_date": "2029-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 14.812875237032097,
+            "pessimistic": -24.265756215312926
+          },
+          "delta_margin_pts": {
+            "optimistic": 7.450236236390443,
+            "pessimistic": -7.460982542940931
+          },
+          "irr_range_pts": 39.07863145234502,
+          "rank": 2
+        },
+        {
+          "variable": "exit_yield",
+          "label": "Taux de sortie",
+          "optimistic": {
+            "levered_irr": -0.30173384627776156,
+            "unlevered_irr": -0.056734568920852047,
+            "equity_multiple": 0.42727690895375164,
+            "peak_equity": 18278936.900640003,
+            "yield_on_cost": 0.04469424463570899,
+            "spread_bps": -92.36395387459261,
+            "margin": -10864141.372444391,
+            "margin_on_cost": -0.21679265500115555,
+            "total_cost": 50113050.981300466,
+            "net_exit_value": 39248909.608856075,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.5747003161331319,
+            "unlevered_irr": -0.10735180913150622,
+            "equity_multiple": 0.1577188859424315,
+            "peak_equity": 18278936.900640003,
+            "yield_on_cost": 0.04469424463570899,
+            "spread_bps": -167.3639538745926,
+            "margin": -15858495.413859397,
+            "margin_on_cost": -0.31645439867105574,
+            "total_cost": 50113050.981300466,
+            "net_exit_value": 34254555.56744107,
+            "exit_date": "2029-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 7.840661762452362,
+            "pessimistic": -19.45598522308467
+          },
+          "delta_margin_pts": {
+            "optimistic": 3.616406912363765,
+            "pessimistic": -6.349767454626254
+          },
+          "irr_range_pts": 27.29664698553703,
+          "rank": 3
+        },
+        {
+          "variable": "capex",
+          "label": "Coût des travaux",
+          "optimistic": {
+            "levered_irr": -0.3510374987366425,
+            "unlevered_irr": -0.06803338270380999,
+            "equity_multiple": 0.36140196661828156,
+            "peak_equity": 17980120.90064,
+            "yield_on_cost": 0.04540328311659534,
+            "spread_bps": -110.27356906572916,
+            "margin": -11893844.83742629,
+            "margin_on_cost": -0.24110547943321778,
+            "total_cost": 49330462.606598236,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.4755308182080473,
+            "unlevered_irr": -0.09372449477759148,
+            "equity_multiple": 0.2395417238798373,
+            "peak_equity": 19175384.900640003,
+            "yield_on_cost": 0.042694054844662356,
+            "spread_bps": -137.365851785059,
+            "margin": -15024198.336235218,
+            "margin_on_cost": -0.28638895563591255,
+            "total_cost": 52460816.10540716,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2029-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 2.9102965165642702,
+            "pessimistic": -9.539035430576215
+          },
+          "delta_margin_pts": {
+            "optimistic": 1.1851244691575418,
+            "pessimistic": -3.3432231511119346
+          },
+          "irr_range_pts": 12.449331947140486,
+          "rank": 4
+        },
+        {
+          "variable": "euribor",
+          "label": "Euribor 3 mois",
+          "optimistic": {
+            "levered_irr": -0.36180452626614235,
+            "unlevered_irr": -0.0745593812566353,
+            "equity_multiple": 0.3507128478997189,
+            "peak_equity": 18278936.900640003,
+            "yield_on_cost": 0.04504816968226512,
+            "spread_bps": -113.82470340903137,
+            "margin": -12282715.464510262,
+            "margin_on_cost": -0.24704103345033143,
+            "total_cost": 49719333.23368221,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.4203326291965417,
+            "unlevered_irr": -0.0745593812566353,
+            "equity_multiple": 0.2861709627570457,
+            "peak_equity": 18278936.900640003,
+            "yield_on_cost": 0.04399013784526155,
+            "spread_bps": -124.4050217790671,
+            "margin": -13478543.439882062,
+            "margin_on_cost": -0.2647255379304433,
+            "total_cost": 50915161.20905401,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2029-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 1.833593763614283,
+            "pessimistic": -4.019216529425651
+          },
+          "delta_margin_pts": {
+            "optimistic": 0.5915690674461765,
+            "pessimistic": -1.1768813805650091
+          },
+          "irr_range_pts": 5.8528102930399335,
+          "rank": 5
+        },
+        {
+          "variable": "letting_12",
+          "label": "Délai de relocation (+12 mois)",
+          "optimistic": {
+            "levered_irr": -0.32471504053069344,
+            "unlevered_irr": -0.062290287226061225,
+            "equity_multiple": 0.3950640554955935,
+            "peak_equity": 18259788.284160003,
+            "yield_on_cost": 0.04478500254438224,
+            "spread_bps": -116.45637478786018,
+            "margin": -11390159.48231043,
+            "margin_on_cost": -0.22775082676362265,
+            "total_cost": 50011495.65148237,
+            "net_exit_value": 38621336.169171944,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.3712366606179517,
+            "unlevered_irr": -0.05543234588220958,
+            "equity_multiple": 0.223487566724454,
+            "peak_equity": 18369880.900640003,
+            "yield_on_cost": 0.04295084033591921,
+            "spread_bps": -134.79799687249044,
+            "margin": -14710556.593023568,
+            "margin_on_cost": -0.28209690693592204,
+            "total_cost": 52147174.362195514,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2030-12-31"
+          },
+          "delta_irr_pts": {
+            "optimistic": 5.542542337159173,
+            "pessimistic": 0.8903803284333489
+          },
+          "delta_margin_pts": {
+            "optimistic": 2.520589736117054,
+            "pessimistic": -2.9140182811128845
+          },
+          "irr_range_pts": 4.652162008725824,
+          "rank": 6
+        },
+        {
+          "variable": "letting",
+          "label": "Délai de relocation",
+          "optimistic": {
+            "levered_irr": -0.32471504053069344,
+            "unlevered_irr": -0.062290287226061225,
+            "equity_multiple": 0.3950640554955935,
+            "peak_equity": 18259788.284160003,
+            "yield_on_cost": 0.04478500254438224,
+            "spread_bps": -116.45637478786018,
+            "margin": -11390159.48231043,
+            "margin_on_cost": -0.22775082676362265,
+            "total_cost": 50011495.65148237,
+            "net_exit_value": 38621336.169171944,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.36921244687179255,
+            "unlevered_irr": -0.06345089336790133,
+            "equity_multiple": 0.2770772028479598,
+            "peak_equity": 18324408.900640003,
+            "yield_on_cost": 0.043816849183819916,
+            "spread_bps": -126.1379083934834,
+            "margin": -13679904.795099273,
+            "margin_on_cost": -0.2676219763951838,
+            "total_cost": 51116522.56427122,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2030-06-30"
+          },
+          "delta_irr_pts": {
+            "optimistic": 5.542542337159173,
+            "pessimistic": 1.092801703049262
+          },
+          "delta_margin_pts": {
+            "optimistic": 2.520589736117054,
+            "pessimistic": -1.4665252270390616
+          },
+          "irr_range_pts": 4.449740634109911,
+          "rank": 7
+        },
+        {
+          "variable": "works",
+          "label": "Durée des travaux",
+          "optimistic": {
+            "levered_irr": -0.3577224201003272,
+            "unlevered_irr": -0.06969294188506003,
+            "equity_multiple": 0.34889727507879426,
+            "peak_equity": 18273501.361813333,
+            "yield_on_cost": 0.04468395234508569,
+            "spread_bps": -117.46687678082569,
+            "margin": -12293069.88236674,
+            "margin_on_cost": -0.24525026447350246,
+            "total_cost": 50124593.78487202,
+            "net_exit_value": 37831523.90250528,
+            "exit_date": "2029-12-31"
+          },
+          "pessimistic": {
+            "levered_irr": -0.3776618532162408,
+            "unlevered_irr": -0.06526741065854036,
+            "equity_multiple": 0.2846825585262907,
+            "peak_equity": 18321566.90064,
+            "yield_on_cost": 0.0439400222642325,
+            "spread_bps": -124.90617758935757,
+            "margin": -13536614.482082158,
+            "margin_on_cost": -0.2655631962940532,
+            "total_cost": 50973232.251254104,
+            "net_exit_value": 37436617.769171946,
+            "exit_date": "2030-06-30"
+          },
+          "delta_irr_pts": {
+            "optimistic": 2.2418043801958,
+            "pessimistic": 0.24786106860443802
+          },
+          "delta_margin_pts": {
+            "optimistic": 0.7706459651290742,
+            "pessimistic": -1.260647216926003
+          },
+          "irr_range_pts": 1.9939433115913618,
+          "rank": 8
+        }
+      ]
+    },
+    "breakeven": {
+      "rent": {
+        "label": "Loyer de relocation (x loyer central)",
+        "bounds": [
+          0.3,
+          2.0
+        ],
+        "integer": false,
+        "margin_zero_at": 1.3401155844097952,
+        "irr_target_at": 1.545190051360987,
+        "irr_target": 0.15,
+        "field": "relet_rent",
+        "central_value": 779.42,
+        "margin_zero_value": 1044.5128888006825,
+        "irr_target_value": 1204.3520298317806,
+        "central_below_target": true,
+        "central_margin_negative": true
+      },
+      "exit_yield": {
+        "label": "Taux de sortie (+ points)",
+        "bounds": [
+          -0.02,
+          0.06
+        ],
+        "integer": false,
+        "margin_zero_at": -0.013817197978496554,
+        "irr_target_at": -0.019276615679264072,
+        "irr_target": 0.15,
+        "field": "exit_yield",
+        "central_value": 0.056430640023168256,
+        "margin_zero_value": 0.0426134420446717,
+        "irr_target_value": 0.037154024343904184,
+        "central_below_target": true,
+        "central_margin_negative": true
+      },
+      "capex": {
+        "label": "Coût des travaux (x budget)",
+        "bounds": [
+          0.3,
+          3.0
+        ],
+        "integer": false,
+        "margin_zero_at": null,
+        "irr_target_at": null,
+        "irr_target": 0.15,
+        "field": "capex_per_sqm",
+        "central_value": 4000.0,
+        "margin_zero_value": null,
+        "irr_target_value": null,
+        "central_below_target": true,
+        "central_margin_negative": true
+      },
+      "euribor": {
+        "label": "Euribor (+ points)",
+        "bounds": [
+          -0.03,
+          0.1
+        ],
+        "integer": false,
+        "margin_zero_at": null,
+        "irr_target_at": null,
+        "irr_target": 0.15,
+        "field": "euribor",
+        "central_value": 0.026346818,
+        "margin_zero_value": null,
+        "irr_target_value": null,
+        "central_below_target": true,
+        "central_margin_negative": true
+      },
+      "letting": {
+        "label": "Délai de relocation (+ mois)",
+        "bounds": [
+          0.0,
+          48.0
+        ],
+        "integer": true,
+        "margin_zero_at": null,
+        "irr_target_at": null,
+        "irr_target": 0.15,
+        "field": "letting_void_months",
+        "central_value": 6,
+        "margin_zero_value": null,
+        "irr_target_value": null,
+        "central_below_target": true,
+        "central_margin_negative": true
+      },
+      "works": {
+        "label": "Durée des travaux (+ mois)",
+        "bounds": [
+          0.0,
+          36.0
+        ],
+        "integer": true,
+        "margin_zero_at": null,
+        "irr_target_at": null,
+        "irr_target": 0.15,
+        "field": "works_months",
+        "central_value": 18,
+        "margin_zero_value": null,
+        "irr_target_value": null,
+        "central_below_target": true,
+        "central_margin_negative": true
+      }
+    },
+    "heatmaps": {
+      "exit_yield_x_rent": {
+        "x": {
+          "label": "Loyer (x central)",
+          "values": [
+            0.8,
+            0.85,
+            0.9,
+            0.95,
+            1.0,
+            1.05,
+            1.1,
+            1.15,
+            1.2
+          ]
+        },
+        "y": {
+          "label": "Taux de sortie (+ points)",
+          "values": [
+            -0.005,
+            -0.0025,
+            0.0,
+            0.0025,
+            0.005,
+            0.0075,
+            0.01
+          ]
+        },
+        "levered_irr": [
+          [
+            -0.6979263622894804,
+            -0.5132052139703487,
+            -0.3949131009424597,
+            -0.3042633463461659,
+            -0.2293619645394258,
+            -0.16482175375951214,
+            -0.10769845120299593,
+            -0.0561890745916398,
+            -0.00910115728860994
+          ],
+          [
+            null,
+            -0.6556360779527941,
+            -0.4956302371177608,
+            -0.38688358834641934,
+            -0.30173384627776156,
+            -0.2305846975097532,
+            -0.1688554591456326,
+            -0.11396630724578427,
+            -0.06430606776496095
+          ],
+          [
+            null,
+            -0.9210405621000959,
+            -0.6227980260554145,
+            -0.4809174902546586,
+            -0.3801404639022852,
+            -0.2998011315527417,
+            -0.2320117115319642,
+            -0.1728345244435988,
+            -0.11999199190150633
+          ],
+          [
+            null,
+            null,
+            -0.825589398752438,
+            -0.596405541585345,
+            -0.468492939027116,
+            -0.3744791663103796,
+            -0.2983833212310506,
+            -0.23361910961226984,
+            -0.17676865248650386
+          ],
+          [
+            null,
+            null,
+            null,
+            -0.7646215527029874,
+            -0.5747003161331319,
+            -0.45793500871872883,
+            -0.3697380679819715,
+            -0.2974136040793621,
+            -0.2353870968324253
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            -0.7204054911293207,
+            -0.5565589380319396,
+            -0.4489253504255951,
+            -0.3657875992520172,
+            -0.29683692320514643
+          ],
+          [
+            null,
+            null,
+            null,
+            null,
+            null,
+            -0.6862075677582358,
+            -0.54121755019088,
+            -0.44121803794269654,
+            -0.3625225705295525
+          ]
+        ],
+        "margin_on_cost": [
+          [
+            -0.34159729201238664,
+            -0.3004316618015012,
+            -0.2592957204801729,
+            -0.21818943594228196,
+            -0.17711277612798504,
+            -0.1360657090236336,
+            -0.09504820266168848,
+            -0.05406022512063886,
+            -0.013101744524917231
+          ],
+          [
+            -0.37334727460368367,
+            -0.3341662638944885,
+            -0.2950135107558379,
+            -0.25588898462946646,
+            -0.21679265500115555,
+            -0.17772449140065374,
+            -0.13868446340159538,
+            -0.09967254062142512,
+            -0.06068869272131533
+          ],
+          [
+            -0.4022840707258691,
+            -0.36491183360372687,
+            -0.3275665495542025,
+            -0.29024818942973934,
+            -0.2529567241247932,
+            -0.21569212457575843,
+            -0.17845436176088877,
+            -0.1412434067002255,
+            -0.10405923045551937
+          ],
+          [
+            -0.4287657097251378,
+            -0.3930487798789461,
+            -0.3573576092882326,
+            -0.3216921700964573,
+            -0.28605243448723117,
+            -0.2504383746842463,
+            -0.21484996295120032,
+            -0.17928717159172697,
+            -0.14374997294932282
+          ],
+          [
+            -0.45309193906325995,
+            -0.4188955867168576,
+            -0.38472389697668463,
+            -0.35057684317213766,
+            -0.31645439867105574,
+            -0.28235653687965173,
+            -0.24828323124244156,
+            -0.21423445524217719,
+            -0.1802101823997756
+          ],
+          [
+            -0.4755156198480355,
+            -0.44272092100040844,
+            -0.40994987387843607,
+            -0.3772024529047002,
+            -0.34447863253864947,
+            -0.3117783872765332,
+            -0.27910169165133386,
+            -0.24644852023270283,
+            -0.213818847626892
+          ],
+          [
+            -0.4962515492595776,
+            -0.46475300639494954,
+            -0.4332771804608173,
+            -0.40182404689066786,
+            -0.37039358115339766,
+            -0.33898575875324916,
+            -0.30760055522974666,
+            -0.2762379461576337,
+            -0.24489790714680812
+          ]
+        ]
+      },
+      "capex_x_works": {
+        "x": {
+          "label": "Travaux (x budget)",
+          "values": [
+            0.9,
+            1.0,
+            1.1,
+            1.2,
+            1.3
+          ]
+        },
+        "y": {
+          "label": "Retard des travaux (+ mois)",
+          "values": [
+            0.0,
+            3.0,
+            6.0,
+            9.0,
+            12.0
+          ]
+        },
+        "levered_irr": [
+          [
+            -0.32299830743531355,
+            -0.3801404639022852,
+            -0.44217662837560234,
+            -0.5108219697757039,
+            -0.5889460341886892
+          ],
+          [
+            -0.3203802848547055,
+            -0.3776956959584228,
+            -0.4410675721312336,
+            -0.5129320498270189,
+            -0.5976638899721634
+          ],
+          [
+            -0.3196175384639778,
+            -0.3776618532162408,
+            -0.4431659168227299,
+            -0.5196174324758975,
+            -0.6138482348333802
+          ],
+          [
+            -0.3206029312005523,
+            -0.3799983187885775,
+            -0.4486291118798399,
+            -0.5315927921633901,
+            -0.6400359253164958
+          ],
+          [
+            -0.32331285276046484,
+            -0.3847952486540188,
+            -0.4578665194297119,
+            -0.5502362062584956,
+            -0.6813838865096186
+          ]
+        ],
+        "margin_on_cost": [
+          [
+            -0.22887215225221855,
+            -0.2529567241247932,
+            -0.2755823987568994,
+            -0.296877836142926,
+            -0.31695699962741025
+          ],
+          [
+            -0.23549390426413105,
+            -0.25927402529388294,
+            -0.2816194030941772,
+            -0.30265608045014786,
+            -0.3224957563034932
+          ],
+          [
+            -0.2420847741375761,
+            -0.2655631962940532,
+            -0.2876307129271613,
+            -0.3084107939772597,
+            -0.328012911061968
+          ],
+          [
+            -0.2486445389928504,
+            -0.2718240110048025,
+            -0.29361610098955915,
+            -0.31414174991045174,
+            -0.3335082387547634
+          ],
+          [
+            -0.255172980380367,
+            -0.278056247345893,
+            -0.29957534369610844,
+            -0.3198487247873839,
+            -0.3389815172838642
+          ]
+        ]
+      }
+    },
+    "report": {
+      "node": "sensitivity_analysis",
+      "figures": [
+        {
+          "id": "tornado_occupancy",
+          "label": "amplitude sur le TRI fonds propres : Occupation stabilisée",
+          "value": "39,9 pt",
+          "raw": 39.85902488883997,
+          "source": "moteur"
+        },
+        {
+          "id": "tornado_rent",
+          "label": "amplitude sur le TRI fonds propres : Loyer de relocation",
+          "value": "39,1 pt",
+          "raw": 39.07863145234502,
+          "source": "moteur"
+        },
+        {
+          "id": "tornado_exit_yield",
+          "label": "amplitude sur le TRI fonds propres : Taux de sortie",
+          "value": "27,3 pt",
+          "raw": 27.29664698553703,
+          "source": "moteur"
+        },
+        {
+          "id": "tornado_capex",
+          "label": "amplitude sur le TRI fonds propres : Coût des travaux",
+          "value": "12,4 pt",
+          "raw": 12.449331947140486,
+          "source": "moteur"
+        },
+        {
+          "id": "be_rent_central",
+          "label": "Loyer de relocation (x loyer central) : valeur centrale",
+          "value": "779 €/m²",
+          "raw": 779.42,
+          "source": "moteur"
+        },
+        {
+          "id": "be_rent_margin",
+          "label": "Loyer de relocation (x loyer central) : marge nulle à",
+          "value": "1 045 €/m²",
+          "raw": 1044.5128888006825,
+          "source": "moteur"
+        },
+        {
+          "id": "be_rent_irr",
+          "label": "Loyer de relocation (x loyer central) : TRI à l'objectif à",
+          "value": "1 204 €/m²",
+          "raw": 1204.3520298317806,
+          "source": "moteur"
+        },
+        {
+          "id": "be_exit_yield_central",
+          "label": "Taux de sortie (+ points) : valeur centrale",
+          "value": "5,64 %",
+          "raw": 0.056430640023168256,
+          "source": "moteur"
+        },
+        {
+          "id": "be_exit_yield_margin",
+          "label": "Taux de sortie (+ points) : marge nulle à",
+          "value": "4,26 %",
+          "raw": 0.0426134420446717,
+          "source": "moteur"
+        },
+        {
+          "id": "be_exit_yield_irr",
+          "label": "Taux de sortie (+ points) : TRI à l'objectif à",
+          "value": "3,72 %",
+          "raw": 0.037154024343904184,
+          "source": "moteur"
+        },
+        {
+          "id": "be_capex_central",
+          "label": "Coût des travaux (x budget) : valeur centrale",
+          "value": "4 000 €/m²",
+          "raw": 4000.0,
+          "source": "moteur"
+        },
+        {
+          "id": "be_euribor_central",
+          "label": "Euribor (+ points) : valeur centrale",
+          "value": "2,63 %",
+          "raw": 0.026346818,
+          "source": "moteur"
+        }
+      ],
+      "questions": {
+        "q5": "Quelles hypothèses font basculer la décision (loyer, taux de sortie, coût des travaux, délai) ?"
+      },
+      "summary": "Les variables les plus déterminantes pour la décision d'investissement sont l'occupation stabilisée, le loyer de relocation et le taux de sortie. Les seuils de bascule indiquent que la marge devient nulle pour un loyer de relocation à 1 045 €/m² et pour un taux de sortie à 4,26 %. Les coûts des travaux, l'Euribor, les délais de relocation et la durée des travaux n'atteignent pas de seuils de bascule, la marge restant négative sur toute la plage testée.",
+      "answers": {
+        "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² ; taux de sortie : marge nulle à 4,26 % ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée."
+      },
+      "reference_summary": "Classement des sensibilités : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt).",
+      "reference_answers": {
+        "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² (valeur centrale 779 €/m²) ; taux de sortie : marge nulle à 4,26 % (valeur centrale 5,64 %) ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée."
+      },
+      "drafting": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      }
+    }
+  },
+  "scenarios": {
+    "status": "complete",
+    "scenarios": {
+      "favorable": {
+        "label": "Favorable",
+        "rationale": "toutes les hypothèses optimistes du plan simultanément",
+        "variables": {
+          "rent": "optimistic",
+          "capex": "optimistic",
+          "works": "optimistic",
+          "occupancy": "optimistic",
+          "exit_yield": "optimistic",
+          "euribor": "optimistic",
+          "letting": "optimistic"
+        },
+        "metrics": {
+          "levered_irr": -0.027165048276103998,
+          "unlevered_irr": 0.024180813997015438,
+          "equity_multiple": 0.9327914006604565,
+          "peak_equity": 17981125.522666663,
+          "yield_on_cost": 0.053312007357687465,
+          "spread_bps": -6.186326654807894,
+          "margin": -1377180.295495823,
+          "margin_on_cost": -0.02816942752975786,
+          "total_cost": 48889182.92858403,
+          "net_exit_value": 47512002.63308821,
+          "exit_date": "2029-12-31"
+        },
+        "max_price": 21571015.147499084,
+        "binding_target": "levered_irr",
+        "meets_targets": false,
+        "checks": {
+          "profit_identity": true,
+          "debt_balance_identity": true,
+          "equity_shortfall_at_exit": false
+        }
+      },
+      "central": {
+        "label": "Central",
+        "rationale": "hypothèses centrales (données de marché et hypothèses de modélisation)",
+        "variables": {},
+        "metrics": {
+          "levered_irr": -0.3801404639022852,
+          "unlevered_irr": -0.0745593812566353,
+          "equity_multiple": 0.32946289709679594,
+          "peak_equity": 18278936.900640003,
+          "yield_on_cost": 0.04469424463570899,
+          "spread_bps": -117.36395387459262,
+          "margin": -12676433.21212852,
+          "margin_on_cost": -0.2529567241247932,
+          "total_cost": 50113050.981300466,
+          "net_exit_value": 37436617.769171946,
+          "exit_date": "2029-12-31"
+        },
+        "max_price": 13358918.077293396,
+        "binding_target": "margin_on_cost",
+        "meets_targets": false,
+        "checks": {
+          "profit_identity": true,
+          "debt_balance_identity": true,
+          "equity_shortfall_at_exit": false
+        }
+      },
+      "defavorable": {
+        "label": "Défavorable",
+        "rationale": "combinaison logique du plan : chantier plus long ET relocation retardée ET Euribor plus haut ET dépassement de travaux ; loyer et taux de sortie au central",
+        "variables": {
+          "works": "pessimistic",
+          "letting": "pessimistic",
+          "euribor": "pessimistic",
+          "capex": "pessimistic"
+        },
+        "metrics": {
+          "levered_irr": -0.6028617909417102,
+          "unlevered_irr": -0.07094586156017435,
+          "equity_multiple": 0.08190813020467963,
+          "peak_equity": 19263486.90064,
+          "yield_on_cost": 0.04028090721103585,
+          "spread_bps": -161.49732812132402,
+          "margin": -18167019.662965283,
+          "margin_on_cost": -0.3267235832392737,
+          "total_cost": 55603637.43213723,
+          "net_exit_value": 37436617.769171946,
+          "exit_date": "2030-12-31"
+        },
+        "max_price": 9427185.946365356,
+        "binding_target": "levered_irr",
+        "meets_targets": false,
+        "checks": {
+          "profit_identity": true,
+          "debt_balance_identity": true,
+          "equity_shortfall_at_exit": false
+        }
+      },
+      "stress": {
+        "label": "Stress",
+        "rationale": "toutes les hypothèses pessimistes du plan simultanément (test de robustesse extrême)",
+        "variables": {
+          "rent": "pessimistic",
+          "capex": "pessimistic",
+          "works": "pessimistic",
+          "occupancy": "pessimistic",
+          "exit_yield": "pessimistic",
+          "euribor": "pessimistic",
+          "letting": "pessimistic"
+        },
+        "metrics": {
+          "levered_irr": null,
+          "unlevered_irr": -0.15725753946955268,
+          "equity_multiple": 0.0087863455665506,
+          "peak_equity": 28090427.138847895,
+          "yield_on_cost": 0.032028708547152625,
+          "spread_bps": -294.0193147601563,
+          "margin": -28354726.63484789,
+          "margin_on_cost": -0.5104865084227767,
+          "total_cost": 55544517.175300084,
+          "net_exit_value": 27189790.540452193,
+          "exit_date": "2030-12-31"
+        },
+        "max_price": 2992218.981956482,
+        "binding_target": "margin_on_cost",
+        "meets_targets": false,
+        "checks": {
+          "profit_identity": true,
+          "debt_balance_identity": true,
+          "equity_shortfall_at_exit": true
+        }
+      }
+    },
+    "targets": {
+      "levered_irr": 0.15,
+      "margin_on_cost": 0.15
+    },
+    "report": {
+      "node": "scenario_analysis",
+      "figures": [
+        {
+          "id": "favorable_irr",
+          "label": "TRI fonds propres, scénario Favorable",
+          "value": "-2,7 %",
+          "raw": -0.027165048276103998,
+          "source": "moteur"
+        },
+        {
+          "id": "favorable_margin",
+          "label": "marge, scénario Favorable",
+          "value": "-2,8 %",
+          "raw": -0.02816942752975786,
+          "source": "moteur"
+        },
+        {
+          "id": "favorable_max_price",
+          "label": "prix maximum, scénario Favorable",
+          "value": "21,6 M€",
+          "raw": 21571015.147499084,
+          "source": "moteur"
+        },
+        {
+          "id": "central_irr",
+          "label": "TRI fonds propres, scénario Central",
+          "value": "-38,0 %",
+          "raw": -0.3801404639022852,
+          "source": "moteur"
+        },
+        {
+          "id": "central_margin",
+          "label": "marge, scénario Central",
+          "value": "-25,3 %",
+          "raw": -0.2529567241247932,
+          "source": "moteur"
+        },
+        {
+          "id": "central_max_price",
+          "label": "prix maximum, scénario Central",
+          "value": "13,4 M€",
+          "raw": 13358918.077293396,
+          "source": "moteur"
+        },
+        {
+          "id": "defavorable_irr",
+          "label": "TRI fonds propres, scénario Défavorable",
+          "value": "-60,3 %",
+          "raw": -0.6028617909417102,
+          "source": "moteur"
+        },
+        {
+          "id": "defavorable_margin",
+          "label": "marge, scénario Défavorable",
+          "value": "-32,7 %",
+          "raw": -0.3267235832392737,
+          "source": "moteur"
+        },
+        {
+          "id": "defavorable_max_price",
+          "label": "prix maximum, scénario Défavorable",
+          "value": "9,4 M€",
+          "raw": 9427185.946365356,
+          "source": "moteur"
+        },
+        {
+          "id": "stress_irr",
+          "label": "TRI fonds propres, scénario Stress",
+          "value": "non calculable (perte en capital)",
+          "raw": null,
+          "source": "moteur"
+        },
+        {
+          "id": "stress_margin",
+          "label": "marge, scénario Stress",
+          "value": "-51,0 %",
+          "raw": -0.5104865084227767,
+          "source": "moteur"
+        },
+        {
+          "id": "stress_max_price",
+          "label": "prix maximum, scénario Stress",
+          "value": "3,0 M€",
+          "raw": 2992218.981956482,
+          "source": "moteur"
+        }
+      ],
+      "questions": {
+        "q7": "L'opération reste-t-elle rentable quand plusieurs hypothèses se dégradent ensemble ?"
+      },
+      "summary": "L'analyse des scénarios montre une dégradation significative de la rentabilité avec des TRI fonds propres négatifs dans tous les cas. Dans le scénario Favorable, le TRI est de -2,7 % et la marge de -2,8 %, tandis que dans le scénario Central, ces chiffres se détériorent à -38,0 % et -25,3 %. Les scénarios Défavorable et Stress présentent des TRI encore plus négatifs et des marges très faibles, indiquant que l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble.",
+      "answers": {
+        "q7": "Non, l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble. Les TRI fonds propres et les marges sont négatifs dans tous les scénarios, et les objectifs du fonds ne sont atteints dans aucun scénario."
+      },
+      "reference_summary": "Scénarios : Favorable : TRI fonds propres -2,7 %, marge -2,8 %, prix maximum 21,6 M€ ; Central : TRI fonds propres -38,0 %, marge -25,3 %, prix maximum 13,4 M€ ; Défavorable : TRI fonds propres -60,3 %, marge -32,7 %, prix maximum 9,4 M€ ; Stress : TRI fonds propres non calculable (perte en capital), marge -51,0 %, prix maximum 3,0 M€.",
+      "reference_answers": {
+        "q7": "Favorable : TRI fonds propres -2,7 %, marge -2,8 %, prix maximum 21,6 M€ ; Central : TRI fonds propres -38,0 %, marge -25,3 %, prix maximum 13,4 M€ ; Défavorable : TRI fonds propres -60,3 %, marge -32,7 %, prix maximum 9,4 M€ ; Stress : TRI fonds propres non calculable (perte en capital), marge -51,0 %, prix maximum 3,0 M€. Les objectifs du fonds ne sont atteints dans aucun scénario."
+      },
+      "drafting": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      }
+    }
+  },
+  "recommendation": {
+    "decision": "NO-GO",
+    "triggers": [
+      "prix maximum 13,4 M€ inférieur au prix demandé 28,0 M€ de plus de 15 %",
+      "marge centrale négative ou nulle (-25,3 %)",
+      "4 risques critiques (seuil admis : 2)"
+    ],
+    "criteria": {
+      "A": {
+        "checks": {
+          "levered_irr": {
+            "value": -0.3801404639022852,
+            "target": 0.15,
+            "ok": false
+          },
+          "margin_on_cost": {
+            "value": -0.2529567241247932,
+            "target": 0.15,
+            "ok": false
+          },
+          "spread_bps": {
+            "value": -117.36395387459262,
+            "target": 150.0,
+            "ok": false
+          },
+          "equity_multiple": {
+            "value": 0.32946289709679594,
+            "target": 1.5,
+            "ok": false
+          }
+        },
+        "conform": false
+      },
+      "B": {
+        "critical": [
+          "R3",
+          "R2",
+          "R6",
+          "R7"
+        ],
+        "high": [
+          "R8",
+          "R5",
+          "R4"
+        ],
+        "uncertain": [],
+        "manageable": false
+      },
+      "C": {
+        "scenario": "defavorable",
+        "margin_on_cost": -0.3267235832392737,
+        "satisfactory": false
+      },
+      "price": {
+        "max_price": 13358918.077293396,
+        "asking": 28000000.0,
+        "floor": 23800000.0,
+        "negotiable": false
+      },
+      "central_profitable": false
+    },
+    "facts": {
+      "asset": "Hélios",
+      "asking_price": 28000000.0,
+      "targets": {
+        "levered_irr": 0.15,
+        "margin_on_cost": 0.15,
+        "spread_bps": 150.0,
+        "equity_multiple": 1.5,
+        "status": {
+          "levered_irr_min": "assumption",
+          "equity_multiple_min": "assumption",
+          "margin_on_cost_min": "assumption",
+          "yoc_spread_min_bps": "assumption"
+        }
+      },
+      "complete": true,
+      "missing_inputs": [],
+      "required_missing": [],
+      "risks": [
+        {
+          "id": "R3",
+          "category": "travaux",
+          "title": "Dépassement du budget travaux",
+          "description": "Le coût de la restructuration dépasse le budget prévu et sa provision pour aléas.",
+          "evidence": [
+            {
+              "key": "asset_config.json:operation.capex_eur_per_sqm_after",
+              "label": "budget travaux (€/m²)",
+              "value": 4000.0,
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "asset_config.json:asset.surface_after_sqm",
+              "label": "surface après travaux",
+              "value": 3200.0,
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "asset_config.json:asset.dpe_current",
+              "label": "DPE actuel / cible",
+              "value": "F -> B",
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "asset_config.json:asset.year_built_decade",
+              "label": "décennie de construction",
+              "value": 1970,
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "index.bt01.yoy",
+              "label": "inflation annuelle BT01",
+              "value": 0.042633,
+              "source": "INSEE BDM - Index bâtiment tous corps d'état (BT01)",
+              "data_date": "2026-08"
+            }
+          ],
+          "probability": 5,
+          "probability_rationale": "base 1 ; extension de surface : +1 ; saut de 4 classes DPE (F -> B) : +1 ; construit dans les années 1970, avant l'interdiction de l'amiante : +1 ; coûts de travaux +4.3% sur un an (> 2%) : +1",
+          "impact": 5,
+          "impact_rationale": "dégradation de 9.5 pt (TRI fonds propres ; TRI -9.5 pt, marge -3.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+          "financial_effect": {
+            "shock": "capex_overrun",
+            "shock_rationale": "travaux +15 % (plan : pessimiste +15 %)",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.4755308182080473,
+            "delta_irr_pts": -9.539035430576215,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.28638895563591255,
+            "delta_margin_pts": -3.3432231511119346,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -15024198.336235218
+          },
+          "criticality": 25,
+          "level": "critique",
+          "uncertain": false,
+          "missing_information": [
+            "benchmark du coût de restructuration lourde au m² (économiste de la construction, devis)"
+          ],
+          "mitigations": [
+            "contrat de travaux à prix global et forfaitaire",
+            "audit technique et repérage amiante avant signature",
+            "provision pour aléas maintenue jusqu'à la réception",
+            "économiste de la construction"
+          ],
+          "seller_requests": [
+            "audit technique complet",
+            "diagnostic amiante avant travaux",
+            "plans de l'immeuble"
+          ],
+          "financial_link": [
+            "coût total",
+            "YoC",
+            "TRI",
+            "marge"
+          ]
+        },
+        {
+          "id": "R2",
+          "category": "marché_locatif",
+          "title": "Loyer de relocation inférieur à l'hypothèse",
+          "description": "Le loyer obtenu à la relocation est inférieur au loyer retenu dans le scénario central.",
+          "evidence": [
+            {
+              "key": "market.immediate_supply.yoy",
+              "label": "variation annuelle de l'offre",
+              "value": 0.325536,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+              "data_date": "2026-T3"
+            },
+            {
+              "key": "market.average_rent.yoy",
+              "label": "variation annuelle du loyer moyen",
+              "value": -0.042298,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+              "data_date": "2026-T3"
+            }
+          ],
+          "probability": 4,
+          "probability_rationale": "base 2 : loyer de relocation estimé, pas encore confronté à des offres réelles ; offre en hausse de 33% sur un an (> 20%) : +1 ; loyer moyen en baisse de -4.2% sur un an : +1",
+          "impact": 5,
+          "impact_rationale": "dégradation de 24.3 pt (TRI fonds propres ; TRI -24.3 pt, marge -7.5 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+          "financial_effect": {
+            "shock": "rent_level",
+            "shock_rationale": "loyer de relocation inférieur de 10 % à l'hypothèse (plan : -10 % en sensibilité)",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.6227980260554145,
+            "delta_irr_pts": -24.265756215312926,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.3275665495542025,
+            "delta_margin_pts": -7.460982542940931,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -16403528.878093205
+          },
+          "criticality": 20,
+          "level": "critique",
+          "uncertain": false,
+          "missing_information": [],
+          "mitigations": [
+            "références locatives récentes d'immeubles restructurés comparables",
+            "pré-commercialisation",
+            "fixer le prix d'acquisition sur un loyer prudent"
+          ],
+          "seller_requests": [],
+          "financial_link": [
+            "NOI",
+            "YoC",
+            "valeur de sortie",
+            "TRI",
+            "marge"
+          ]
+        },
+        {
+          "id": "R6",
+          "category": "financier",
+          "title": "Baisse de la valeur de sortie",
+          "description": "Le taux de rendement attendu par les acquéreurs à la sortie est plus élevé que prévu.",
+          "evidence": [
+            {
+              "key": "market.investment_price_per_sqm.yoy",
+              "label": "variation annuelle du prix d'investissement",
+              "value": -0.096605,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+              "data_date": "2026-T3"
+            }
+          ],
+          "probability": 4,
+          "probability_rationale": "prix d'investissement -9.7% sur un an (<= -5%) : P 4",
+          "impact": 5,
+          "impact_rationale": "dégradation de 19.5 pt (TRI fonds propres ; TRI -19.5 pt, marge -6.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+          "financial_effect": {
+            "shock": "exit_yield_up",
+            "shock_rationale": "taux de sortie +50 points de base (plan : pessimiste +0,50 pt)",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.5747003161331319,
+            "delta_irr_pts": -19.45598522308467,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.31645439867105574,
+            "delta_margin_pts": -6.349767454626254,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -15858495.413859397
+          },
+          "criticality": 20,
+          "level": "critique",
+          "uncertain": false,
+          "missing_information": [
+            "taux de rendement prime et son évolution (rapports de marché)"
+          ],
+          "mitigations": [
+            "prix d'acquisition fixé sur un taux de sortie prudent",
+            "flexibilité sur la date de cession"
+          ],
+          "seller_requests": [],
+          "financial_link": [
+            "valeur de sortie",
+            "marge",
+            "TRI"
+          ]
+        },
+        {
+          "id": "R7",
+          "category": "réglementaire",
+          "title": "Extension ou rooftop non autorisés",
+          "description": "Les surfaces supplémentaires et le rooftop ne sont pas autorisés par la Ville ou l'ABF.",
+          "evidence": [
+            {
+              "key": "asset_config.json:asset.surface_after_sqm",
+              "label": "surface après travaux (extension)",
+              "value": 3200.0,
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "urbanism.plu_constraints.max_height",
+              "label": "hauteur maximale indiquée au PLU (arrondissement)",
+              "value": 12.0,
+              "source": "Paris Open Data - PLU bioclimatique, emprises et hauteurs constructibles",
+              "data_date": "2026-11-08"
+            },
+            {
+              "key": "urbanism.protected_buildings.count",
+              "label": "bâtiments protégés dans l'arrondissement",
+              "value": 216,
+              "source": "Paris Open Data - PLU bioclimatique, bâtiments protégés",
+              "data_date": "2026-11-08"
+            }
+          ],
+          "probability": 4,
+          "probability_rationale": "base 3 : extension et rooftop soumis à autorisation d'urbanisme ; 216 bâtiments protégés dans l'arrondissement : +1",
+          "impact": 5,
+          "impact_rationale": "dégradation de 8.3 pt (TRI fonds propres ; TRI -8.3 pt, marge -3.2 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+          "financial_effect": {
+            "shock": "no_extension",
+            "shock_rationale": "extension et rooftop refusés : surface finale égale à la surface actuelle",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.4628620197801607,
+            "delta_irr_pts": -8.272155587787555,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.285265349470809,
+            "delta_margin_pts": -3.230862534601581,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -14007868.833324507
+          },
+          "criticality": 20,
+          "level": "critique",
+          "uncertain": false,
+          "missing_information": [
+            "règle PLU applicable à LA parcelle et étude de faisabilité (architecte)"
+          ],
+          "mitigations": [
+            "consultation préalable du service urbanisme et de l'ABF",
+            "condition suspensive d'obtention du permis",
+            "étude de faisabilité par un architecte"
+          ],
+          "seller_requests": [
+            "autorisations d'urbanisme existantes",
+            "plans et relevés de géomètre"
+          ],
+          "financial_link": [
+            "surface louable",
+            "NOI",
+            "valeur de sortie",
+            "marge"
+          ]
+        },
+        {
+          "id": "R8",
+          "category": "environnemental",
+          "title": "Objectif DPE non atteint",
+          "description": "La restructuration n'atteint pas la classe énergétique visée.",
+          "evidence": [
+            {
+              "key": "asset_config.json:asset.dpe_current",
+              "label": "DPE actuel / cible",
+              "value": "F -> B",
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "energy.dpe_comparables.share_b_or_better",
+              "label": "part des DPE A-B à proximité",
+              "value": 0.1759,
+              "source": "ADEME - DPE tertiaire (depuis juillet 2021)",
+              "data_date": "2026-11-08"
+            }
+          ],
+          "probability": 3,
+          "probability_rationale": "4 classes à gagner (F -> B) : P 3",
+          "impact": 5,
+          "impact_rationale": "dégradation de 13.9 pt (TRI fonds propres ; TRI -13.9 pt, marge -4.8 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+          "financial_effect": {
+            "shock": "dpe_target_missed",
+            "shock_rationale": "objectif DPE non atteint : décote de loyer de 5 % et 5 % de travaux énergétiques supplémentaires",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.5188602741468986,
+            "delta_irr_pts": -13.871981024461345,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.3011654441387656,
+            "delta_margin_pts": -4.820872001397242,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -15322569.419813111
+          },
+          "criticality": 15,
+          "level": "élevé",
+          "uncertain": false,
+          "missing_information": [
+            "audit énergétique de l'immeuble"
+          ],
+          "mitigations": [
+            "audit énergétique et simulation thermique avant acquisition",
+            "engagement de performance dans le marché de travaux"
+          ],
+          "seller_requests": [
+            "DPE actuel et factures d'énergie",
+            "audit énergétique s'il existe"
+          ],
+          "financial_link": [
+            "loyer",
+            "travaux",
+            "liquidité à la sortie"
+          ]
+        },
+        {
+          "id": "R5",
+          "category": "financier",
+          "title": "Hausse des taux d'intérêt",
+          "description": "La hausse de l'Euribor renchérit la dette à taux variable pendant l'opération.",
+          "evidence": [
+            {
+              "key": "rates.euribor_3m.last",
+              "label": "Euribor 3 mois (dernier)",
+              "value": 0.026346818,
+              "source": "BCE - Euribor 3 mois",
+              "data_date": "2026-10"
+            },
+            {
+              "key": "rates.euribor_3m.avg_12m",
+              "label": "Euribor 3 mois (moyenne 12 mois)",
+              "value": 0.022655980416666666,
+              "source": "BCE - Euribor 3 mois",
+              "data_date": "2026-10"
+            },
+            {
+              "key": "asset_config.json:operation.financing.reference_rate",
+              "label": "taux de référence",
+              "value": "Euribor3M",
+              "source": "Case Braxton AM",
+              "data_date": null
+            }
+          ],
+          "probability": 4,
+          "probability_rationale": "base 3 : dette à taux variable, aucune couverture prévue au case ; Euribor 2.63% au-dessus de sa moyenne 12 mois 2.27% : tendance haussière : +1",
+          "impact": 3,
+          "impact_rationale": "dégradation de 4.0 pt (TRI fonds propres ; TRI -4.0 pt, marge -1.2 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 3",
+          "financial_effect": {
+            "shock": "rates_up",
+            "shock_rationale": "Euribor +1 point sur toute l'opération (plan : pessimiste +1 pt)",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.4203326291965417,
+            "delta_irr_pts": -4.019216529425651,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.2647255379304433,
+            "delta_margin_pts": -1.1768813805650091,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -13478543.439882062
+          },
+          "criticality": 12,
+          "level": "élevé",
+          "uncertain": false,
+          "missing_information": [],
+          "mitigations": [
+            "couverture de taux (cap ou swap) dès le tirage",
+            "négociation de la marge et du plancher"
+          ],
+          "seller_requests": [],
+          "financial_link": [
+            "frais financiers",
+            "TRI fonds propres"
+          ]
+        },
+        {
+          "id": "R4",
+          "category": "travaux",
+          "title": "Retard du chantier",
+          "description": "Le chantier dépasse la durée prévue (désamiantage, autorisations, aléas).",
+          "evidence": [
+            {
+              "key": "asset_config.json:operation.timeline.works_duration_months",
+              "label": "durée des travaux (mois)",
+              "value": 18,
+              "source": "Case Braxton AM",
+              "data_date": null
+            },
+            {
+              "key": "urbanism.protected_buildings.count",
+              "label": "bâtiments protégés dans l'arrondissement",
+              "value": 216,
+              "source": "Paris Open Data - PLU bioclimatique, bâtiments protégés",
+              "data_date": "2026-11-08"
+            },
+            {
+              "key": "asset_config.json:operation.current_leases.end_date",
+              "label": "fin du bail en place",
+              "value": "2027-06-30",
+              "source": "Case Braxton AM",
+              "data_date": null
+            }
+          ],
+          "probability": 5,
+          "probability_rationale": "base 1 ; extension : permis de construire et délai de recours des tiers : +1 ; désamiantage probable (construction antérieure à 1997) : +1 ; 216 bâtiments protégés dans l'arrondissement (secteur patrimonial, avis ABF possible) : +1 ; bail en place libéré 1 jour(s) avant le chantier : aucune marge : +1",
+          "impact": 2,
+          "impact_rationale": "dégradation de 1.3 pt (marge sur coût ; TRI +0.2 pt, marge -1.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 2",
+          "financial_effect": {
+            "shock": "works_delay",
+            "shock_rationale": "chantier de 24 mois au lieu de 18 (plan : pessimiste 24 mois) ; cession décalée d'autant",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.3776618532162408,
+            "delta_irr_pts": 0.24786106860443802,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.2655631962940532,
+            "delta_margin_pts": -1.260647216926003,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -13536614.482082158
+          },
+          "criticality": 10,
+          "level": "élevé",
+          "uncertain": false,
+          "missing_information": [],
+          "mitigations": [
+            "planning avec pénalités de retard",
+            "désamiantage traité en lot préalable",
+            "condition suspensive de libération des locaux"
+          ],
+          "seller_requests": [
+            "calendrier de libération du locataire en place",
+            "historique des autorisations d'urbanisme"
+          ],
+          "financial_link": [
+            "portage",
+            "frais financiers",
+            "TRI"
+          ]
+        },
+        {
+          "id": "R1",
+          "category": "marché_locatif",
+          "title": "Relocation retardée",
+          "description": "Les surfaces restructurées ne trouvent pas preneur dans le délai prévu après la livraison.",
+          "evidence": [
+            {
+              "key": "market.immediate_supply.last",
+              "label": "offre immédiate (m²)",
+              "value": 680000.0,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+              "data_date": "2026-T3"
+            },
+            {
+              "key": "market.take_up.rolling_12m",
+              "label": "demande placée sur 12 mois (m²)",
+              "value": 408031.0,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+              "data_date": "2026-T3"
+            },
+            {
+              "key": "computed.months_of_supply",
+              "label": "mois d'offre",
+              "value": 20.0,
+              "source": null,
+              "data_date": null
+            }
+          ],
+          "probability": 3,
+          "probability_rationale": "20 mois d'offre disponible au rythme de la demande (seuils [6.0, 12.0, 24.0, 36.0]) : P 3",
+          "impact": 2,
+          "impact_rationale": "dégradation de 1.5 pt (marge sur coût ; TRI +1.1 pt, marge -1.5 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 2",
+          "financial_effect": {
+            "shock": "letting_delay",
+            "shock_rationale": "relocation retardée de 6 mois ; la cession, prévue une fois l'actif loué, glisse d'autant",
+            "base_levered_irr": -0.3801404639022852,
+            "shocked_levered_irr": -0.36921244687179255,
+            "delta_irr_pts": 1.092801703049262,
+            "base_margin_on_cost": -0.2529567241247932,
+            "shocked_margin_on_cost": -0.2676219763951838,
+            "delta_margin_pts": -1.4665252270390616,
+            "base_margin": -12676433.21212852,
+            "shocked_margin": -13679904.795099273
+          },
+          "criticality": 6,
+          "level": "modéré",
+          "uncertain": false,
+          "missing_information": [
+            "taux de vacance du sous-marché (rapports de marché)"
+          ],
+          "mitigations": [
+            "pré-commercialisation dès le lancement des travaux",
+            "promesse de bail avant l'acquisition définitive",
+            "étude d'absorption du sous-marché par un conseil"
+          ],
+          "seller_requests": [
+            "état locatif et calendrier de départ du locataire en place"
+          ],
+          "financial_link": [
+            "NOI",
+            "TRI",
+            "marge"
+          ]
+        }
+      ],
+      "seller_requests": [
+        "DPE actuel et factures d'énergie",
+        "audit technique complet",
+        "audit énergétique s'il existe",
+        "autorisations d'urbanisme existantes",
+        "calendrier de libération du locataire en place",
+        "diagnostic amiante avant travaux",
+        "diagnostics environnementaux",
+        "historique des autorisations d'urbanisme",
+        "plans de l'immeuble",
+        "plans et relevés de géomètre",
+        "état des risques et pollutions (ERP)",
+        "état locatif et calendrier de départ du locataire en place"
+      ],
+      "data_missing": [
+        "market.future_supply",
+        "market.incentives",
+        "market.prime_rent",
+        "market.prime_yield",
+        "market.vacancy",
+        "risk.catnat",
+        "risk.natural_risks"
+      ],
+      "data_rejected": [],
+      "market": {
+        "supply_yoy": {
+          "value": 0.325536,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "date": "2026-T3"
+        },
+        "investment_price_yoy": {
+          "value": -0.096605,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "date": "2026-T3"
+        },
+        "investment_price_per_sqm": {
+          "value": 13812.0,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "date": "2026-T3"
+        },
+        "average_rent": {
+          "value": 779.42,
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "date": "2026-T3"
+        }
+      },
+      "reports": {
+        "financials": {
+          "node": "financial_analysis",
+          "figures": [
+            {
+              "id": "asking_price",
+              "label": "prix demandé",
+              "value": "28,0 M€",
+              "raw": 28000000.0,
+              "source": "case"
+            },
+            {
+              "id": "asking_price_sqm",
+              "label": "prix demandé au m² (surface actuelle)",
+              "value": "9 333 €/m²",
+              "raw": 9333.333333333334,
+              "source": "calcul"
+            },
+            {
+              "id": "dvf_median",
+              "label": "médiane DVF des locaux d'activité du secteur",
+              "value": "8 744 €/m²",
+              "raw": 8744,
+              "source": "DVF+ open data (Cerema, API données foncières), 2025-12-31"
+            },
+            {
+              "id": "dvf_n",
+              "label": "transactions retenues",
+              "value": "434",
+              "raw": 434,
+              "source": "DVF+ open data (Cerema, API données foncières)"
+            },
+            {
+              "id": "gap_dvf",
+              "label": "écart du prix demandé à la médiane DVF",
+              "value": "6,7 %",
+              "raw": 0.06739859713327245,
+              "source": "calcul"
+            },
+            {
+              "id": "dvf_large",
+              "label": "médiane DVF des grandes surfaces",
+              "value": "8 416 €/m²",
+              "raw": 8416,
+              "source": "DVF+ open data (Cerema, API données foncières)"
+            },
+            {
+              "id": "firmio_median",
+              "label": "médiane Firmio (recoupement, confiance faible)",
+              "value": "9 059 €/m²",
+              "raw": 9059.0,
+              "source": "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF, 2026-10-03"
+            },
+            {
+              "id": "relet_rent",
+              "label": "loyer de relocation retenu",
+              "value": "779 €/m²/an",
+              "raw": 779.42,
+              "source": "market.average_rent"
+            },
+            {
+              "id": "immostat_rent",
+              "label": "loyer moyen de seconde main du sous-marché",
+              "value": "779 €/m²/an",
+              "raw": 779.42,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3"
+            },
+            {
+              "id": "immostat_rent_yoy",
+              "label": "variation annuelle du loyer moyen",
+              "value": "-4,2 %",
+              "raw": -0.042298,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France"
+            },
+            {
+              "id": "investment_price_sqm",
+              "label": "prix moyen d'investissement bureaux du sous-marché",
+              "value": "13 812 €/m²",
+              "raw": 13812.0,
+              "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3"
+            },
+            {
+              "id": "total_cost",
+              "label": "coût total",
+              "value": "50,1 M€",
+              "raw": 50113050.981300466,
+              "source": "moteur"
+            },
+            {
+              "id": "total_cost_sqm",
+              "label": "coût total au m² après travaux",
+              "value": "15 660 €/m²",
+              "raw": 15660.328431656395,
+              "source": "moteur"
+            },
+            {
+              "id": "exit_value_sqm",
+              "label": "valeur de sortie brute au m²",
+              "value": "12 403 €/m²",
+              "raw": 12403.3069572246,
+              "source": "moteur"
+            },
+            {
+              "id": "gap_cost_value",
+              "label": "écart du coût au m² au prix d'investissement du secteur",
+              "value": "13,4 %",
+              "raw": 0.1338204772412681,
+              "source": "calcul"
+            },
+            {
+              "id": "yoc",
+              "label": "yield on cost",
+              "value": "4,47 %",
+              "raw": 0.04469424463570899,
+              "source": "moteur"
+            },
+            {
+              "id": "exit_yield",
+              "label": "taux de sortie",
+              "value": "5,64 %",
+              "raw": 0.056430640023168256,
+              "source": "rendement implicite 779 / 13812 = 0.0564 ; Sans taux de rendement prime sourcé, le taux de sortie est le rendement implicite du marché : loyer moyen / prix moyen d'investissement bureaux du même sous-marché (ImmoStat), deux données sourcées. C'est un rendement BRUT moyen (seconde main), donc prudent pour un immeuble restructuré."
+            },
+            {
+              "id": "spread",
+              "label": "spread yield on cost / taux de sortie",
+              "value": "-117 pb",
+              "raw": -117.36395387459262,
+              "source": "moteur"
+            },
+            {
+              "id": "spread_target",
+              "label": "spread minimal visé par le fonds",
+              "value": "150 pb",
+              "raw": 150.0,
+              "source": "config/investor_targets.yaml"
+            },
+            {
+              "id": "debt_rate",
+              "label": "coût de la dette (Euribor + marge)",
+              "value": "5,63 %",
+              "raw": 0.056346818,
+              "source": "BCE + case"
+            },
+            {
+              "id": "yoc_vs_debt",
+              "label": "écart yield on cost / coût de la dette",
+              "value": "-117 pb",
+              "raw": -116.52573364291007,
+              "source": "calcul"
+            },
+            {
+              "id": "margin",
+              "label": "marge sur coût",
+              "value": "-25,3 %",
+              "raw": -0.2529567241247932,
+              "source": "moteur"
+            },
+            {
+              "id": "levered_irr",
+              "label": "TRI fonds propres",
+              "value": "-38,0 %",
+              "raw": -0.3801404639022852,
+              "source": "moteur"
+            },
+            {
+              "id": "unlevered_irr",
+              "label": "TRI projet",
+              "value": "-7,5 %",
+              "raw": -0.0745593812566353,
+              "source": "moteur"
+            },
+            {
+              "id": "multiple",
+              "label": "multiple de fonds propres",
+              "value": "0,33x",
+              "raw": 0.32946289709679594,
+              "source": "moteur"
+            },
+            {
+              "id": "max_price",
+              "label": "prix maximum (objectifs du fonds)",
+              "value": "13,4 M€",
+              "raw": 13358918.077293396,
+              "source": "moteur"
+            }
+          ],
+          "questions": {
+            "q1": "Le prix demandé est-il cohérent avec les transactions du quartier ?",
+            "q2": "Quel loyer peut-on espérer après restructuration, au regard du marché ?",
+            "q3": "Quel est le coût total au m² après travaux, et comment se compare-t-il à la valeur d'un immeuble restructuré dans ce secteur ?",
+            "q4": "Le rendement sur coût total (yield on cost) dégage-t-il une marge suffisante par rapport au taux de rendement de sortie et au niveau actuel des taux ?"
+          },
+          "summary": "Au prix demandé de 28,0 M€, le scénario central donne un yield on cost de 4,47 %, une marge de -25,3 % et un TRI fonds propres de -38,0 %. Le prix maximum compatible avec les objectifs du fonds est de 13,4 M€.",
+          "answers": {
+            "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+            "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+            "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+            "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %."
+          },
+          "reference_summary": "Au prix demandé de 28,0 M€, le scénario central donne un yield on cost de 4,47 %, une marge de -25,3 % et un TRI fonds propres de -38,0 %. Le prix maximum compatible avec les objectifs du fonds est de 13,4 M€.",
+          "reference_answers": {
+            "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+            "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+            "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+            "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %."
+          },
+          "drafting": {
+            "mode": "template",
+            "status": "rejeté : nombres absents des chiffres du nœud [40.0]",
+            "model": "gpt-4o-mini"
+          }
+        },
+        "risks": {
+          "node": "risk_analysis",
+          "figures": [
+            {
+              "id": "R3",
+              "label": "Dépassement du budget travaux",
+              "value": "P 5/5 x I 5/5 = 25/25, critique",
+              "raw": 25,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R3_margin",
+              "label": "effet sur la marge : Dépassement du budget travaux",
+              "value": "-3,3 pt",
+              "raw": -3.3432231511119346,
+              "source": "moteur"
+            },
+            {
+              "id": "R3_irr",
+              "label": "effet sur le TRI fonds propres : Dépassement du budget travaux",
+              "value": "-9,5 pt",
+              "raw": -9.539035430576215,
+              "source": "moteur"
+            },
+            {
+              "id": "R2",
+              "label": "Loyer de relocation inférieur à l'hypothèse",
+              "value": "P 4/5 x I 5/5 = 20/25, critique",
+              "raw": 20,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R2_margin",
+              "label": "effet sur la marge : Loyer de relocation inférieur à l'hypothèse",
+              "value": "-7,5 pt",
+              "raw": -7.460982542940931,
+              "source": "moteur"
+            },
+            {
+              "id": "R2_irr",
+              "label": "effet sur le TRI fonds propres : Loyer de relocation inférieur à l'hypothèse",
+              "value": "-24,3 pt",
+              "raw": -24.265756215312926,
+              "source": "moteur"
+            },
+            {
+              "id": "R6",
+              "label": "Baisse de la valeur de sortie",
+              "value": "P 4/5 x I 5/5 = 20/25, critique",
+              "raw": 20,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R6_margin",
+              "label": "effet sur la marge : Baisse de la valeur de sortie",
+              "value": "-6,3 pt",
+              "raw": -6.349767454626254,
+              "source": "moteur"
+            },
+            {
+              "id": "R6_irr",
+              "label": "effet sur le TRI fonds propres : Baisse de la valeur de sortie",
+              "value": "-19,5 pt",
+              "raw": -19.45598522308467,
+              "source": "moteur"
+            },
+            {
+              "id": "R7",
+              "label": "Extension ou rooftop non autorisés",
+              "value": "P 4/5 x I 5/5 = 20/25, critique",
+              "raw": 20,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R7_margin",
+              "label": "effet sur la marge : Extension ou rooftop non autorisés",
+              "value": "-3,2 pt",
+              "raw": -3.230862534601581,
+              "source": "moteur"
+            },
+            {
+              "id": "R7_irr",
+              "label": "effet sur le TRI fonds propres : Extension ou rooftop non autorisés",
+              "value": "-8,3 pt",
+              "raw": -8.272155587787555,
+              "source": "moteur"
+            },
+            {
+              "id": "R8",
+              "label": "Objectif DPE non atteint",
+              "value": "P 3/5 x I 5/5 = 15/25, élevé",
+              "raw": 15,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R8_margin",
+              "label": "effet sur la marge : Objectif DPE non atteint",
+              "value": "-4,8 pt",
+              "raw": -4.820872001397242,
+              "source": "moteur"
+            },
+            {
+              "id": "R8_irr",
+              "label": "effet sur le TRI fonds propres : Objectif DPE non atteint",
+              "value": "-13,9 pt",
+              "raw": -13.871981024461345,
+              "source": "moteur"
+            },
+            {
+              "id": "R5",
+              "label": "Hausse des taux d'intérêt",
+              "value": "P 4/5 x I 3/5 = 12/25, élevé",
+              "raw": 12,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R5_margin",
+              "label": "effet sur la marge : Hausse des taux d'intérêt",
+              "value": "-1,2 pt",
+              "raw": -1.1768813805650091,
+              "source": "moteur"
+            },
+            {
+              "id": "R5_irr",
+              "label": "effet sur le TRI fonds propres : Hausse des taux d'intérêt",
+              "value": "-4,0 pt",
+              "raw": -4.019216529425651,
+              "source": "moteur"
+            },
+            {
+              "id": "R4",
+              "label": "Retard du chantier",
+              "value": "P 5/5 x I 2/5 = 10/25, élevé",
+              "raw": 10,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R4_margin",
+              "label": "effet sur la marge : Retard du chantier",
+              "value": "-1,3 pt",
+              "raw": -1.260647216926003,
+              "source": "moteur"
+            },
+            {
+              "id": "R4_irr",
+              "label": "effet sur le TRI fonds propres : Retard du chantier",
+              "value": "0,2 pt",
+              "raw": 0.24786106860443802,
+              "source": "moteur"
+            },
+            {
+              "id": "R1",
+              "label": "Relocation retardée",
+              "value": "P 3/5 x I 2/5 = 6/25, modéré",
+              "raw": 6,
+              "source": "règles de notation"
+            },
+            {
+              "id": "R1_margin",
+              "label": "effet sur la marge : Relocation retardée",
+              "value": "-1,5 pt",
+              "raw": -1.4665252270390616,
+              "source": "moteur"
+            },
+            {
+              "id": "R1_irr",
+              "label": "effet sur le TRI fonds propres : Relocation retardée",
+              "value": "1,1 pt",
+              "raw": 1.092801703049262,
+              "source": "moteur"
+            }
+          ],
+          "questions": {
+            "q6": "Quels sont les principaux risques : marché locatif, travaux, taux, réglementation, environnement ?"
+          },
+          "summary": "Les principaux risques identifiés sont classés par catégorie. Dans la catégorie des travaux, le dépassement du budget travaux est noté critique avec une criticité de 25/25 et un impact sur la marge de -3,3 pt. Pour le marché locatif, le loyer de relocation inférieur à l'hypothèse est également critique avec une criticité de 20/25 et un impact sur la marge de -7,5 pt. La réglementation présente un risque critique avec l'extension ou rooftop non autorisés, noté 20/25 et un impact de -3,2 pt. Enfin, la hausse des taux d'intérêt est un risque élevé dans la catégorie taux, avec une criticité de 12/25 et un impact de -1,2 pt.",
+          "answers": {
+            "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt)."
+          },
+          "reference_summary": "8 risques sont caractérisés par des données ; les plus critiques sont : Dépassement du budget travaux, Loyer de relocation inférieur à l'hypothèse, Baisse de la valeur de sortie.",
+          "reference_answers": {
+            "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt)."
+          },
+          "drafting": {
+            "mode": "llm",
+            "status": "accepté",
+            "model": "gpt-4o-mini"
+          }
+        },
+        "sensitivity": {
+          "node": "sensitivity_analysis",
+          "figures": [
+            {
+              "id": "tornado_occupancy",
+              "label": "amplitude sur le TRI fonds propres : Occupation stabilisée",
+              "value": "39,9 pt",
+              "raw": 39.85902488883997,
+              "source": "moteur"
+            },
+            {
+              "id": "tornado_rent",
+              "label": "amplitude sur le TRI fonds propres : Loyer de relocation",
+              "value": "39,1 pt",
+              "raw": 39.07863145234502,
+              "source": "moteur"
+            },
+            {
+              "id": "tornado_exit_yield",
+              "label": "amplitude sur le TRI fonds propres : Taux de sortie",
+              "value": "27,3 pt",
+              "raw": 27.29664698553703,
+              "source": "moteur"
+            },
+            {
+              "id": "tornado_capex",
+              "label": "amplitude sur le TRI fonds propres : Coût des travaux",
+              "value": "12,4 pt",
+              "raw": 12.449331947140486,
+              "source": "moteur"
+            },
+            {
+              "id": "be_rent_central",
+              "label": "Loyer de relocation (x loyer central) : valeur centrale",
+              "value": "779 €/m²",
+              "raw": 779.42,
+              "source": "moteur"
+            },
+            {
+              "id": "be_rent_margin",
+              "label": "Loyer de relocation (x loyer central) : marge nulle à",
+              "value": "1 045 €/m²",
+              "raw": 1044.5128888006825,
+              "source": "moteur"
+            },
+            {
+              "id": "be_rent_irr",
+              "label": "Loyer de relocation (x loyer central) : TRI à l'objectif à",
+              "value": "1 204 €/m²",
+              "raw": 1204.3520298317806,
+              "source": "moteur"
+            },
+            {
+              "id": "be_exit_yield_central",
+              "label": "Taux de sortie (+ points) : valeur centrale",
+              "value": "5,64 %",
+              "raw": 0.056430640023168256,
+              "source": "moteur"
+            },
+            {
+              "id": "be_exit_yield_margin",
+              "label": "Taux de sortie (+ points) : marge nulle à",
+              "value": "4,26 %",
+              "raw": 0.0426134420446717,
+              "source": "moteur"
+            },
+            {
+              "id": "be_exit_yield_irr",
+              "label": "Taux de sortie (+ points) : TRI à l'objectif à",
+              "value": "3,72 %",
+              "raw": 0.037154024343904184,
+              "source": "moteur"
+            },
+            {
+              "id": "be_capex_central",
+              "label": "Coût des travaux (x budget) : valeur centrale",
+              "value": "4 000 €/m²",
+              "raw": 4000.0,
+              "source": "moteur"
+            },
+            {
+              "id": "be_euribor_central",
+              "label": "Euribor (+ points) : valeur centrale",
+              "value": "2,63 %",
+              "raw": 0.026346818,
+              "source": "moteur"
+            }
+          ],
+          "questions": {
+            "q5": "Quelles hypothèses font basculer la décision (loyer, taux de sortie, coût des travaux, délai) ?"
+          },
+          "summary": "Les variables les plus déterminantes pour la décision d'investissement sont l'occupation stabilisée, le loyer de relocation et le taux de sortie. Les seuils de bascule indiquent que la marge devient nulle pour un loyer de relocation à 1 045 €/m² et pour un taux de sortie à 4,26 %. Les coûts des travaux, l'Euribor, les délais de relocation et la durée des travaux n'atteignent pas de seuils de bascule, la marge restant négative sur toute la plage testée.",
+          "answers": {
+            "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² ; taux de sortie : marge nulle à 4,26 % ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée."
+          },
+          "reference_summary": "Classement des sensibilités : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt).",
+          "reference_answers": {
+            "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² (valeur centrale 779 €/m²) ; taux de sortie : marge nulle à 4,26 % (valeur centrale 5,64 %) ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée."
+          },
+          "drafting": {
+            "mode": "llm",
+            "status": "accepté",
+            "model": "gpt-4o-mini"
+          }
+        },
+        "scenarios": {
+          "node": "scenario_analysis",
+          "figures": [
+            {
+              "id": "favorable_irr",
+              "label": "TRI fonds propres, scénario Favorable",
+              "value": "-2,7 %",
+              "raw": -0.027165048276103998,
+              "source": "moteur"
+            },
+            {
+              "id": "favorable_margin",
+              "label": "marge, scénario Favorable",
+              "value": "-2,8 %",
+              "raw": -0.02816942752975786,
+              "source": "moteur"
+            },
+            {
+              "id": "favorable_max_price",
+              "label": "prix maximum, scénario Favorable",
+              "value": "21,6 M€",
+              "raw": 21571015.147499084,
+              "source": "moteur"
+            },
+            {
+              "id": "central_irr",
+              "label": "TRI fonds propres, scénario Central",
+              "value": "-38,0 %",
+              "raw": -0.3801404639022852,
+              "source": "moteur"
+            },
+            {
+              "id": "central_margin",
+              "label": "marge, scénario Central",
+              "value": "-25,3 %",
+              "raw": -0.2529567241247932,
+              "source": "moteur"
+            },
+            {
+              "id": "central_max_price",
+              "label": "prix maximum, scénario Central",
+              "value": "13,4 M€",
+              "raw": 13358918.077293396,
+              "source": "moteur"
+            },
+            {
+              "id": "defavorable_irr",
+              "label": "TRI fonds propres, scénario Défavorable",
+              "value": "-60,3 %",
+              "raw": -0.6028617909417102,
+              "source": "moteur"
+            },
+            {
+              "id": "defavorable_margin",
+              "label": "marge, scénario Défavorable",
+              "value": "-32,7 %",
+              "raw": -0.3267235832392737,
+              "source": "moteur"
+            },
+            {
+              "id": "defavorable_max_price",
+              "label": "prix maximum, scénario Défavorable",
+              "value": "9,4 M€",
+              "raw": 9427185.946365356,
+              "source": "moteur"
+            },
+            {
+              "id": "stress_irr",
+              "label": "TRI fonds propres, scénario Stress",
+              "value": "non calculable (perte en capital)",
+              "raw": null,
+              "source": "moteur"
+            },
+            {
+              "id": "stress_margin",
+              "label": "marge, scénario Stress",
+              "value": "-51,0 %",
+              "raw": -0.5104865084227767,
+              "source": "moteur"
+            },
+            {
+              "id": "stress_max_price",
+              "label": "prix maximum, scénario Stress",
+              "value": "3,0 M€",
+              "raw": 2992218.981956482,
+              "source": "moteur"
+            }
+          ],
+          "questions": {
+            "q7": "L'opération reste-t-elle rentable quand plusieurs hypothèses se dégradent ensemble ?"
+          },
+          "summary": "L'analyse des scénarios montre une dégradation significative de la rentabilité avec des TRI fonds propres négatifs dans tous les cas. Dans le scénario Favorable, le TRI est de -2,7 % et la marge de -2,8 %, tandis que dans le scénario Central, ces chiffres se détériorent à -38,0 % et -25,3 %. Les scénarios Défavorable et Stress présentent des TRI encore plus négatifs et des marges très faibles, indiquant que l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble.",
+          "answers": {
+            "q7": "Non, l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble. Les TRI fonds propres et les marges sont négatifs dans tous les scénarios, et les objectifs du fonds ne sont atteints dans aucun scénario."
+          },
+          "reference_summary": "Scénarios : Favorable : TRI fonds propres -2,7 %, marge -2,8 %, prix maximum 21,6 M€ ; Central : TRI fonds propres -38,0 %, marge -25,3 %, prix maximum 13,4 M€ ; Défavorable : TRI fonds propres -60,3 %, marge -32,7 %, prix maximum 9,4 M€ ; Stress : TRI fonds propres non calculable (perte en capital), marge -51,0 %, prix maximum 3,0 M€.",
+          "reference_answers": {
+            "q7": "Favorable : TRI fonds propres -2,7 %, marge -2,8 %, prix maximum 21,6 M€ ; Central : TRI fonds propres -38,0 %, marge -25,3 %, prix maximum 13,4 M€ ; Défavorable : TRI fonds propres -60,3 %, marge -32,7 %, prix maximum 9,4 M€ ; Stress : TRI fonds propres non calculable (perte en capital), marge -51,0 %, prix maximum 3,0 M€. Les objectifs du fonds ne sont atteints dans aucun scénario."
+          },
+          "drafting": {
+            "mode": "llm",
+            "status": "accepté",
+            "model": "gpt-4o-mini"
+          }
+        }
+      },
+      "central": {
+        "yield_on_cost": 0.04469424463570899,
+        "spread_bps": -117.36395387459262,
+        "margin": -12676433.21212852,
+        "margin_on_cost": -0.2529567241247932,
+        "unlevered_irr": -0.0745593812566353,
+        "levered_irr": -0.3801404639022852,
+        "equity_multiple": 0.32946289709679594,
+        "peak_equity": 18278936.900640003,
+        "exit_yield": 0.056430640023168256,
+        "gross_exit_value": 39690582.26311872,
+        "net_exit_value": 37436617.769171946,
+        "total_cost": 50113050.981300466,
+        "total_cost_per_sqm": 15660.328431656395,
+        "noi": 2239764.9599999995,
+        "relet_rent": 779.42,
+        "price_per_sqm_before": 9333.333333333334,
+        "price_per_sqm_after": 8750.0,
+        "exit_date": "2029-12-31"
+      },
+      "max_price": {
+        "value": 13358918.077293396,
+        "binding_target": "margin_on_cost",
+        "by_target": {
+          "levered_irr": 13781891.705070496,
+          "margin_on_cost": 13358918.077293396
+        },
+        "gap_pct": -0.5228957829538072
+      },
+      "assumptions": [
+        "exit_quarter",
+        "acq_fees_pct",
+        "firm_lease_term_months",
+        "incentives_if_missing",
+        "letting_void_months",
+        "stabilised_occupancy",
+        "non_recoverable_pct",
+        "vacant_holding_cost_eur_sqm_year",
+        "marketing_fees_pct_annual_rent",
+        "sale_costs_pct",
+        "debt_arrangement_fee_pct",
+        "euribor_floor",
+        "ltv_basis",
+        "interest_mode"
+      ],
+      "overrides": [],
+      "price_references": [
+        {
+          "key": "market.dvf_price_per_sqm",
+          "label": "médiane DVF des comparables",
+          "source": "DVF+ open data (Cerema, API données foncières)",
+          "data_date": "2025-12-31",
+          "confidence": "medium",
+          "value_per_sqm": 8744.0,
+          "basis": "surface_before",
+          "gap_pct": 0.06739859713327245,
+          "value_range": [
+            15000000.0,
+            34503000.0
+          ]
+        },
+        {
+          "key": "market.dvf_price_per_sqm",
+          "label": "médiane DVF des comparables",
+          "source": "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF",
+          "data_date": "2026-10-03",
+          "confidence": "low",
+          "value_per_sqm": 9059.0,
+          "basis": "surface_before",
+          "gap_pct": 0.03028295985576035
+        },
+        {
+          "key": "market.investment_price_per_sqm",
+          "label": "prix moyen d'investissement bureaux du sous-marché",
+          "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+          "data_date": "2026-T3",
+          "confidence": "medium",
+          "value_per_sqm": 13812.0,
+          "basis": "surface_after",
+          "gap_pct": -0.36649290472053286
+        }
+      ],
+      "scenarios": {
+        "favorable": {
+          "label": "Favorable",
+          "levered_irr": -0.027165048276103998,
+          "margin_on_cost": -0.02816942752975786,
+          "max_price": 21571015.147499084,
+          "meets_targets": false
+        },
+        "central": {
+          "label": "Central",
+          "levered_irr": -0.3801404639022852,
+          "margin_on_cost": -0.2529567241247932,
+          "max_price": 13358918.077293396,
+          "meets_targets": false
+        },
+        "defavorable": {
+          "label": "Défavorable",
+          "levered_irr": -0.6028617909417102,
+          "margin_on_cost": -0.3267235832392737,
+          "max_price": 9427185.946365356,
+          "meets_targets": false
+        },
+        "stress": {
+          "label": "Stress",
+          "levered_irr": null,
+          "margin_on_cost": -0.5104865084227767,
+          "max_price": 2992218.981956482,
+          "meets_targets": false
+        }
+      },
+      "tornado_top": [
+        {
+          "label": "Occupation stabilisée",
+          "irr_range_pts": 39.85902488883997,
+          "pessimistic_pts": -30.664698295987602
+        },
+        {
+          "label": "Loyer de relocation",
+          "irr_range_pts": 39.07863145234502,
+          "pessimistic_pts": -24.265756215312926
+        },
+        {
+          "label": "Taux de sortie",
+          "irr_range_pts": 27.29664698553703,
+          "pessimistic_pts": -19.45598522308467
+        }
+      ],
+      "breakeven": {
+        "rent": {
+          "label": "Loyer de relocation (x loyer central)",
+          "central_value": 779.42,
+          "margin_zero_value": 1044.5128888006825,
+          "irr_target_value": 1204.3520298317806
+        },
+        "exit_yield": {
+          "label": "Taux de sortie (+ points)",
+          "central_value": 0.056430640023168256,
+          "margin_zero_value": 0.0426134420446717,
+          "irr_target_value": 0.037154024343904184
+        },
+        "capex": {
+          "label": "Coût des travaux (x budget)",
+          "central_value": 4000.0,
+          "margin_zero_value": null,
+          "irr_target_value": null
+        },
+        "euribor": {
+          "label": "Euribor (+ points)",
+          "central_value": 0.026346818,
+          "margin_zero_value": null,
+          "irr_target_value": null
+        },
+        "letting": {
+          "label": "Délai de relocation (+ mois)",
+          "central_value": 6,
+          "margin_zero_value": null,
+          "irr_target_value": null
+        },
+        "works": {
+          "label": "Durée des travaux (+ mois)",
+          "central_value": 18,
+          "margin_zero_value": null,
+          "irr_target_value": null
+        }
+      }
+    },
+    "conditions": [
+      "ramener le prix d'acquisition à 13,4 M€ au plus (contre 28,0 M€ demandés)",
+      "sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation",
+      "Dépassement du budget travaux : contrat de travaux à prix global et forfaitaire",
+      "Loyer de relocation inférieur à l'hypothèse : références locatives récentes d'immeubles restructurés comparables",
+      "Baisse de la valeur de sortie : prix d'acquisition fixé sur un taux de sortie prudent",
+      "Extension ou rooftop non autorisés : consultation préalable du service urbanisme et de l'ABF",
+      "Objectif DPE non atteint : audit énergétique et simulation thermique avant acquisition",
+      "Hausse des taux d'intérêt : couverture de taux (cap ou swap) dès le tirage",
+      "Retard du chantier : planning avec pénalités de retard"
+    ],
+    "questions": {
+      "q1": "Le prix demandé est-il cohérent avec les transactions du quartier ?",
+      "q2": "Quel loyer peut-on espérer après restructuration, au regard du marché ?",
+      "q3": "Quel est le coût total au m² après travaux, et comment se compare-t-il à la valeur d'un immeuble restructuré dans ce secteur ?",
+      "q4": "Le rendement sur coût total (yield on cost) dégage-t-il une marge suffisante par rapport au taux de rendement de sortie et au niveau actuel des taux ?",
+      "q5": "Quelles hypothèses font basculer la décision (loyer, taux de sortie, coût des travaux, délai) ?",
+      "q6": "Quels sont les principaux risques : marché locatif, travaux, taux, réglementation, environnement ?",
+      "q7": "L'opération reste-t-elle rentable quand plusieurs hypothèses se dégradent ensemble ?"
+    },
+    "top_risks": [
+      {
+        "id": "R3",
+        "category": "travaux",
+        "title": "Dépassement du budget travaux",
+        "description": "Le coût de la restructuration dépasse le budget prévu et sa provision pour aléas.",
+        "evidence": [
+          {
+            "key": "asset_config.json:operation.capex_eur_per_sqm_after",
+            "label": "budget travaux (€/m²)",
+            "value": 4000.0,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.surface_after_sqm",
+            "label": "surface après travaux",
+            "value": 3200.0,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.dpe_current",
+            "label": "DPE actuel / cible",
+            "value": "F -> B",
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "asset_config.json:asset.year_built_decade",
+            "label": "décennie de construction",
+            "value": 1970,
+            "source": "Case Braxton AM",
+            "data_date": null
+          },
+          {
+            "key": "index.bt01.yoy",
+            "label": "inflation annuelle BT01",
+            "value": 0.042633,
+            "source": "INSEE BDM - Index bâtiment tous corps d'état (BT01)",
+            "data_date": "2026-08"
+          }
+        ],
+        "probability": 5,
+        "probability_rationale": "base 1 ; extension de surface : +1 ; saut de 4 classes DPE (F -> B) : +1 ; construit dans les années 1970, avant l'interdiction de l'amiante : +1 ; coûts de travaux +4.3% sur un an (> 2%) : +1",
+        "impact": 5,
+        "impact_rationale": "dégradation de 9.5 pt (TRI fonds propres ; TRI -9.5 pt, marge -3.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "capex_overrun",
+          "shock_rationale": "travaux +15 % (plan : pessimiste +15 %)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.4755308182080473,
+          "delta_irr_pts": -9.539035430576215,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.28638895563591255,
+          "delta_margin_pts": -3.3432231511119346,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -15024198.336235218
+        },
+        "criticality": 25,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [
+          "benchmark du coût de restructuration lourde au m² (économiste de la construction, devis)"
+        ],
+        "mitigations": [
+          "contrat de travaux à prix global et forfaitaire",
+          "audit technique et repérage amiante avant signature",
+          "provision pour aléas maintenue jusqu'à la réception",
+          "économiste de la construction"
+        ],
+        "seller_requests": [
+          "audit technique complet",
+          "diagnostic amiante avant travaux",
+          "plans de l'immeuble"
+        ],
+        "financial_link": [
+          "coût total",
+          "YoC",
+          "TRI",
+          "marge"
+        ]
+      },
+      {
+        "id": "R2",
+        "category": "marché_locatif",
+        "title": "Loyer de relocation inférieur à l'hypothèse",
+        "description": "Le loyer obtenu à la relocation est inférieur au loyer retenu dans le scénario central.",
+        "evidence": [
+          {
+            "key": "market.immediate_supply.yoy",
+            "label": "variation annuelle de l'offre",
+            "value": 0.325536,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          },
+          {
+            "key": "market.average_rent.yoy",
+            "label": "variation annuelle du loyer moyen",
+            "value": -0.042298,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "base 2 : loyer de relocation estimé, pas encore confronté à des offres réelles ; offre en hausse de 33% sur un an (> 20%) : +1 ; loyer moyen en baisse de -4.2% sur un an : +1",
+        "impact": 5,
+        "impact_rationale": "dégradation de 24.3 pt (TRI fonds propres ; TRI -24.3 pt, marge -7.5 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "rent_level",
+          "shock_rationale": "loyer de relocation inférieur de 10 % à l'hypothèse (plan : -10 % en sensibilité)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.6227980260554145,
+          "delta_irr_pts": -24.265756215312926,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.3275665495542025,
+          "delta_margin_pts": -7.460982542940931,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -16403528.878093205
+        },
+        "criticality": 20,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [],
+        "mitigations": [
+          "références locatives récentes d'immeubles restructurés comparables",
+          "pré-commercialisation",
+          "fixer le prix d'acquisition sur un loyer prudent"
+        ],
+        "seller_requests": [],
+        "financial_link": [
+          "NOI",
+          "YoC",
+          "valeur de sortie",
+          "TRI",
+          "marge"
+        ]
+      },
+      {
+        "id": "R6",
+        "category": "financier",
+        "title": "Baisse de la valeur de sortie",
+        "description": "Le taux de rendement attendu par les acquéreurs à la sortie est plus élevé que prévu.",
+        "evidence": [
+          {
+            "key": "market.investment_price_per_sqm.yoy",
+            "label": "variation annuelle du prix d'investissement",
+            "value": -0.096605,
+            "source": "ImmoStat - indicateurs du marché tertiaire Île-de-France",
+            "data_date": "2026-T3"
+          }
+        ],
+        "probability": 4,
+        "probability_rationale": "prix d'investissement -9.7% sur un an (<= -5%) : P 4",
+        "impact": 5,
+        "impact_rationale": "dégradation de 19.5 pt (TRI fonds propres ; TRI -19.5 pt, marge -6.3 pt ; seuils [1.0, 3.0, 5.0, 8.0] pt) : impact 5",
+        "financial_effect": {
+          "shock": "exit_yield_up",
+          "shock_rationale": "taux de sortie +50 points de base (plan : pessimiste +0,50 pt)",
+          "base_levered_irr": -0.3801404639022852,
+          "shocked_levered_irr": -0.5747003161331319,
+          "delta_irr_pts": -19.45598522308467,
+          "base_margin_on_cost": -0.2529567241247932,
+          "shocked_margin_on_cost": -0.31645439867105574,
+          "delta_margin_pts": -6.349767454626254,
+          "base_margin": -12676433.21212852,
+          "shocked_margin": -15858495.413859397
+        },
+        "criticality": 20,
+        "level": "critique",
+        "uncertain": false,
+        "missing_information": [
+          "taux de rendement prime et son évolution (rapports de marché)"
+        ],
+        "mitigations": [
+          "prix d'acquisition fixé sur un taux de sortie prudent",
+          "flexibilité sur la date de cession"
+        ],
+        "seller_requests": [],
+        "financial_link": [
+          "valeur de sortie",
+          "marge",
+          "TRI"
+        ]
+      }
+    ],
+    "seller_requests": [
+      "DPE actuel et factures d'énergie",
+      "audit technique complet",
+      "audit énergétique s'il existe",
+      "autorisations d'urbanisme existantes",
+      "calendrier de libération du locataire en place",
+      "diagnostic amiante avant travaux",
+      "diagnostics environnementaux",
+      "historique des autorisations d'urbanisme",
+      "plans de l'immeuble",
+      "plans et relevés de géomètre",
+      "état des risques et pollutions (ERP)",
+      "état locatif et calendrier de départ du locataire en place"
+    ],
+    "arguments": {
+      "for": [
+        {
+          "polarity": "for",
+          "strength": 18.324645236026644,
+          "text": "prix demandé de 8 750 €/m² soit -36,6 % par rapport à la référence « prix moyen d'investissement bureaux du sous-marché » (13 812 €/m², ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3)",
+          "refs": [
+            "market.investment_price_per_sqm"
+          ]
+        }
+      ],
+      "against": [
+        {
+          "polarity": "against",
+          "strength": 54.28957829538072,
+          "text": "prix maximum de 13,4 M€ pour respecter les objectifs, contre 28,0 M€ demandés (-52,3 %)",
+          "refs": [
+            "finance.max_price"
+          ]
+        },
+        {
+          "polarity": "against",
+          "strength": 54.01404639022852,
+          "text": "TRI fonds propres de -38,0 % au scénario central, en dessous de l'objectif de 15,0 %",
+          "refs": [
+            "finance.levered_irr",
+            "config/investor_targets.yaml"
+          ]
+        },
+        {
+          "polarity": "against",
+          "strength": 41.29567241247932,
+          "text": "marge sur coût de -25,3 % au scénario central, en dessous de l'objectif de 15,0 %",
+          "refs": [
+            "finance.margin_on_cost",
+            "config/investor_targets.yaml"
+          ]
+        },
+        {
+          "polarity": "against",
+          "strength": 17.336179161963685,
+          "text": "scénario défavorable : marge de -32,7 % et TRI fonds propres de -60,3 %",
+          "refs": [
+            "scenarios.defavorable"
+          ]
+        },
+        {
+          "polarity": "against",
+          "strength": 13.817197978496557,
+          "text": "la marge ne s'annule qu'à un taux de sortie de 4,26 % (-138 pb par rapport au taux central de 5,64 %)",
+          "refs": [
+            "sensitivity.breakeven.exit_yield"
+          ]
+        }
+      ]
+    },
+    "node_drafting": {
+      "financials": {
+        "mode": "template",
+        "status": "rejeté : nombres absents des chiffres du nœud [40.0]",
+        "model": "gpt-4o-mini"
+      },
+      "risks": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      },
+      "sensitivity": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      },
+      "scenarios": {
+        "mode": "llm",
+        "status": "accepté",
+        "model": "gpt-4o-mini"
+      }
+    },
+    "template_lines": [
+      "**Recommandation : NO-GO.** Prix maximum 13,4 M€ inférieur au prix demandé 28,0 M€ de plus de 15 %.",
+      "Prix maximum : 13,4 M€ (TRI fonds propres ≥ 15 % et marge ≥ 15 %), contre 28,0 M€ demandés (-52,3 %).",
+      "Scénario central : yield on cost 4,47 %, spread -117 pb, marge -25,3 %, TRI fonds propres -38,0 %, multiple 0,33x.",
+      "Robustesse : en scénario défavorable, marge -32,7 % et TRI fonds propres -60,3 % (prix maximum 9,4 M€).",
+      "Risques principaux : 1) Dépassement du budget travaux (criticité 25/25) ; 2) Loyer de relocation inférieur à l'hypothèse (criticité 20/25) ; 3) Baisse de la valeur de sortie (criticité 20/25).",
+      "Conditions : ramener le prix d'acquisition à 13,4 M€ au plus (contre 28,0 M€ demandés) ; sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation ; Dépassement du budget travaux : contrat de travaux à prix global et forfaitaire ; Loyer de relocation inférieur à l'hypothèse : références locatives récentes d'immeubles restructurés comparables.",
+      "À demander au vendeur : DPE actuel et factures d'énergie, audit technique complet, audit énergétique s'il existe, autorisations d'urbanisme existantes, calendrier de libération du locataire en place, diagnostic amiante avant travaux, diagnostics environnementaux, historique des autorisations d'urbanisme, plans de l'immeuble, plans et relevés de géomètre, état des risques et pollutions (ERP), état locatif et calendrier de départ du locataire en place.",
+      "Réserves : 14 hypothèses de modélisation, données complémentaires non trouvées : offre future, mesures d'accompagnement, loyer prime du sous-marché, taux de rendement prime, taux de vacance, arrêtés de catastrophe naturelle, risques naturels, objectifs du fonds à confirmer (détail dans le dashboard)."
+    ],
+    "drafting": {
+      "mode": "llm",
+      "status": "accepté",
+      "model": "gpt-4o-mini",
+      "note_lines": [
+        "**Recommandation : NO-GO.** Prix maximum 13,4 M€ inférieur au prix demandé 28,0 M€ de plus de 15 %.",
+        "Prix maximum : 13,4 M€ (TRI fonds propres ≥ 15 % et marge ≥ 15 %), contre 28,0 M€ demandés (-52,3 %).",
+        "Scénario central : yield on cost 4,47 %, spread -117 pb, marge -25,3 %, TRI fonds propres -38,0 %, multiple 0,33x.",
+        "Risques principaux : 1) Dépassement du budget travaux (criticité 25/25) ; 2) Loyer de relocation inférieur à l'hypothèse (criticité 20/25) ; 3) Baisse de la valeur de sortie (criticité 20/25).",
+        "Conditions : ramener le prix d'acquisition à 13,4 M€ au plus (contre 28,0 M€ demandés) ; sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation.",
+        "À demander au vendeur : DPE actuel et factures d'énergie, audit technique complet, audit énergétique s'il existe, autorisations d'urbanisme existantes, calendrier de libération du locataire en place, diagnostic amiante avant travaux, diagnostics environnementaux."
+      ],
+      "answers": {
+        "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+        "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+        "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+        "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %. ",
+        "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² ; taux de sortie : marge nulle à 4,26 % ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée.",
+        "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt).",
+        "q7": "Non, l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble. Les TRI fonds propres et les marges sont négatifs dans tous les scénarios, et les objectifs du fonds ne sont atteints dans aucun scénario."
+      },
+      "synthesis": "La recommandation est un NO-GO en raison d'un prix maximum de 13,4 M€, bien inférieur au prix demandé de 28,0 M€. Le scénario central présente une rentabilité négative avec un yield on cost de 4,47 % et un TRI fonds propres de -38,0 %. Les principaux risques identifiés incluent le dépassement du budget travaux, un loyer de relocation inférieur aux attentes, et des problèmes de réglementation concernant les extensions. Il est crucial de ramener le prix d'acquisition à 13,4 M€ et de sécuriser le scénario défavorable.",
+      "arguments_for": [],
+      "arguments_against": [],
+      "disagreement": null
+    },
+    "answers": {
+      "q1": "Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.",
+      "q2": "Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).",
+      "q3": "Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².",
+      "q4": "Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %. ",
+      "q5": "Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² ; taux de sortie : marge nulle à 4,26 % ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée.",
+      "q6": "Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt).",
+      "q7": "Non, l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble. Les TRI fonds propres et les marges sont négatifs dans tous les scénarios, et les objectifs du fonds ne sont atteints dans aucun scénario."
+    },
+    "synthesis": "La recommandation est un NO-GO en raison d'un prix maximum de 13,4 M€, bien inférieur au prix demandé de 28,0 M€. Le scénario central présente une rentabilité négative avec un yield on cost de 4,47 % et un TRI fonds propres de -38,0 %. Les principaux risques identifiés incluent le dépassement du budget travaux, un loyer de relocation inférieur aux attentes, et des problèmes de réglementation concernant les extensions. Il est crucial de ramener le prix d'acquisition à 13,4 M€ et de sécuriser le scénario défavorable.",
+    "note_lines": [
+      "**Recommandation : NO-GO.** Prix maximum 13,4 M€ inférieur au prix demandé 28,0 M€ de plus de 15 %.",
+      "Prix maximum : 13,4 M€ (TRI fonds propres ≥ 15 % et marge ≥ 15 %), contre 28,0 M€ demandés (-52,3 %).",
+      "Scénario central : yield on cost 4,47 %, spread -117 pb, marge -25,3 %, TRI fonds propres -38,0 %, multiple 0,33x.",
+      "Risques principaux : 1) Dépassement du budget travaux (criticité 25/25) ; 2) Loyer de relocation inférieur à l'hypothèse (criticité 20/25) ; 3) Baisse de la valeur de sortie (criticité 20/25).",
+      "Conditions : ramener le prix d'acquisition à 13,4 M€ au plus (contre 28,0 M€ demandés) ; sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation.",
+      "À demander au vendeur : DPE actuel et factures d'énergie, audit technique complet, audit énergétique s'il existe, autorisations d'urbanisme existantes, calendrier de libération du locataire en place, diagnostic amiante avant travaux, diagnostics environnementaux."
+    ]
+  }
+}

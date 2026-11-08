@@ -1,0 +1,403 @@
+# Paramètres de recherche et seuils techniques par défaut.
+# Aucune donnée propre au deal ici (elles sont dans asset_config.json),
+# aucun objectif du fonds ici (ils sont dans investor_targets.yaml).
+
+research:
+  radius_m: [500, 1000, 1500]
+  transactions_from: "2021-01-01"
+  transactions_to: today          # résolu à la date d'exécution
+  max_research_loops: 2           # retours maximum de validate_research vers research_market_data
+  parallel_workers: 4             # connecteurs indépendants exécutés en parallèle
+
+quality_checks:
+  source_divergence_alert_pct: 0.10   # écart (max-min)/moyenne entre sources d'un même indicateur
+  dvf_outlier_percentiles: [5, 95]
+  geocoding_min_score: 0.7
+
+# --------------------------------------------------------------------------- besoins de données
+# Lu par identify_data_needs. Chaque besoin = une clé du registre.
+#   indicators        : indicateurs recherchés dans sources_catalog.yaml (dans l'ordre de priorité des sources)
+#   priority          : P1 bloquant pour la décision / P2 utile / P3 confort
+#   scope             : reference_point | radius | district | submarket | national
+#   max_age_months    : contrôle de fraîcheur (date de la donnée vs date d'analyse)
+#   plausible_range   : garde-fou LARGE contre les erreurs grossières (unité, virgule), PAS une estimation
+#   value_field       : champ lu quand la valeur est un dictionnaire (ex. médiane DVF)
+#   min_sources       : nombre de sources souhaité (vérification croisée)
+#   min_sample        : taille d'échantillon minimale, lue dans sample_size_field
+#   override          : clé de asset_config.json/overrides qui dispense de rechercher
+#   fallback          : hypothèse de repli SI la recherche échoue (jamais pour une donnée de marché)
+# Données EXIGÉES pour décider (P1) : prix/m² des transactions, loyer ImmoStat, prix de vente des bureaux
+# du secteur (ImmoStat), Euribor, frais d'acquisition ; le yield on cost et le taux de sortie en découlent.
+# Loyer prime, rendement prime et vacance sont COMPLÉMENTAIRES (P2) : utilisés s'ils existent.
+data_needs:
+  # ------------------------------------------------------------------ P1
+  - key: location.reference_point
+    indicators: [latitude]
+    priority: P1
+    scope: reference_point
+    reason: "point de départ de toutes les requêtes géolocalisées"
+  - key: market.dvf_price_per_sqm
+    indicators: [price_per_sqm]
+    priority: P1
+    scope: radius
+    max_age_months: 24                    # transactions des 2 dernières années au moins
+    value_field: median
+    plausible_range: [1000, 60000]        # €/m²
+    min_sources: 2                        # DVF Cerema + Firmio : recoupement systématique
+    min_sample: 5
+    sample_size_field: n
+    reason: "comparer le prix demandé/m² aux transactions du secteur"
+  - key: market.prime_rent
+    indicators: [prime_rent]              # ImmoStat ne publie pas de loyer prime : rapports de marché
+    priority: P2
+    scope: submarket
+    max_age_months: 12
+    plausible_range: [100, 2000]          # €/m²/an
+    min_sources: 2
+    override: relet_rent_eur_sqm_year
+    reason: "référence du loyer de relocation après restructuration"
+  - key: market.average_rent
+    indicators: [average_rent]
+    priority: P1
+    scope: submarket
+    max_age_months: 12
+    value_field: last
+    plausible_range: [100, 2000]          # €/m²/an
+    override: relet_rent_eur_sqm_year
+    reason: "borne basse du loyer de relocation (ImmoStat : seconde main uniquement)"
+  - key: market.prime_yield
+    indicators: [prime_yield]
+    priority: P2
+    scope: submarket
+    max_age_months: 12
+    plausible_range: [0.02, 0.12]         # fraction
+    min_sources: 2
+    override: exit_yield_pct
+    reason: "base du taux de sortie"
+  - key: market.vacancy
+    indicators: [vacancy]
+    priority: P2
+    scope: submarket
+    max_age_months: 12
+    plausible_range: [0.0, 0.40]          # fraction
+    reason: "risque de relocation en 2029"
+  - key: rates.euribor_3m
+    indicators: [euribor_3m]
+    priority: P1
+    scope: national
+    max_age_months: 3
+    value_field: last
+    plausible_range: [-0.01, 0.10]        # fraction
+    override: euribor_3m_pct
+    reason: "coût de la dette (Euribor 3M + marge)"
+  - key: deal.acquisition_fees_pct
+    indicators: [acquisition_fees]        # aucune source structurée au catalogue à ce stade
+    priority: P1
+    scope: national
+    plausible_range: [0.0, 0.12]
+    override: acquisition_fees_pct
+    reason: "le prix du case est hors droits : les frais d'acquisition s'ajoutent au coût total"
+    fallback:
+      value: 0.075
+      unit: fraction
+      range: [0.069, 0.080]
+      confidence: low
+      rationale: >-
+        Hypothèse : droits d'enregistrement d'un immeuble de bureaux ancien en Île-de-France
+        (environ 6,9 %) plus émoluments et frais de notaire. À confirmer par le notaire
+        (taux départemental, régime TVA éventuel).
+
+  # ------------------------------------------------------------------ P2
+  - {key: market.incentives, indicators: [incentives], priority: P2, scope: submarket, max_age_months: 12,
+     plausible_range: [0.0, 0.50], reason: "passage du loyer facial au loyer économique"}
+  - {key: market.future_supply, indicators: [future_supply], priority: P2, scope: submarket, max_age_months: 12,
+     reason: "concurrence à la relocation en 2029"}
+  - {key: market.take_up, indicators: [take_up], priority: P2, scope: submarket, max_age_months: 12, value_field: last,
+     reason: "profondeur de la demande"}
+  - {key: market.immediate_supply, indicators: [immediate_supply], priority: P2, scope: submarket, max_age_months: 12,
+     value_field: last,
+     reason: "stock disponible concurrent à la relocation"}
+  - {key: market.investment_price_per_sqm, indicators: [investment_price_per_sqm], priority: P1, scope: submarket,
+     max_age_months: 12, plausible_range: [1000, 60000], value_field: last,
+     reason: "valeur vénale moyenne des bureaux du secteur : à comparer au coût total/m²"}
+  - {key: index.ilat, indicators: [ilat_index], priority: P2, scope: national, max_age_months: 9,
+     value_field: last, reason: "indexation des loyers"}
+  - {key: energy.dpe_comparables, indicators: [energy_class], priority: P2, scope: district,
+     reason: "le passage DPE F -> B est-il cohérent avec le parc voisin ?"}
+  - {key: urbanism.plu_constraints, indicators: [max_height], priority: P2, scope: district,
+     reason: "faisabilité de l'extension et du rooftop"}
+  - {key: urbanism.protected_buildings, indicators: [protected_buildings_count], priority: P2, scope: district,
+     reason: "contraintes patrimoniales"}
+
+  # ------------------------------------------------------------------ P3
+  - {key: risk.natural_risks, indicators: [natural_risks], priority: P3, scope: district,
+     reason: "risques naturels et technologiques"}
+  - {key: risk.catnat, indicators: [catnat_events], priority: P3, scope: district,
+     reason: "historique des arrêtés de catastrophe naturelle"}
+  - {key: index.icc, indicators: [icc_index], priority: P3, scope: national, max_age_months: 9,
+     value_field: last, reason: "contexte d'évolution du coût de la construction (logement)"}
+  - {key: index.bt01, indicators: [bt01_index], priority: P3, scope: national, max_age_months: 4,
+     value_field: last, reason: "évolution du coût des travaux tous corps d'état : stress du budget travaux"}
+
+# Correspondance entre le sous-marché du deal et le découpage propre à chaque source.
+# Ce n'est PAS une donnée du deal : c'est la géographie des sources, réutilisable pour tout actif du secteur.
+# Chaque correspondance est approximative et le DataPoint le dit dans ses notes.
+# Filtres DVF (vérifiés sur de vraies réponses du Cerema, 2026-11-08)
+dvf:
+  property_type_codes: ["14"]           # 14 = « ACTIVITE » (bureaux, commerces, locaux d'activité) ; 152 mixte exclu
+  sale_natures: ["Vente"]               # exclut échanges, adjudications, VEFA
+  exclude_vefa: true
+  large_lot_min_sqm: 500                # sous-ensemble plus proche d'un immeuble de bureaux
+  max_bbox_deg: 0.02                    # limite de l'API (in_bbox)
+
+submarket_zones:
+  "Paris QCA":
+    immostat: "Paris Centre Ouest"
+
+# Contrôles de cohérence entre indicateurs (validate_research)
+coherence_rules:
+  - {greater_or_equal: market.prime_rent, than: market.average_rent,
+     message: "le loyer prime doit être supérieur ou égal au loyer moyen"}
+
+# --------------------------------------------------------------------------- hypothèses de modélisation
+# Paramètres du modèle financier que ni le case ni les sources ne fournissent.
+# Ce ne sont PAS des données du deal : ce sont des conventions de modélisation de bureaux parisiens.
+# Chacune est enregistrée comme hypothèse (status=assumption) avec sa justification, affichée dans
+# le dashboard, et remplaçable par un override de asset_config.json quand il existe.
+# `range` sert aux sensibilités (phase 6).
+financial_assumptions:
+  relet_rent_position:
+    value: 0.5
+    unit: fraction
+    range: [0.25, 0.75]
+    rationale: >-
+      Loyer de relocation d'un immeuble restructuré (DPE B, rooftop) placé entre le loyer moyen de seconde
+      main (0) et le loyer prime (1) du sous-marché : un produit restructuré dépasse la seconde main sans
+      atteindre les adresses prime.
+  exit_yield_fallback:
+    value: implied_market_yield
+    rationale: >-
+      Sans taux de rendement prime sourcé, le taux de sortie est le rendement implicite du marché :
+      loyer moyen / prix moyen d'investissement bureaux du même sous-marché (ImmoStat), deux données sourcées.
+      C'est un rendement BRUT moyen (seconde main), donc prudent pour un immeuble restructuré.
+  relet_rent_fallback:
+    value: average_rent
+    rationale: >-
+      Sans loyer prime sourcé, le loyer de relocation est le loyer moyen du sous-marché publié par ImmoStat
+      (seconde main) : référence prudente pour un immeuble restructuré.
+  exit_yield_premium_bps:
+    value: 25
+    unit: bps
+    range: [0, 75]
+    rationale: "Taux de sortie = taux prime + prime de risque : actif restructuré bien situé mais hors produits prime absolus."
+  letting_void_months:
+    value: 6
+    unit: mois
+    range: [0, 12]
+    override: letting_period_months
+    rationale: "Délai de commercialisation entre la livraison des travaux et la prise d'effet du bail (plan : +6 / +12 mois en sensibilité)."
+  firm_lease_term_months:
+    value: 72
+    unit: mois
+    range: [36, 108]
+    rationale: "Bail 3/6/9 avec engagement ferme de 6 ans : base de conversion des mesures d'accompagnement en mois de franchise."
+  incentives_if_missing:
+    value: 0.20
+    unit: fraction
+    range: [0.15, 0.30]
+    rationale: >-
+      Utilisée SEULEMENT si market.incentives (donnée P2) est introuvable : mesures d'accompagnement en part
+      de la valeur du bail ferme, niveau usuel pour des bureaux parisiens, à remplacer par la donnée de marché.
+  stabilised_occupancy:
+    value: 0.95
+    unit: fraction
+    range: [0.85, 1.0]
+    override: stabilised_occupancy_pct
+    rationale: "Taux d'occupation à la stabilisation (plan : 95 % central, 85-100 % en sensibilité)."
+  non_recoverable_pct:
+    value: 0.05
+    unit: fraction
+    range: [0.02, 0.08]
+    override: non_recoverable_costs_pct
+    rationale: "Charges non refacturables au locataire (gestion, gros travaux, part non récupérable), en % du loyer."
+  vacant_holding_cost_eur_sqm_year:
+    value: 70
+    unit: "€/m²/an"
+    range: [40, 110]
+    rationale: >-
+      Coût de portage des surfaces vides : taxe foncière, taxe annuelle sur les bureaux en Île-de-France,
+      assurance, charges d'un immeuble vacant. À confirmer par l'historique de charges demandé au vendeur.
+  marketing_fees_pct_annual_rent:
+    value: 0.15
+    unit: fraction
+    range: [0.10, 0.25]
+    rationale: "Honoraires de commercialisation, en % du loyer facial annuel du bail signé."
+  sale_costs_pct:
+    value: 0.015
+    unit: fraction
+    range: [0.01, 0.02]
+    override: sale_costs_pct
+    rationale: "Frais de cession (honoraires d'arrangement, conseils), en % de la valeur brute de sortie."
+  debt_arrangement_fee_pct:
+    value: 0.01
+    unit: fraction
+    range: [0.005, 0.015]
+    rationale: "Commission d'arrangement de la dette, en % du montant de la facilité."
+  euribor_floor:
+    value: 0.0
+    unit: fraction
+    rationale: "Plancher usuel des contrats de crédit : l'Euribor retenu n'est jamais négatif."
+  ltv_basis:
+    value: total_cost
+    rationale: >-
+      « Environ 60 % de dette » (case) appliqué au coût total (acquisition et travaux), financé au fur et à
+      mesure des décaissements ; variante « price » (60 % du seul prix d'acquisition) testée en sensibilité.
+  interest_mode:
+    value: capitalised
+    rationale: "Intérêts capitalisés pendant l'opération et remboursés à la cession (crédit de restructuration)."
+  exit_quarter:
+    value: 4
+    unit: trimestre
+    rationale: "Cession au dernier trimestre de l'année de sortie du case, une fois l'actif loué."
+
+# --------------------------------------------------------------------------- sensibilités et scénarios (plan, section 7)
+# Toutes les variations sont RELATIVES au scénario central (mult, add) : aucune valeur du deal ici.
+# Les retards (travaux, relocation) décalent aussi la cession (« cession une fois l'actif loué »).
+sensitivity:
+  variables:
+    rent:        {label: "Loyer de relocation", optimistic: [{field: relet_rent, op: mult, value: 1.10}],
+                  pessimistic: [{field: relet_rent, op: mult, value: 0.90}]}
+    capex:       {label: "Coût des travaux", optimistic: [{field: capex_per_sqm, op: mult, value: 0.95}],
+                  pessimistic: [{field: capex_per_sqm, op: mult, value: 1.15}]}
+    works:       {label: "Durée des travaux", optimistic: [{field: works_months, op: add, value: -2}],
+                  pessimistic: [{field: works_months, op: add, value: 6}, {field: exit_date, op: add_months, value: 6}]}
+    occupancy:   {label: "Occupation stabilisée", optimistic: [{field: stabilised_occupancy, op: set, value: 1.0}],
+                  pessimistic: [{field: stabilised_occupancy, op: set, value: 0.85}]}
+    exit_yield:  {label: "Taux de sortie", optimistic: [{field: exit_yield, op: add, value: -0.0025}],
+                  pessimistic: [{field: exit_yield, op: add, value: 0.005}]}
+    euribor:     {label: "Euribor 3 mois", optimistic: [{field: euribor, op: add, value: -0.005}],
+                  pessimistic: [{field: euribor, op: add, value: 0.01}]}
+    letting:     {label: "Délai de relocation", optimistic: [{field: letting_void_months, op: set, value: 0}],
+                  pessimistic: [{field: letting_void_months, op: add, value: 6}, {field: exit_date, op: add_months, value: 6}]}
+    letting_12:  {label: "Délai de relocation (+12 mois)", optimistic: [{field: letting_void_months, op: set, value: 0}],
+                  pessimistic: [{field: letting_void_months, op: add, value: 12}, {field: exit_date, op: add_months, value: 12}]}
+
+  # Seuils de bascule : valeur du paramètre pour laquelle la marge s'annule, ou le TRI fonds propres
+  # tombe à l'objectif du fonds. Recherche sur t dans [bounds] ; t remplace `value` dans chaque changement.
+  breakeven:
+    rent:        {label: "Loyer de relocation (x loyer central)", changes: [{field: relet_rent, op: mult}], bounds: [0.3, 2.0]}
+    exit_yield:  {label: "Taux de sortie (+ points)", changes: [{field: exit_yield, op: add}], bounds: [-0.02, 0.06]}
+    capex:       {label: "Coût des travaux (x budget)", changes: [{field: capex_per_sqm, op: mult}], bounds: [0.3, 3.0]}
+    euribor:     {label: "Euribor (+ points)", changes: [{field: euribor, op: add}], bounds: [-0.03, 0.10]}
+    letting:     {label: "Délai de relocation (+ mois)", changes: [{field: letting_void_months, op: add},
+                  {field: exit_date, op: add_months}], bounds: [0, 48], integer: true}
+    works:       {label: "Durée des travaux (+ mois)", changes: [{field: works_months, op: add},
+                  {field: exit_date, op: add_months}], bounds: [0, 36], integer: true}
+
+  heatmaps:
+    exit_yield_x_rent:
+      x: {label: "Loyer (x central)", changes: [{field: relet_rent, op: mult}], values: [0.80, 0.85, 0.90, 0.95, 1.0, 1.05, 1.10, 1.15, 1.20]}
+      y: {label: "Taux de sortie (+ points)", changes: [{field: exit_yield, op: add}], values: [-0.005, -0.0025, 0.0, 0.0025, 0.005, 0.0075, 0.01]}
+    capex_x_works:
+      x: {label: "Travaux (x budget)", changes: [{field: capex_per_sqm, op: mult}], values: [0.90, 1.0, 1.10, 1.20, 1.30]}
+      y: {label: "Retard des travaux (+ mois)", changes: [{field: works_months, op: add}, {field: exit_date, op: add_months}],
+          values: [0, 3, 6, 9, 12]}
+
+scenarios:
+  favorable:
+    label: "Favorable"
+    variables: {rent: optimistic, capex: optimistic, works: optimistic, occupancy: optimistic,
+                exit_yield: optimistic, euribor: optimistic, letting: optimistic}
+    rationale: "toutes les hypothèses optimistes du plan simultanément"
+  central:
+    label: "Central"
+    variables: {}
+    rationale: "hypothèses centrales (données de marché et hypothèses de modélisation)"
+  defavorable:
+    label: "Défavorable"
+    variables: {works: pessimistic, letting: pessimistic, euribor: pessimistic, capex: pessimistic}
+    rationale: >-
+      combinaison logique du plan : chantier plus long ET relocation retardée ET Euribor plus haut ET
+      dépassement de travaux ; loyer et taux de sortie au central
+  stress:
+    label: "Stress"
+    variables: {rent: pessimistic, capex: pessimistic, works: pessimistic, occupancy: pessimistic,
+                exit_yield: pessimistic, euribor: pessimistic, letting: pessimistic}
+    rationale: "toutes les hypothèses pessimistes du plan simultanément (test de robustesse extrême)"
+
+# --------------------------------------------------------------------------- recommandation (plan, section 8)
+# La DÉCISION est calculée par ces règles ; le LLM ne fait que rédiger (et peut exprimer un désaccord affiché).
+# Questions du comité (case Braxton AM), chacune confiée au nœud qui détient les données pour y répondre.
+committee_questions:
+  q1: {node: financial_analysis, text: "Le prix demandé est-il cohérent avec les transactions du quartier ?"}
+  q2: {node: financial_analysis, text: "Quel loyer peut-on espérer après restructuration, au regard du marché ?"}
+  q3: {node: financial_analysis, text: "Quel est le coût total au m² après travaux, et comment se compare-t-il à la valeur d'un immeuble restructuré dans ce secteur ?"}
+  q4: {node: financial_analysis, text: "Le rendement sur coût total (yield on cost) dégage-t-il une marge suffisante par rapport au taux de rendement de sortie et au niveau actuel des taux ?"}
+  q5: {node: sensitivity_analysis, text: "Quelles hypothèses font basculer la décision (loyer, taux de sortie, coût des travaux, délai) ?"}
+  q6: {node: risk_analysis, text: "Quels sont les principaux risques : marché locatif, travaux, taux, réglementation, environnement ?"}
+  q7: {node: scenario_analysis, text: "L'opération reste-t-elle rentable quand plusieurs hypothèses se dégradent ensemble ?"}
+
+decision_rules:
+  # sans ces données, aucune décision (NON DÉTERMINÉ) ; le yield on cost et le taux de sortie doivent aussi être calculés
+  required_data: [market.dvf_price_per_sqm, market.average_rent, market.investment_price_per_sqm]
+  max_negotiable_discount: 0.15        # prix maximum < prix demandé x (1 - 15 %) : écart jugé non négociable -> NO-GO
+  max_critical_risks_conditional: 2    # au-delà : risques jugés non maîtrisables -> NO-GO
+  robustness_scenario: defavorable     # critère C : la marge doit rester positive dans ce scénario
+  top_risks: 3
+  max_arguments: 5
+
+llm:
+  provider: openai
+  model: gpt-4o-mini                   # modèle prévu au plan
+  temperature: 0
+  api_key_env: OPENAI_API_KEY          # la clé n'est JAMAIS écrite dans un fichier du projet
+  prompt_file: prompts/final_v2.md
+  node_prompts:                        # un LLM par nœud d'analyse, chacun sur ses propres résultats
+    financial_analysis: prompts/financial_v1.md
+    risk_analysis: prompts/risk_v1.md
+    sensitivity_analysis: prompts/sensitivity_v1.md
+    scenario_analysis: prompts/scenario_v1.md
+  number_tolerance_rel: 0.005          # un nombre du texte doit correspondre à un chiffre calculé (arrondi d'affichage)
+
+risk_scoring:
+  criticality_levels:            # criticité = probabilité (1-5) x impact (1-5)
+    faible: [1, 4]
+    modéré: [5, 9]
+    élevé: [10, 16]
+    critique: [17, 25]
+
+  # IMPACT : effet chiffré du choc, calculé par le moteur financier. Impact 5 si la marge DEVIENT négative ;
+  # sinon selon la plus forte dégradation (points) du TRI fonds propres ou de la marge sur coût.
+  impact_irr_drop_pts: [1, 3, 5, 8]     # < 1 -> 1 ; 1-3 -> 2 ; 3-5 -> 3 ; 5-8 -> 4 ; >= 8 -> 5
+
+  # PROBABILITÉ : seuils des règles (risk/catalog.py). Garde-fous génériques, pas des données du deal.
+  probability:
+    months_of_supply_bands: [6, 12, 24, 36]   # offre immédiate / demande placée mensuelle -> P 1..5
+    vacancy_high: 0.08                         # vacance au-dessus : +1
+    supply_growth_high: 0.20                   # croissance annuelle de l'offre au-dessus : +1
+    bt01_inflation_high: 0.02                  # inflation annuelle des coûts de travaux au-dessus : +1
+    protected_buildings_many: 100              # bâtiments protégés dans l'arrondissement : +1
+    dpe_gap_heavy: 3                           # écart de classes DPE à franchir considéré lourd
+    dpe_low_share_b_or_better: 0.15            # part locale de DPE A-B en dessous : +1
+    investment_price_drop: -0.05               # baisse annuelle du prix d'investissement : P 4 en dessous
+    asbestos_ban_year: 1997                    # interdiction de l'amiante en France (1er janvier 1997)
+
+  # CHOCS appliqués au scénario central pour mesurer l'impact de chaque risque.
+  # op : mult (multiplie), add (ajoute), set_field (remplace par un autre champ), add_months (décale une date)
+  shocks:
+    rent_level:      {changes: [{field: relet_rent, op: mult, value: 0.90}],
+                      rationale: "loyer de relocation inférieur de 10 % à l'hypothèse (plan : -10 % en sensibilité)"}
+    letting_delay:   {changes: [{field: letting_void_months, op: add, value: 6}, {field: exit_date, op: add_months, value: 6}],
+                      rationale: "relocation retardée de 6 mois ; la cession, prévue une fois l'actif loué, glisse d'autant"}
+    capex_overrun:   {changes: [{field: capex_per_sqm, op: mult, value: 1.15}],
+                      rationale: "travaux +15 % (plan : pessimiste +15 %)"}
+    works_delay:     {changes: [{field: works_months, op: add, value: 6}, {field: exit_date, op: add_months, value: 6}],
+                      rationale: "chantier de 24 mois au lieu de 18 (plan : pessimiste 24 mois) ; cession décalée d'autant"}
+    rates_up:        {changes: [{field: euribor, op: add, value: 0.01}],
+                      rationale: "Euribor +1 point sur toute l'opération (plan : pessimiste +1 pt)"}
+    exit_yield_up:   {changes: [{field: exit_yield, op: add, value: 0.005}],
+                      rationale: "taux de sortie +50 points de base (plan : pessimiste +0,50 pt)"}
+    no_extension:    {changes: [{field: surface_after, op: set_field, value: surface_before}],
+                      rationale: "extension et rooftop refusés : surface finale égale à la surface actuelle"}
+    dpe_target_missed: {changes: [{field: relet_rent, op: mult, value: 0.95}, {field: capex_per_sqm, op: mult, value: 1.05}],
+                        rationale: "objectif DPE non atteint : décote de loyer de 5 % et 5 % de travaux énergétiques supplémentaires"}

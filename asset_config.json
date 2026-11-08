@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "source_document": "Case study Braxton AM - Immeuble Hélios, Paris 9e",
+    "source_date": "2026-11",
+    "notes": "Actif fictif. Toutes les valeurs ci-dessous proviennent du case. Les ratios suffixés _pct sont des fractions (0.15 = 15 %)."
+  },
+  "asset": {
+    "name": "Hélios",
+    "type": "bureaux",
+    "district": "Paris 9e",
+    "sector": "Opéra - Saint-Lazare",
+    "submarket": "Paris QCA",
+    "reference_point": {
+      "label": "Mairie du 9e arrondissement",
+      "address": "6 rue Drouot, 75009 Paris"
+    },
+    "surface_before_sqm": 3000,
+    "surface_after_sqm": 3200,
+    "condition": "obsolète : plateaux cloisonnés, installations techniques d'origine, pas d'espaces extérieurs",
+    "dpe_current": "F",
+    "dpe_target": "B",
+    "year_built_decade": 1970,
+    "floors": "R+6 sur un niveau de sous-sol"
+  },
+  "operation": {
+    "asking_price_eur": 28000000,
+    "price_basis": "hors droits",
+    "strategy": "acquisition-restructuration-relocation-cession",
+    "capex_eur_per_sqm_after": 4000,
+    "fees_and_contingency_pct_of_capex": 0.15,
+    "project_scope": "création de surfaces et d'un rooftop, objectif DPE B",
+    "current_leases": [
+      {
+        "tenant": "Locataire en place",
+        "surface_sqm": 1200,
+        "rent_eur_sqm_year": 520,
+        "rent_basis": "HT HC",
+        "end_date": "2027-06-30"
+      }
+    ],
+    "occupancy_current_pct": 0.40,
+    "financing": {
+      "ltv": 0.60,
+      "reference_rate": "Euribor3M",
+      "margin_bps": 300
+    },
+    "timeline": {
+      "acquisition_date": "2027-01-01",
+      "works_start": "2027-07-01",
+      "works_duration_months": 18,
+      "letting_year": 2029,
+      "exit_year": 2029
+    }
+  },
+  "overrides": {}
+}

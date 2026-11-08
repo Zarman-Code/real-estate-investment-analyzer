@@ -1,0 +1,44 @@
+"""Libellés lisibles des clés du registre (affichage seulement, pour la note et le dashboard)."""
+LABELS = {
+    "location.reference_point": "point de référence géocodé",
+    "market.dvf_price_per_sqm": "prix au m² des transactions (DVF)",
+    "market.prime_rent": "loyer prime du sous-marché",
+    "market.average_rent": "loyer moyen du sous-marché",
+    "market.prime_yield": "taux de rendement prime",
+    "market.vacancy": "taux de vacance",
+    "rates.euribor_3m": "Euribor 3 mois",
+    "deal.acquisition_fees_pct": "frais d'acquisition",
+    "market.incentives": "mesures d'accompagnement",
+    "market.future_supply": "offre future",
+    "market.take_up": "demande placée",
+    "market.immediate_supply": "offre immédiate",
+    "market.investment_price_per_sqm": "prix d'investissement bureaux au m²",
+    "index.ilat": "indice ILAT",
+    "index.icc": "indice ICC",
+    "index.bt01": "index BT01",
+    "energy.dpe_comparables": "DPE tertiaires voisins",
+    "urbanism.plu_constraints": "règles du PLU",
+    "urbanism.protected_buildings": "protections patrimoniales",
+    "risk.natural_risks": "risques naturels",
+    "risk.catnat": "arrêtés de catastrophe naturelle",
+}
+
+
+def label(key: str) -> str:
+    return LABELS.get(key, key)
+
+
+def labels(keys) -> str:
+    return ", ".join(label(k) for k in keys)
+
+
+PARAM_LABELS = {
+    "relet_rent": "loyer de relocation", "exit_yield": "taux de sortie", "euribor": "Euribor",
+    "acq_fees_pct": "frais d'acquisition", "stabilised_occupancy": "occupation stabilisée",
+    "rent_free_months": "franchise", "letting_void_months": "délai de relocation",
+    "non_recoverable_pct": "charges non récupérables", "sale_costs_pct": "frais de cession",
+}
+
+
+def param_labels(names) -> str:
+    return ", ".join(PARAM_LABELS.get(n, n) for n in names)

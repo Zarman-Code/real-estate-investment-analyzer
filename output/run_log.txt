@@ -1,0 +1,66 @@
+config chargée : Hélios (12 données du deal enregistrées)
+catalogue : deal.acquisition_fees_pct : aucune source au catalogue pour ['acquisition_fees'] (hypothèse de repli prévue)
+LLM de rédaction : gpt-4o-mini (ok)
+identify_data_needs : 21 besoins (6 P1, 11 P2, 4 P3)
+  deal.acquisition_fees_pct : aucune source au catalogue pour ['acquisition_fees']
+research_market_data passe 1 : 21 besoins, 11 sources interrogées, 8 sans source utilisable
+  deal.acquisition_fees_pct : aucune source au catalogue pour ['acquisition_fees']
+  market.prime_rent : connecteur non implémenté pour ['market_reports']
+  market.prime_yield : connecteur non implémenté pour ['market_reports']
+  market.vacancy : connecteur non implémenté pour ['market_reports']
+  market.incentives : connecteur non implémenté pour ['market_reports']
+  market.future_supply : connecteur non implémenté pour ['market_reports']
+  risk.natural_risks : connecteur non implémenté pour ['georisques']
+  risk.catnat : connecteur non implémenté pour ['georisques']
+  [insee_bt01] index.bt01 : ok, confiance high -> set
+  [insee_icc] index.icc : ok, confiance high -> set
+  [insee_ilat] index.ilat : ok, confiance high -> set
+  [ign_geocodage] location.reference_point : ok, confiance high -> set
+  [immostat] market.average_rent : ok, confiance medium -> set
+  [immostat] market.immediate_supply : ok, confiance medium -> set
+  [immostat] market.investment_price_per_sqm : ok, confiance medium -> set
+  [immostat] market.take_up : ok, confiance medium -> set
+  [ecb_euribor] rates.euribor_3m : ok, confiance high -> set
+  [ademe_dpe_tertiaire] energy.dpe_comparables : ok, confiance medium -> set
+  [dvf] market.dvf_price_per_sqm : ok, confiance medium -> set
+  [firmio_dvf_entreprises] market.dvf_price_per_sqm : ok, confiance low -> alternative
+  [paris_plu_emprises] urbanism.plu_constraints : ok, confiance medium -> set
+  [paris_plu_protections] urbanism.protected_buildings : ok, confiance medium -> set
+validate_research (après passe 1) : 1 lacune(s) P1, 1 bloquant(s), 7 avertissement(s), 1 information(s)
+  -> analyse avec lacunes (aucune autre source disponible)
+  deal.acquisition_fees_pct : hypothèse de repli appliquée (0.075 fraction)
+  [info] convergence market.dvf_price_per_sqm : recoupement concordant : écart de 3.5% (seuil 10%) : DVF+ open data (Cerema, API données foncières) = 8744.0, Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF = 9059.0
+  [blocking] completeness deal.acquisition_fees_pct : donnée P1 manquante : aucune source au catalogue pour ['acquisition_fees']
+  [warning] completeness market.prime_rent : donnée P2 manquante : connecteur non implémenté pour ['market_reports']
+  [warning] completeness market.prime_yield : donnée P2 manquante : connecteur non implémenté pour ['market_reports']
+  [warning] completeness market.vacancy : donnée P2 manquante : connecteur non implémenté pour ['market_reports']
+  [warning] completeness market.incentives : donnée P2 manquante : connecteur non implémenté pour ['market_reports']
+  [warning] completeness market.future_supply : donnée P2 manquante : connecteur non implémenté pour ['market_reports']
+  [warning] completeness risk.natural_risks : donnée P3 manquante : connecteur non implémenté pour ['georisques']
+  [warning] completeness risk.catnat : donnée P3 manquante : connecteur non implémenté pour ['georisques']
+financial_analysis : YoC 4.47%, spread -117 bps, marge -25.3%, TRI projet -7.5%, TRI FP -38.0%, multiple 0.33x
+  prix maximum 13 358 918 € (objectif contraignant : margin_on_cost) pour un prix demandé de 28 000 000 €
+  14 hypothèses de modélisation utilisées ; contrôles : {'profit_identity': True, 'debt_balance_identity': True, 'equity_shortfall_at_exit': False}
+  rapport financier : template (rejeté : nombres absents des chiffres du nœud [40.0])
+risk_analysis : 8 risques caractérisés (4 critique, 3 élevé, 1 modéré), 1 non communiqués faute de données ['R9']
+  R3 Dépassement du budget travaux : P 5 x I 5 -> critique
+  R2 Loyer de relocation inférieur à l'hypothèse : P 4 x I 5 -> critique
+  R6 Baisse de la valeur de sortie : P 4 x I 5 -> critique
+  R7 Extension ou rooftop non autorisés : P 4 x I 5 -> critique
+  R8 Objectif DPE non atteint : P 3 x I 5 -> élevé
+  R5 Hausse des taux d'intérêt : P 4 x I 3 -> élevé
+  R4 Retard du chantier : P 5 x I 2 -> élevé
+  R1 Relocation retardée : P 3 x I 2 -> modéré
+  rapport des risques : llm (accepté)
+sensitivity_analysis : 8 variables, plus déterminantes : Occupation stabilisée (39.9 pt), Loyer de relocation (39.1 pt), Taux de sortie (27.3 pt)
+  seuil rent : marge nulle à 1044.5128888006825, TRI = objectif à 1204.3520298317806
+  seuil exit_yield : marge nulle à 0.0426134420446717, TRI = objectif à 0.037154024343904184
+  seuil capex : marge nulle à None, TRI = objectif à None
+  seuil euribor : marge nulle à None, TRI = objectif à None
+  seuil letting : marge nulle à None, TRI = objectif à None
+  seuil works : marge nulle à None, TRI = objectif à None
+  rapport sensitivity_analysis : llm (accepté)
+scenario_analysis : Favorable TRI FP -2.7%, marge -2.8%, prix max 21.57 M€ | Central TRI FP -38.0%, marge -25.3%, prix max 13.36 M€ | Défavorable TRI FP -60.3%, marge -32.7%, prix max 9.43 M€ | Stress TRI FP n.d., marge -51.0%, prix max 2.99 M€
+  rapport scenario_analysis : llm (accepté)
+investment_recommendation : NO-GO (prix maximum 13,4 M€ inférieur au prix demandé 28,0 M€ de plus de 15 % ; marge centrale négative ou nulle (-25,3 %) ; 4 risques critiques (seuil admis : 2))
+  rédaction finale : llm (accepté)

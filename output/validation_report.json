@@ -1,0 +1,66 @@
+{
+  "iteration": 1,
+  "issues": [
+    {
+      "key": "market.dvf_price_per_sqm",
+      "check": "convergence",
+      "severity": "info",
+      "message": "recoupement concordant : écart de 3.5% (seuil 10%) : DVF+ open data (Cerema, API données foncières) = 8744.0, Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF = 9059.0"
+    },
+    {
+      "key": "deal.acquisition_fees_pct",
+      "check": "completeness",
+      "severity": "blocking",
+      "message": "donnée P1 manquante : aucune source au catalogue pour ['acquisition_fees']"
+    },
+    {
+      "key": "market.prime_rent",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+    },
+    {
+      "key": "market.prime_yield",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+    },
+    {
+      "key": "market.vacancy",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+    },
+    {
+      "key": "market.incentives",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+    },
+    {
+      "key": "market.future_supply",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+    },
+    {
+      "key": "risk.natural_risks",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P3 manquante : connecteur non implémenté pour ['georisques']"
+    },
+    {
+      "key": "risk.catnat",
+      "check": "completeness",
+      "severity": "warning",
+      "message": "donnée P3 manquante : connecteur non implémenté pour ['georisques']"
+    }
+  ],
+  "gaps": [
+    "deal.acquisition_fees_pct"
+  ],
+  "assumptions_applied": [
+    "deal.acquisition_fees_pct"
+  ],
+  "verdict": "proceed_with_assumptions"
+}

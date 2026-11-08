@@ -1,0 +1,2761 @@
+{
+	"url": "https://aucadastre.fr/api/commune/75109",
+	"municipality": {
+		"insee": "75109",
+		"name": "Paris 9e Arrondissement",
+		"department": {
+			"code": "75",
+			"name": "Paris"
+		},
+		"postal_codes": [
+			"75009"
+		],
+		"population": 57271,
+		"addresses": 4933,
+		"centre": {
+			"lon": 2.338,
+			"lat": 48.8775
+		}
+	},
+	"addressed_by_arrondissements": false,
+	"market": {
+		"year": 2025,
+		"sales": 1700,
+		"median_price_per_m2_flat": {
+			"value": 10833,
+			"currency": "EUR"
+		},
+		"median_price_per_m2_house": null,
+		"measured_sales_flat": 1122,
+		"measured_sales_house": 0,
+		"by_year": [
+			{
+				"year": 2014,
+				"sales": 1447,
+				"median_price_per_m2_flat": {
+					"value": 8571,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 1194,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 968,
+				"measured_sales_house": 1
+			},
+			{
+				"year": 2015,
+				"sales": 1592,
+				"median_price_per_m2_flat": {
+					"value": 8529,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 21849,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1141,
+				"measured_sales_house": 1
+			},
+			{
+				"year": 2016,
+				"sales": 1479,
+				"median_price_per_m2_flat": {
+					"value": 8780,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 17376,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1019,
+				"measured_sales_house": 2
+			},
+			{
+				"year": 2017,
+				"sales": 1668,
+				"median_price_per_m2_flat": {
+					"value": 9500,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 12119,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1115,
+				"measured_sales_house": 2
+			},
+			{
+				"year": 2018,
+				"sales": 1700,
+				"median_price_per_m2_flat": {
+					"value": 10271,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": null,
+				"measured_sales_flat": 1136,
+				"measured_sales_house": 0
+			},
+			{
+				"year": 2019,
+				"sales": 1782,
+				"median_price_per_m2_flat": {
+					"value": 11047,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 14505,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1180,
+				"measured_sales_house": 1
+			},
+			{
+				"year": 2020,
+				"sales": 1491,
+				"median_price_per_m2_flat": {
+					"value": 11910,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": null,
+				"measured_sales_flat": 1004,
+				"measured_sales_house": 0
+			},
+			{
+				"year": 2021,
+				"sales": 1827,
+				"median_price_per_m2_flat": {
+					"value": 11686,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 14020,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1250,
+				"measured_sales_house": 2
+			},
+			{
+				"year": 2022,
+				"sales": 1914,
+				"median_price_per_m2_flat": {
+					"value": 11670,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": {
+					"value": 16689,
+					"currency": "EUR"
+				},
+				"measured_sales_flat": 1342,
+				"measured_sales_house": 2
+			},
+			{
+				"year": 2023,
+				"sales": 1558,
+				"median_price_per_m2_flat": {
+					"value": 11263,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": null,
+				"measured_sales_flat": 1020,
+				"measured_sales_house": 0
+			},
+			{
+				"year": 2024,
+				"sales": 1504,
+				"median_price_per_m2_flat": {
+					"value": 10544,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": null,
+				"measured_sales_flat": 960,
+				"measured_sales_house": 0
+			},
+			{
+				"year": 2025,
+				"sales": 1700,
+				"median_price_per_m2_flat": {
+					"value": 10833,
+					"currency": "EUR"
+				},
+				"median_price_per_m2_house": null,
+				"measured_sales_flat": 1122,
+				"measured_sales_house": 0
+			}
+		],
+		"change": {
+			"property_type": "apartment",
+			"from_year": 2014,
+			"to_year": 2025,
+			"from": {
+				"value": 8571,
+				"currency": "EUR"
+			},
+			"to": {
+				"value": 10833,
+				"currency": "EUR"
+			},
+			"percent": 26
+		},
+		"by_property_type": {
+			"apartment": {
+				"change": {
+					"property_type": "apartment",
+					"from_year": 2014,
+					"to_year": 2025,
+					"from": {
+						"value": 8571,
+						"currency": "EUR"
+					},
+					"to": {
+						"value": 10833,
+						"currency": "EUR"
+					},
+					"percent": 26
+				},
+				"streets_by_price": [
+					{
+						"street_code": "5952",
+						"name": "CITE MALESHERBES",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 14781,
+							"currency": "EUR"
+						},
+						"measured_sales": 12,
+						"sales": 15
+					},
+					{
+						"street_code": "3870",
+						"name": "AV FROCHOT",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 13906,
+							"currency": "EUR"
+						},
+						"measured_sales": 5,
+						"sales": 6
+					},
+					{
+						"street_code": "9281",
+						"name": "RUE THIMONNIER",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 13508,
+							"currency": "EUR"
+						},
+						"measured_sales": 8,
+						"sales": 9
+					},
+					{
+						"street_code": "5888",
+						"name": "BD DE LA MADELEINE",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 13462,
+							"currency": "EUR"
+						},
+						"measured_sales": 39,
+						"sales": 41
+					},
+					{
+						"street_code": "2933",
+						"name": "RUE DROUOT",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 13375,
+							"currency": "EUR"
+						},
+						"measured_sales": 9,
+						"sales": 13
+					}
+				],
+				"most_active_streets": [
+					{
+						"street_code": "8289",
+						"name": "RUE MARGUERITE DE ROCHECHOUART",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 11042,
+							"currency": "EUR"
+						},
+						"measured_sales": 338,
+						"sales": 379
+					},
+					{
+						"street_code": "6147",
+						"name": "RUE DES MARTYRS",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 11598,
+							"currency": "EUR"
+						},
+						"measured_sales": 187,
+						"sales": 215
+					},
+					{
+						"street_code": "8299",
+						"name": "RUE CLAUDE RODIER",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 11184,
+							"currency": "EUR"
+						},
+						"measured_sales": 192,
+						"sales": 205
+					},
+					{
+						"street_code": "7484",
+						"name": "RUE JEAN-BAPTISTE PIGALLE",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 11262,
+							"currency": "EUR"
+						},
+						"measured_sales": 179,
+						"sales": 194
+					},
+					{
+						"street_code": "2268",
+						"name": "RUE CONDORCET",
+						"property_type": "apartment",
+						"median_price_per_m2": {
+							"value": 11509,
+							"currency": "EUR"
+						},
+						"measured_sales": 172,
+						"sales": 190
+					}
+				]
+			},
+			"house": {
+				"change": null,
+				"streets_by_price": [],
+				"most_active_streets": []
+			}
+		}
+	},
+	"benchmarks": [
+		{
+			"name": "Paris",
+			"median_price_per_m2": {
+				"value": 9706,
+				"currency": "EUR"
+			},
+			"period": "en 2025",
+			"difference_percent": 12
+		}
+	],
+	"streets_by_price": [
+		{
+			"street_code": "5952",
+			"name": "CITE MALESHERBES",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 14781,
+				"currency": "EUR"
+			},
+			"measured_sales": 12,
+			"sales": 15
+		},
+		{
+			"street_code": "3870",
+			"name": "AV FROCHOT",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 13906,
+				"currency": "EUR"
+			},
+			"measured_sales": 5,
+			"sales": 6
+		},
+		{
+			"street_code": "9281",
+			"name": "RUE THIMONNIER",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 13508,
+				"currency": "EUR"
+			},
+			"measured_sales": 8,
+			"sales": 9
+		},
+		{
+			"street_code": "5888",
+			"name": "BD DE LA MADELEINE",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 13462,
+				"currency": "EUR"
+			},
+			"measured_sales": 39,
+			"sales": 41
+		},
+		{
+			"street_code": "2933",
+			"name": "RUE DROUOT",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 13375,
+				"currency": "EUR"
+			},
+			"measured_sales": 9,
+			"sales": 13
+		}
+	],
+	"most_active_streets": [
+		{
+			"street_code": "8289",
+			"name": "RUE MARGUERITE DE ROCHECHOUART",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 11042,
+				"currency": "EUR"
+			},
+			"measured_sales": 338,
+			"sales": 379
+		},
+		{
+			"street_code": "6147",
+			"name": "RUE DES MARTYRS",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 11598,
+				"currency": "EUR"
+			},
+			"measured_sales": 187,
+			"sales": 215
+		},
+		{
+			"street_code": "8299",
+			"name": "RUE CLAUDE RODIER",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 11184,
+				"currency": "EUR"
+			},
+			"measured_sales": 192,
+			"sales": 205
+		},
+		{
+			"street_code": "7484",
+			"name": "RUE JEAN-BAPTISTE PIGALLE",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 11262,
+				"currency": "EUR"
+			},
+			"measured_sales": 179,
+			"sales": 194
+		},
+		{
+			"street_code": "2268",
+			"name": "RUE CONDORCET",
+			"property_type": "apartment",
+			"median_price_per_m2": {
+				"value": 11509,
+				"currency": "EUR"
+			},
+			"measured_sales": 172,
+			"sales": 190
+		}
+	],
+	"planning_document": {
+		"name": "75056_PLU_20260616",
+		"title": "PARIS",
+		"type": "PLU",
+		"partition": "DU_75056"
+	},
+	"housing_market_zone": null,
+	"fibre": null,
+	"risks": {
+		"clay_shrink_swell": null,
+		"seismicity": {
+			"zone": "1",
+			"label": "très faible",
+			"scale": 5
+		},
+		"radon_class": {
+			"value": "1",
+			"scale": 3
+		},
+		"natural_disaster_orders": {
+			"count": 20,
+			"latest": "Inondations et/ou Coulées de Boue, 27/07/2018"
+		},
+		"classified_installations_within_500m": 47,
+		"potentially_polluted_sites_within_500m": 180,
+		"soil_information_sectors_within_1km": 0,
+		"flood_zoning": null,
+		"recorded_hazards": [
+			"Inondation",
+			"Transport de marchandises dangereuses"
+		],
+		"prevention_plans": [
+			{
+				"name": "R111.3 - Dissolution de gypse",
+				"kind": "naturel"
+			},
+			{
+				"name": "R111.3 - Anciennes carrières",
+				"kind": "naturel"
+			},
+			{
+				"name": "PPRi de Paris - Révision",
+				"kind": "naturel"
+			}
+		]
+	},
+	"condominiums": {
+		"total": 1914,
+		"largest": [
+			{
+				"registration_number": "AA0589747",
+				"name": "Résidence 92 RUE SAINT LAZARE",
+				"address_as_filed": "92 r saint-lazare",
+				"lots": 538,
+				"dwelling_lots": 185,
+				"construction_period": "de 1975 à 1977",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.328326,
+					"lat": 48.875864
+				}
+			},
+			{
+				"registration_number": "AB8882631",
+				"name": "10 12 RUE DE BELLEFOND",
+				"address_as_filed": "10 r de bellefond",
+				"lots": 462,
+				"dwelling_lots": 4,
+				"construction_period": null,
+				"manager": {
+					"name": "SOC EXPLOIT CABINET PAUTRAT",
+					"siren": "301052510"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.348287,
+					"lat": 48.877636
+				}
+			},
+			{
+				"registration_number": "AA0836007",
+				"name": "SDC 6/8 RUE DE LA ROCHEFOUCAULD",
+				"address_as_filed": "8 r de la rochefoucauld",
+				"lots": 435,
+				"dwelling_lots": 1,
+				"construction_period": "de 1961 à 1974",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.334317,
+					"lat": 48.877517
+				}
+			},
+			{
+				"registration_number": "AA4424008",
+				"name": "SDC TURGOT 12",
+				"address_as_filed": "12 Rue Turgot",
+				"lots": 405,
+				"dwelling_lots": 52,
+				"construction_period": "de 1949 à 1974",
+				"manager": {
+					"name": "R.L.MEILLANT & F.BOURDELEAU",
+					"siren": "582043956"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.345359,
+					"lat": 48.880505
+				}
+			},
+			{
+				"registration_number": "AA6655476",
+				"name": "SDC 67 A 71 RUE  JB PIGALLE",
+				"address_as_filed": "67 r jean-baptiste pigalle",
+				"lots": 357,
+				"dwelling_lots": 83,
+				"construction_period": "avant 1949",
+				"manager": {
+					"name": "GID",
+					"siren": "328620737"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.336241,
+					"lat": 48.881464
+				}
+			},
+			{
+				"registration_number": "AE8584153",
+				"name": "20 rue pigalle",
+				"address_as_filed": "20 r jean-baptiste pigalle",
+				"lots": 337,
+				"dwelling_lots": 102,
+				"construction_period": "de 1975 à 1977",
+				"manager": {
+					"name": "GAELLE CONSEILS IMMO",
+					"siren": "948244199"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.333283,
+					"lat": 48.879017
+				}
+			},
+			{
+				"registration_number": "AA1464726",
+				"name": "SDC 3/5 et 5Bis Rue de l'Agent BAILLY",
+				"address_as_filed": "3 r de l'agent bailly",
+				"lots": 333,
+				"dwelling_lots": 192,
+				"construction_period": "avant 1949",
+				"manager": {
+					"name": "2ASC IMMOBILIER",
+					"siren": "800976029"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.342196,
+					"lat": 48.878363
+				}
+			},
+			{
+				"registration_number": "AA6546659",
+				"name": "SDC 34-36 RUE DE CLICHY",
+				"address_as_filed": "34-36 r de clichy",
+				"lots": 318,
+				"dwelling_lots": 104,
+				"construction_period": null,
+				"manager": {
+					"name": "LEPINAY MALET",
+					"siren": "552139362"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.329468,
+					"lat": 48.879258
+				}
+			},
+			{
+				"registration_number": "AB0224188",
+				"name": "SDC 7 RUE BERGERE",
+				"address_as_filed": "7 r bergere",
+				"lots": 318,
+				"dwelling_lots": 167,
+				"construction_period": "avant 1949",
+				"manager": {
+					"name": "CRAUNOT",
+					"siren": "335149647"
+				},
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": false,
+				"point": {
+					"lon": 2.346869,
+					"lat": 48.872043
+				}
+			},
+			{
+				"registration_number": "AA2840916",
+				"name": "SDC 8 BOULEVARD DE LA MADELEINE",
+				"address_as_filed": "8 bd de la madeleine",
+				"lots": 309,
+				"dwelling_lots": 220,
+				"construction_period": "avant 1949",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.326818,
+					"lat": 48.869959
+				}
+			}
+		],
+		"without_a_manager": 110,
+		"without_a_manager_sample": [
+			{
+				"registration_number": "AA0589747",
+				"name": "Résidence 92 RUE SAINT LAZARE",
+				"address_as_filed": "92 r saint-lazare",
+				"lots": 538,
+				"dwelling_lots": 185,
+				"construction_period": "de 1975 à 1977",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.328326,
+					"lat": 48.875864
+				}
+			},
+			{
+				"registration_number": "AA2840916",
+				"name": "SDC 8 BOULEVARD DE LA MADELEINE",
+				"address_as_filed": "8 bd de la madeleine",
+				"lots": 309,
+				"dwelling_lots": 220,
+				"construction_period": "avant 1949",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.326818,
+					"lat": 48.869959
+				}
+			},
+			{
+				"registration_number": "AB6756118",
+				"name": "SDC 35/37 RUE ROCHECHOUART",
+				"address_as_filed": "35 r de rochechouart",
+				"lots": 256,
+				"dwelling_lots": 125,
+				"construction_period": "de 1949 à 1974",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.344975,
+					"lat": 48.878448
+				}
+			},
+			{
+				"registration_number": "AB2391860",
+				"name": "RICHER",
+				"address_as_filed": "22 Rue Richer",
+				"lots": 238,
+				"dwelling_lots": 78,
+				"construction_period": "de 1949 à 1974",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.346028,
+					"lat": 48.874086
+				}
+			},
+			{
+				"registration_number": "AB5607221",
+				"name": "RICHER - 10/12",
+				"address_as_filed": "12 Rue Richer",
+				"lots": 198,
+				"dwelling_lots": 51,
+				"construction_period": "de 1949 à 1974",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.346827,
+					"lat": 48.874084
+				}
+			},
+			{
+				"registration_number": "AB1305911",
+				"name": "CADET - 20",
+				"address_as_filed": "20 Rue Cadet",
+				"lots": 184,
+				"dwelling_lots": 64,
+				"construction_period": "avant 1949",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.343311,
+					"lat": 48.875213
+				}
+			},
+			{
+				"registration_number": "AB5733373",
+				"name": "13-15-17 CITE DE TREVISE",
+				"address_as_filed": "13 Cité de Trévise",
+				"lots": 162,
+				"dwelling_lots": 91,
+				"construction_period": "avant 1949",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.346997,
+					"lat": 48.875333
+				}
+			},
+			{
+				"registration_number": "AB6065908",
+				"name": "94 RUE SAINT LAZARE",
+				"address_as_filed": "94 Rue Saint-Lazare",
+				"lots": 153,
+				"dwelling_lots": 87,
+				"construction_period": "de 1949 à 1974",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.328059,
+					"lat": 48.875831
+				}
+			},
+			{
+				"registration_number": "AB1948033",
+				"name": "SDC 14-16 RUE DE BRUXELLES",
+				"address_as_filed": "14-16 r de bruxelles",
+				"lots": 127,
+				"dwelling_lots": 67,
+				"construction_period": null,
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.331162,
+					"lat": 48.883522
+				}
+			},
+			{
+				"registration_number": "AC1410778",
+				"name": "18 RUE CADET",
+				"address_as_filed": "18 Rue Cadet",
+				"lots": 126,
+				"dwelling_lots": 59,
+				"construction_period": "avant 1949",
+				"manager": null,
+				"manager_is_a_resident": false,
+				"mandate_expired_without_successor": true,
+				"point": {
+					"lon": 2.343211,
+					"lat": 48.875088
+				}
+			}
+		]
+	},
+	"recorded_crime": {
+		"year": 2025,
+		"previous_year": 2024,
+		"dataset": "Bases statistiques communale, départementale et régionale de la délinquance enregistrée par la police et la gendarmerie nationales (SSMSI, ministère de l'Intérieur)",
+		"published_on": "2026-07-09",
+		"population": {
+			"value": 57271,
+			"census_year": 2023
+		},
+		"dwellings": {
+			"value": 40932,
+			"census_year": 2022
+		},
+		"department": {
+			"code": "75",
+			"name": "Paris"
+		},
+		"scale": "arrondissement",
+		"summary": "En 2025, hors stupéfiants, 12 indicateurs sont diffusés pour Paris 9e Arrondissement : 8 dépassent le taux de Paris ; 8 dépassent le taux national. Au-dessus des deux : vols sans violence contre des personnes, 9,7 fois le taux national ; vols violents sans arme, 8,5 fois ; vols dans les véhicules, 3,0 fois ; et 4 autres.",
+		"indicators": [
+			{
+				"key": "domestic_physical_violence",
+				"name": "Violences physiques intrafamiliales",
+				"group": "violence",
+				"unit": "victim",
+				"part_of": null,
+				"published": true,
+				"count": 118,
+				"rate_per_1000": 2.06038,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 2.97512,
+				"france_rate_per_1000": 3.75535,
+				"previous_count": 115,
+				"change_percent": 3
+			},
+			{
+				"key": "other_physical_violence",
+				"name": "Violences physiques hors cadre familial",
+				"group": "violence",
+				"unit": "victim",
+				"part_of": null,
+				"published": true,
+				"count": 314,
+				"rate_per_1000": 5.48271,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 5.27385,
+				"france_rate_per_1000": 3.15619,
+				"previous_count": 279,
+				"change_percent": 13
+			},
+			{
+				"key": "sexual_violence",
+				"name": "Violences sexuelles",
+				"group": "violence",
+				"unit": "victim",
+				"part_of": null,
+				"published": true,
+				"count": 234,
+				"rate_per_1000": 4.08584,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 3.00412,
+				"france_rate_per_1000": 1.93331,
+				"previous_count": 220,
+				"change_percent": 6
+			},
+			{
+				"key": "armed_robbery",
+				"name": "Vols avec armes",
+				"group": "theft_and_damage",
+				"unit": "offence",
+				"part_of": null,
+				"published": true,
+				"count": 10,
+				"rate_per_1000": 0.174608,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 0.186807,
+				"france_rate_per_1000": 0.11577,
+				"previous_count": 9,
+				"change_percent": 11
+			},
+			{
+				"key": "violent_theft",
+				"name": "Vols violents sans arme",
+				"group": "theft_and_damage",
+				"unit": "offence",
+				"part_of": null,
+				"published": true,
+				"count": 350,
+				"rate_per_1000": 6.1113,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 3.45474,
+				"france_rate_per_1000": 0.719714,
+				"previous_count": 357,
+				"change_percent": -2
+			},
+			{
+				"key": "theft_from_persons",
+				"name": "Vols sans violence contre des personnes",
+				"group": "theft_and_damage",
+				"unit": "victim_heard",
+				"part_of": null,
+				"published": true,
+				"count": 5078,
+				"rate_per_1000": 88.6662,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 45.1207,
+				"france_rate_per_1000": 9.10098,
+				"previous_count": 5303,
+				"change_percent": -4
+			},
+			{
+				"key": "burglary",
+				"name": "Cambriolages de logement",
+				"group": "theft_and_damage",
+				"unit": "offence",
+				"part_of": null,
+				"published": true,
+				"count": 139,
+				"rate_per_1000": 3.39591,
+				"rate_base": "dwellings",
+				"department_rate_per_1000": 5.0546,
+				"france_rate_per_1000": 5.62729,
+				"previous_count": 180,
+				"change_percent": -23
+			},
+			{
+				"key": "vehicle_theft",
+				"name": "Vols de véhicule",
+				"group": "theft_and_damage",
+				"unit": "vehicle",
+				"part_of": null,
+				"published": true,
+				"count": 98,
+				"rate_per_1000": 1.71116,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 1.73402,
+				"france_rate_per_1000": 1.82611,
+				"previous_count": 105,
+				"change_percent": -7
+			},
+			{
+				"key": "theft_from_vehicles",
+				"name": "Vols dans les véhicules",
+				"group": "theft_and_damage",
+				"unit": "vehicle",
+				"part_of": null,
+				"published": true,
+				"count": 583,
+				"rate_per_1000": 10.1797,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 6.60811,
+				"france_rate_per_1000": 3.41532,
+				"previous_count": 623,
+				"change_percent": -6
+			},
+			{
+				"key": "theft_of_vehicle_parts",
+				"name": "Vols d'accessoires sur véhicules",
+				"group": "theft_and_damage",
+				"unit": "vehicle",
+				"part_of": null,
+				"published": true,
+				"count": 75,
+				"rate_per_1000": 1.30956,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 0.981567,
+				"france_rate_per_1000": 1.39444,
+				"previous_count": 83,
+				"change_percent": -10
+			},
+			{
+				"key": "criminal_damage",
+				"name": "Destructions et dégradations volontaires",
+				"group": "theft_and_damage",
+				"unit": "offence",
+				"part_of": null,
+				"published": true,
+				"count": 799,
+				"rate_per_1000": 13.9512,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 8.9729,
+				"france_rate_per_1000": 7.88743,
+				"previous_count": 755,
+				"change_percent": 6
+			},
+			{
+				"key": "drug_use",
+				"name": "Usage de stupéfiants",
+				"group": "drugs",
+				"unit": "person_implicated",
+				"part_of": null,
+				"published": true,
+				"count": 1227,
+				"rate_per_1000": 21.4245,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 13.5399,
+				"france_rate_per_1000": null,
+				"previous_count": 1292,
+				"change_percent": -5
+			},
+			{
+				"key": "drug_use_fixed_fine",
+				"name": "Usage de stupéfiants (AFD)",
+				"group": "drugs",
+				"unit": "person_implicated",
+				"part_of": "drug_use",
+				"published": true,
+				"count": 912,
+				"rate_per_1000": 15.9243,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 10.0657,
+				"france_rate_per_1000": null,
+				"previous_count": 996,
+				"change_percent": -8
+			},
+			{
+				"key": "drug_trafficking",
+				"name": "Trafic de stupéfiants",
+				"group": "drugs",
+				"unit": "person_implicated",
+				"part_of": null,
+				"published": true,
+				"count": 443,
+				"rate_per_1000": 7.73515,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 2.64762,
+				"france_rate_per_1000": null,
+				"previous_count": 397,
+				"change_percent": 12
+			},
+			{
+				"key": "fraud",
+				"name": "Escroqueries et fraudes aux moyens de paiement",
+				"group": "fraud",
+				"unit": "victim",
+				"part_of": null,
+				"published": true,
+				"count": 941,
+				"rate_per_1000": 16.4307,
+				"rate_base": "inhabitants",
+				"department_rate_per_1000": 11.89,
+				"france_rate_per_1000": 6.51731,
+				"previous_count": 913,
+				"change_percent": 3
+			}
+		],
+		"caveats": [
+			"Des faits enregistrés, pas des faits commis : plaintes, signalements et constatations des services de police et de gendarmerie. Leur nombre dépend aussi du dépôt de plainte et de l'activité des services. Selon les enquêtes de victimation du ministère, de 2011 à 2018, 12 % des victimes de violences sexuelles hors ménage ont porté plainte, contre 74 % des victimes de cambriolage.",
+			"Un fait de plus ou de moins déplace ici le taux de 0,0175 pour 1 000 habitants : celui d'une petite commune bouge beaucoup d'une année à l'autre.",
+			"Non diffusé : le ministère ne publie aucun nombre de 1 à 4, et en masque aussi de plus élevés pour qu'un petit nombre ne se retrouve pas par différence avec le département. Un chiffre non diffusé n'est donc ni un zéro, ni forcément un petit nombre ; un zéro n'est publié que s'il se répète trois années de suite.",
+			"Chaque fait est compté dans la commune où il a été commis, puis rapporté à ses seuls habitants : là où passent beaucoup de non-résidents, centre-ville, gare ou zone commerciale, le taux grossit d'autant. Une escroquerie est comptée dans la commune où réside la victime, une part de ces fraudes se commettant en ligne.",
+			"Les stupéfiants comptent les personnes mises en cause dans une affaire élucidée : ils disent aussi l'activité des services. Une personne mise en cause dans deux départements y compte deux fois et le ministère ne publie pas de total national dans ces bases : ils ne sont comparés qu'au département.",
+			"Les taux rapportent le nombre à la population municipale recensée en 2023 (57 271 habitants), et les cambriolages aux 40 932 logements recensés en 2022. La France additionne ses 101 départements.",
+			"Ce sont les chiffres de l'arrondissement ; ceux de la ville entière sont sur sa page."
+		]
+	},
+	"property_tax": {
+		"year": 2025,
+		"built_property_percent": 20.5,
+		"municipality_percent": 20.5,
+		"department_percent": null,
+		"intercommunality_percent": null,
+		"syndicates_percent": null,
+		"household_waste_percent": 6.21,
+		"household_waste_reduced_zones_percent": [],
+		"averaged_over_former_municipalities": false,
+		"voted_by_the_city": {
+			"name": "Paris",
+			"arrondissements": 20
+		},
+		"intercommunality_name": null,
+		"with_household_waste_percent": 26.71,
+		"change": {
+			"from_year": 2020,
+			"to_year": 2025,
+			"from_percent": 13.5,
+			"to_percent": 20.5,
+			"points": 7,
+			"household_waste_points": 0
+		},
+		"boundary_changed_since_2020": false,
+		"by_year": [
+			{
+				"year": 2020,
+				"built_property_percent": 13.5,
+				"municipality_percent": 13.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			},
+			{
+				"year": 2021,
+				"built_property_percent": 13.5,
+				"municipality_percent": 13.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			},
+			{
+				"year": 2022,
+				"built_property_percent": 13.5,
+				"municipality_percent": 13.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			},
+			{
+				"year": 2023,
+				"built_property_percent": 20.5,
+				"municipality_percent": 20.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			},
+			{
+				"year": 2024,
+				"built_property_percent": 20.5,
+				"municipality_percent": 20.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			},
+			{
+				"year": 2025,
+				"built_property_percent": 20.5,
+				"municipality_percent": 20.5,
+				"department_percent": null,
+				"intercommunality_percent": null,
+				"syndicates_percent": null,
+				"household_waste_percent": 6.21,
+				"household_waste_reduced_zones_percent": [],
+				"averaged_over_former_municipalities": false
+			}
+		],
+		"benchmarks": [
+			{
+				"name": "France",
+				"year": 2025,
+				"average_percent": 39.78,
+				"difference_points": -19.28,
+				"weighted_by": "tax_base"
+			}
+		]
+	},
+	"rents": {
+		"year": 2025,
+		"quarter": 3,
+		"basis": "asking rent, charges included, unfurnished, predicted for a reference dwelling",
+		"attribution": "Estimations ANIL, à partir des données du Groupe SeLoger et de leboncoin",
+		"rent_control": {
+			"territory": "Paris",
+			"since": "juillet 2019",
+			"part_of_the_municipality_only": false,
+			"official_simulator": "https://www.service-public.gouv.fr/simulateur/calcul/encadrementDesLoyers",
+			"official_list": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1314",
+			"list_checked_on": "2026-08-01"
+		},
+		"flat": {
+			"rent_per_m2_monthly": {
+				"value": 33.55,
+				"currency": "EUR"
+			},
+			"prediction_interval_95": {
+				"low": {
+					"value": 26.3,
+					"currency": "EUR"
+				},
+				"high": {
+					"value": 42.8,
+					"currency": "EUR"
+				}
+			},
+			"reference_surface_m2": 52,
+			"monthly_rent_of_reference": {
+				"value": 1745,
+				"currency": "EUR"
+			},
+			"prediction_level": "commune",
+			"listings_in_municipality": 7870,
+			"adjusted_r2": 0.95,
+			"department_median_of_municipalities": {
+				"value": 33.04,
+				"currency": "EUR"
+			},
+			"france_median_of_municipalities": {
+				"value": 10,
+				"currency": "EUR"
+			}
+		},
+		"flat_1_or_2_rooms": {
+			"rent_per_m2_monthly": {
+				"value": 36.21,
+				"currency": "EUR"
+			},
+			"prediction_interval_95": {
+				"low": {
+					"value": 28.48,
+					"currency": "EUR"
+				},
+				"high": {
+					"value": 46.05,
+					"currency": "EUR"
+				}
+			},
+			"reference_surface_m2": 37,
+			"monthly_rent_of_reference": {
+				"value": 1340,
+				"currency": "EUR"
+			},
+			"prediction_level": "commune",
+			"listings_in_municipality": 5323,
+			"adjusted_r2": 0.88,
+			"department_median_of_municipalities": {
+				"value": 35.02,
+				"currency": "EUR"
+			},
+			"france_median_of_municipalities": {
+				"value": 11.97,
+				"currency": "EUR"
+			}
+		},
+		"flat_3_rooms_or_more": {
+			"rent_per_m2_monthly": {
+				"value": 32.13,
+				"currency": "EUR"
+			},
+			"prediction_interval_95": {
+				"low": {
+					"value": 25.74,
+					"currency": "EUR"
+				},
+				"high": {
+					"value": 40.11,
+					"currency": "EUR"
+				}
+			},
+			"reference_surface_m2": 72,
+			"monthly_rent_of_reference": {
+				"value": 2313,
+				"currency": "EUR"
+			},
+			"prediction_level": "commune",
+			"listings_in_municipality": 2541,
+			"adjusted_r2": 0.9,
+			"department_median_of_municipalities": {
+				"value": 32,
+				"currency": "EUR"
+			},
+			"france_median_of_municipalities": {
+				"value": 8.53,
+				"currency": "EUR"
+			}
+		},
+		"house": {
+			"rent_per_m2_monthly": {
+				"value": 26.45,
+				"currency": "EUR"
+			},
+			"prediction_interval_95": {
+				"low": {
+					"value": 12.63,
+					"currency": "EUR"
+				},
+				"high": {
+					"value": 55.37,
+					"currency": "EUR"
+				}
+			},
+			"reference_surface_m2": 92,
+			"monthly_rent_of_reference": {
+				"value": 2433,
+				"currency": "EUR"
+			},
+			"prediction_level": "maille",
+			"listings_in_municipality": 14,
+			"adjusted_r2": 0.78,
+			"department_median_of_municipalities": {
+				"value": 24.79,
+				"currency": "EUR"
+			},
+			"france_median_of_municipalities": {
+				"value": 8.75,
+				"currency": "EUR"
+			}
+		}
+	},
+	"drinking_water": null,
+	"drinking_water_city_url": "https://aucadastre.fr/api/commune/75056",
+	"permits_url": "https://aucadastre.fr/api/commune/75109/permits",
+	"streets": [
+		{
+			"id": "75109_7867",
+			"name": "Avenue de Provence",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_7867",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/avenue-de-provence-7867"
+		},
+		{
+			"id": "75109_2313",
+			"name": "Avenue du Coq",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_2313",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/avenue-du-coq-2313"
+		},
+		{
+			"id": "75109_3870",
+			"name": "Avenue Frochot",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_3870",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/avenue-frochot-3870"
+		},
+		{
+			"id": "75109_9484",
+			"name": "Avenue Trudaine",
+			"numbers": 45,
+			"url": "https://aucadastre.fr/api/street/75109_9484",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/avenue-trudaine-9484"
+		},
+		{
+			"id": "75109_2113",
+			"name": "Boulevard de Clichy",
+			"numbers": 44,
+			"url": "https://aucadastre.fr/api/street/75109_2113",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-de-clichy-2113"
+		},
+		{
+			"id": "75109_5888",
+			"name": "Boulevard de la Madeleine",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_5888",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-de-la-madeleine-5888"
+		},
+		{
+			"id": "75109_5907",
+			"name": "Boulevard de Magenta",
+			"numbers": 2,
+			"url": "https://aucadastre.fr/api/street/75109_5907",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-de-magenta-5907"
+		},
+		{
+			"id": "75109_1524",
+			"name": "Boulevard des Capucines",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_1524",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-des-capucines-1524"
+		},
+		{
+			"id": "75109_4758",
+			"name": "Boulevard des Italiens",
+			"numbers": 12,
+			"url": "https://aucadastre.fr/api/street/75109_4758",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-des-italiens-4758"
+		},
+		{
+			"id": "75109_4485",
+			"name": "Boulevard Haussmann",
+			"numbers": 69,
+			"url": "https://aucadastre.fr/api/street/75109_4485",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-haussmann-4485"
+		},
+		{
+			"id": "75109_8288",
+			"name": "Boulevard Marguerite de Rochechouart",
+			"numbers": 34,
+			"url": "https://aucadastre.fr/api/street/75109_8288",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-marguerite-de-rochechouart-8288"
+		},
+		{
+			"id": "75109_6510",
+			"name": "Boulevard Montmartre",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_6510",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-montmartre-6510"
+		},
+		{
+			"id": "75109_7560",
+			"name": "Boulevard Poissonnière",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_7560",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/boulevard-poissonniere-7560"
+		},
+		{
+			"id": "75109_0887",
+			"name": "Cité Bergère",
+			"numbers": 21,
+			"url": "https://aucadastre.fr/api/street/75109_0887",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-bergere-0887"
+		},
+		{
+			"id": "75109_1775",
+			"name": "Cité Chaptal",
+			"numbers": 9,
+			"url": "https://aucadastre.fr/api/street/75109_1775",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-chaptal-1775"
+		},
+		{
+			"id": "75109_1843",
+			"name": "Cité Charles Godon",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_1843",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-charles-godon-1843"
+		},
+		{
+			"id": "75109_2267",
+			"name": "Cité Condorcet",
+			"numbers": 17,
+			"url": "https://aucadastre.fr/api/street/75109_2267",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-condorcet-2267"
+		},
+		{
+			"id": "75109_0364",
+			"name": "Cité d'Antin",
+			"numbers": 25,
+			"url": "https://aucadastre.fr/api/street/75109_0364",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-d-antin-0364"
+		},
+		{
+			"id": "75109_5740",
+			"name": "Cité de Londres",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_5740",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-de-londres-5740"
+		},
+		{
+			"id": "75109_9439",
+			"name": "Cité de Trévise",
+			"numbers": 27,
+			"url": "https://aucadastre.fr/api/street/75109_9439",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-de-trevise-9439"
+		},
+		{
+			"id": "75109_3568",
+			"name": "Cité Fénelon",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_3568",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-fenelon-3568"
+		},
+		{
+			"id": "75109_5952",
+			"name": "Cité Malesherbes",
+			"numbers": 25,
+			"url": "https://aucadastre.fr/api/street/75109_5952",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-malesherbes-5952"
+		},
+		{
+			"id": "75109_6499",
+			"name": "Cité Monthiers",
+			"numbers": 9,
+			"url": "https://aucadastre.fr/api/street/75109_6499",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-monthiers-6499"
+		},
+		{
+			"id": "75109_7482",
+			"name": "Cité Pigalle",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_7482",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-pigalle-7482"
+		},
+		{
+			"id": "75109_8392",
+			"name": "Cité Rougemont",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_8392",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/cite-rougemont-8392"
+		},
+		{
+			"id": "75109_3088",
+			"name": "Impasse de l'École",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_3088",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/impasse-de-l-ecole-3088"
+		},
+		{
+			"id": "75109_1167",
+			"name": "Impasse de la Boule Rouge",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_1167",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/impasse-de-la-boule-rouge-1167"
+		},
+		{
+			"id": "75109_5382",
+			"name": "Impasse Louise-Emilie de la Tour d'Auvergne",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_5382",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/impasse-louise-emilie-de-la-tour-d-auvergne-5382"
+		},
+		{
+			"id": "75109_8806",
+			"name": "Impasse Sandrié",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_8806",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/impasse-sandrie-8806"
+		},
+		{
+			"id": "75109_1290",
+			"name": "Passage Briare",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_1290",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/passage-briare-1290"
+		},
+		{
+			"id": "75109_2778",
+			"name": "Passage des Deux Soeurs",
+			"numbers": 12,
+			"url": "https://aucadastre.fr/api/street/75109_2778",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/passage-des-deux-soeurs-2778"
+		},
+		{
+			"id": "75109_4505",
+			"name": "Passage du Havre",
+			"numbers": 32,
+			"url": "https://aucadastre.fr/api/street/75109_4505",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/passage-du-havre-4505"
+		},
+		{
+			"id": "75109_5030",
+			"name": "Passage Jouffroy",
+			"numbers": 23,
+			"url": "https://aucadastre.fr/api/street/75109_5030",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/passage-jouffroy-5030"
+		},
+		{
+			"id": "75109_9663",
+			"name": "Passage Verdeau",
+			"numbers": 26,
+			"url": "https://aucadastre.fr/api/street/75109_9663",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/passage-verdeau-9663"
+		},
+		{
+			"id": "75109_0065",
+			"name": "Place Adolphe Max",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_0065",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-adolphe-max-0065"
+		},
+		{
+			"id": "75109_0084",
+			"name": "Place Adrien Oudin",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_0084",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-adrien-oudin-0084"
+		},
+		{
+			"id": "75109_y8cwbf",
+			"name": "Place Alain Goldmann",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_y8cwbf",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-alain-goldmann-y8cwbf"
+		},
+		{
+			"id": "75109_0303",
+			"name": "Place André Breton",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_0303",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-andre-breton-0303"
+		},
+		{
+			"id": "75109_1008",
+			"name": "Place Blanche",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_1008",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-blanche-1008"
+		},
+		{
+			"id": "75109_1838",
+			"name": "Place Charles Garnier",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_1838",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-charles-garnier-1838"
+		},
+		{
+			"id": "75109_0394",
+			"name": "Place d'Anvers",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_0394",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-d-anvers-0394"
+		},
+		{
+			"id": "75109_3374",
+			"name": "Place d'Estienne d'Orves",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_3374",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-d-estienne-d-orves-3374"
+		},
+		{
+			"id": "75109_1362",
+			"name": "Place de Budapest",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_1362",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-de-budapest-1362"
+		},
+		{
+			"id": "75109_2115",
+			"name": "Place de Clichy",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_2115",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-de-clichy-2115"
+		},
+		{
+			"id": "75109_6905",
+			"name": "Place de l'Opéra",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_6905",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-de-l-opera-6905"
+		},
+		{
+			"id": "75109_2787",
+			"name": "Place Diaghilev",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_2787",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-diaghilev-2787"
+		},
+		{
+			"id": "75109_4506",
+			"name": "Place du Havre",
+			"numbers": 2,
+			"url": "https://aucadastre.fr/api/street/75109_4506",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-du-havre-4506"
+		},
+		{
+			"id": "75109_3160",
+			"name": "Place Édouard VII",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_3160",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-edouard-vii-3160"
+		},
+		{
+			"id": "75109_3898",
+			"name": "Place Gabriel Kaspereit",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_3898",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-gabriel-kaspereit-3898"
+		},
+		{
+			"id": "75109_1ed6eq",
+			"name": "Place Garbis Aprikian",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_1ed6eq",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-garbis-aprikian-1ed6eq"
+		},
+		{
+			"id": "75109_4121",
+			"name": "Place Georges Berry",
+			"numbers": 2,
+			"url": "https://aucadastre.fr/api/street/75109_4121",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-georges-berry-4121"
+		},
+		{
+			"id": "75109_4427",
+			"name": "Place Gustave Toudouze",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_4427",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-gustave-toudouze-4427"
+		},
+		{
+			"id": "75109_4593",
+			"name": "Place Henri Salvador",
+			"numbers": 2,
+			"url": "https://aucadastre.fr/api/street/75109_4593",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-henri-salvador-4593"
+		},
+		{
+			"id": "75109_4805",
+			"name": "Place Jacques Rouché",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_4805",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-jacques-rouche-4805"
+		},
+		{
+			"id": "75109_v29ycs",
+			"name": "Place Juliette Drouet",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_v29ycs",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-juliette-drouet-v29ycs"
+		},
+		{
+			"id": "75109_5160",
+			"name": "Place Kossuth",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_5160",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-kossuth-5160"
+		},
+		{
+			"id": "75109_5685",
+			"name": "Place Lili et Nadia Boulanger",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_5685",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-lili-et-nadia-boulanger-5685"
+		},
+		{
+			"id": "75109_7483",
+			"name": "Place Pigalle",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_7483",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-pigalle-7483"
+		},
+		{
+			"id": "75109_8616",
+			"name": "Place Saint-Georges",
+			"numbers": 9,
+			"url": "https://aucadastre.fr/api/street/75109_8616",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-saint-georges-8616"
+		},
+		{
+			"id": "75109_69t4pv",
+			"name": "Place Théophile Bader",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_69t4pv",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/place-theophile-bader-69t4pv"
+		},
+		{
+			"id": "75109_0188",
+			"name": "Rue Alfred Stevens",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_0188",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-alfred-stevens-0188"
+		},
+		{
+			"id": "75109_0266",
+			"name": "Rue Ambroise Thomas",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_0266",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-ambroise-thomas-0266"
+		},
+		{
+			"id": "75109_0514",
+			"name": "Rue Auber",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_0514",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-auber-0514"
+		},
+		{
+			"id": "75109_0646",
+			"name": "Rue Ballu",
+			"numbers": 44,
+			"url": "https://aucadastre.fr/api/street/75109_0646",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-ballu-0646"
+		},
+		{
+			"id": "75109_0888",
+			"name": "Rue Bergère",
+			"numbers": 37,
+			"url": "https://aucadastre.fr/api/street/75109_0888",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-bergere-0888"
+		},
+		{
+			"id": "75109_1009",
+			"name": "Rue Blanche",
+			"numbers": 93,
+			"url": "https://aucadastre.fr/api/street/75109_1009",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-blanche-1009"
+		},
+		{
+			"id": "75109_1017",
+			"name": "Rue Bleue",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_1017",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-bleue-1017"
+		},
+		{
+			"id": "75109_1046",
+			"name": "Rue Bochart de Saron",
+			"numbers": 18,
+			"url": "https://aucadastre.fr/api/street/75109_1046",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-bochart-de-saron-1046"
+		},
+		{
+			"id": "75109_1145",
+			"name": "Rue Boudreau",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_1145",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-boudreau-1145"
+		},
+		{
+			"id": "75109_1186",
+			"name": "Rue Bourdaloue",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_1186",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-bourdaloue-1186"
+		},
+		{
+			"id": "75109_1344",
+			"name": "Rue Bruno Coquatrix",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_1344",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-bruno-coquatrix-1344"
+		},
+		{
+			"id": "75109_1369",
+			"name": "Rue Buffault",
+			"numbers": 23,
+			"url": "https://aucadastre.fr/api/street/75109_1369",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-buffault-1369"
+		},
+		{
+			"id": "75109_1407",
+			"name": "Rue Cadet",
+			"numbers": 33,
+			"url": "https://aucadastre.fr/api/street/75109_1407",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-cadet-1407"
+		},
+		{
+			"id": "75109_1602",
+			"name": "Rue Catherine de la Rochefoucauld",
+			"numbers": 64,
+			"url": "https://aucadastre.fr/api/street/75109_1602",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-catherine-de-la-rochefoucauld-1602"
+		},
+		{
+			"id": "75109_1776",
+			"name": "Rue Chaptal",
+			"numbers": 34,
+			"url": "https://aucadastre.fr/api/street/75109_1776",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-chaptal-1776"
+		},
+		{
+			"id": "75109_1890",
+			"name": "Rue Charras",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_1890",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-charras-1890"
+		},
+		{
+			"id": "75109_1937",
+			"name": "Rue Chauchat",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_1937",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-chauchat-1937"
+		},
+		{
+			"id": "75109_2021",
+			"name": "Rue Choron",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_2021",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-choron-2021"
+		},
+		{
+			"id": "75109_8299",
+			"name": "Rue Claude Rodier",
+			"numbers": 72,
+			"url": "https://aucadastre.fr/api/street/75109_8299",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-claude-rodier-8299"
+		},
+		{
+			"id": "75109_2090",
+			"name": "Rue Clauzel",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_2090",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-clauzel-2090"
+		},
+		{
+			"id": "75109_2268",
+			"name": "Rue Condorcet",
+			"numbers": 74,
+			"url": "https://aucadastre.fr/api/street/75109_2268",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-condorcet-2268"
+		},
+		{
+			"id": "75109_2436",
+			"name": "Rue Cretet",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_2436",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-cretet-2436"
+		},
+		{
+			"id": "75109_0022",
+			"name": "Rue d'Abbeville",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_0022",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-d-abbeville-0022"
+		},
+		{
+			"id": "75109_0300",
+			"name": "Rue d'Amsterdam",
+			"numbers": 46,
+			"url": "https://aucadastre.fr/api/street/75109_0300",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-d-amsterdam-0300"
+		},
+		{
+			"id": "75109_0509",
+			"name": "Rue d'Athènes",
+			"numbers": 28,
+			"url": "https://aucadastre.fr/api/street/75109_0509",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-d-athenes-0509"
+		},
+		{
+			"id": "75109_0572",
+			"name": "Rue d'Aumale",
+			"numbers": 30,
+			"url": "https://aucadastre.fr/api/street/75109_0572",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-d-aumale-0572"
+		},
+		{
+			"id": "75109_1345",
+			"name": "Rue de Bruxelles",
+			"numbers": 38,
+			"url": "https://aucadastre.fr/api/street/75109_1345",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-bruxelles-1345"
+		},
+		{
+			"id": "75109_1363",
+			"name": "Rue de Budapest",
+			"numbers": 21,
+			"url": "https://aucadastre.fr/api/street/75109_1363",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-budapest-1363"
+		},
+		{
+			"id": "75109_1434",
+			"name": "Rue de Calais",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_1434",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-calais-1434"
+		},
+		{
+			"id": "75109_1617",
+			"name": "Rue de Caumartin",
+			"numbers": 75,
+			"url": "https://aucadastre.fr/api/street/75109_1617",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-caumartin-1617"
+		},
+		{
+			"id": "75109_1756",
+			"name": "Rue de Chantilly",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_1756",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-chantilly-1756"
+		},
+		{
+			"id": "75109_1920",
+			"name": "Rue de Châteaudun",
+			"numbers": 68,
+			"url": "https://aucadastre.fr/api/street/75109_1920",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-chateaudun-1920"
+		},
+		{
+			"id": "75109_1998",
+			"name": "Rue de Cheverus",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_1998",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-cheverus-1998"
+		},
+		{
+			"id": "75109_2116",
+			"name": "Rue de Clichy",
+			"numbers": 95,
+			"url": "https://aucadastre.fr/api/street/75109_2116",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-clichy-2116"
+		},
+		{
+			"id": "75109_2909",
+			"name": "Rue de Douai",
+			"numbers": 74,
+			"url": "https://aucadastre.fr/api/street/75109_2909",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-douai-2909"
+		},
+		{
+			"id": "75109_2990",
+			"name": "Rue de Dunkerque",
+			"numbers": 46,
+			"url": "https://aucadastre.fr/api/street/75109_2990",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-dunkerque-2990"
+		},
+		{
+			"id": "75109_0090",
+			"name": "Rue de l'Agent Bailly",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_0090",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-l-agent-bailly-0090"
+		},
+		{
+			"id": "75109_1168",
+			"name": "Rue de la Boule Rouge",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_1168",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-boule-rouge-1168"
+		},
+		{
+			"id": "75109_1949",
+			"name": "Rue de la Chaussée d'Antin",
+			"numbers": 63,
+			"url": "https://aucadastre.fr/api/street/75109_1949",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-chaussee-d-antin-1949"
+		},
+		{
+			"id": "75109_4295",
+			"name": "Rue de la Grange Batelière",
+			"numbers": 21,
+			"url": "https://aucadastre.fr/api/street/75109_4295",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-grange-bateliere-4295"
+		},
+		{
+			"id": "75109_9369",
+			"name": "Rue de la Tour des Dames",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_9369",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-tour-des-dames-9369"
+		},
+		{
+			"id": "75109_9445",
+			"name": "Rue de la Trinité",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_9445",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-trinite-9445"
+		},
+		{
+			"id": "75109_9739",
+			"name": "Rue de la Victoire",
+			"numbers": 93,
+			"url": "https://aucadastre.fr/api/street/75109_9739",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-la-victoire-9739"
+		},
+		{
+			"id": "75109_5665",
+			"name": "Rue de Liège",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_5665",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-liege-5665"
+		},
+		{
+			"id": "75109_5741",
+			"name": "Rue de Londres",
+			"numbers": 39,
+			"url": "https://aucadastre.fr/api/street/75109_5741",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-londres-5741"
+		},
+		{
+			"id": "75109_6183",
+			"name": "Rue de Maubeuge",
+			"numbers": 77,
+			"url": "https://aucadastre.fr/api/street/75109_6183",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-maubeuge-6183"
+		},
+		{
+			"id": "75109_6358",
+			"name": "Rue de Milan",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_6358",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-milan-6358"
+		},
+		{
+			"id": "75109_6399",
+			"name": "Rue de Mogador",
+			"numbers": 34,
+			"url": "https://aucadastre.fr/api/street/75109_6399",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-mogador-6399"
+		},
+		{
+			"id": "75109_6501",
+			"name": "Rue de Montholon",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_6501",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-montholon-6501"
+		},
+		{
+			"id": "75109_6541",
+			"name": "Rue de Montyon",
+			"numbers": 20,
+			"url": "https://aucadastre.fr/api/street/75109_6541",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-montyon-6541"
+		},
+		{
+			"id": "75109_6700",
+			"name": "Rue de Navarin",
+			"numbers": 31,
+			"url": "https://aucadastre.fr/api/street/75109_6700",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-navarin-6700"
+		},
+		{
+			"id": "75109_7065",
+			"name": "Rue de Parme",
+			"numbers": 14,
+			"url": "https://aucadastre.fr/api/street/75109_7065",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-parme-7065"
+		},
+		{
+			"id": "75109_7866",
+			"name": "Rue de Provence",
+			"numbers": 123,
+			"url": "https://aucadastre.fr/api/street/75109_7866",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-provence-7866"
+		},
+		{
+			"id": "75109_8959",
+			"name": "Rue de Sèze",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_8959",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-seze-8959"
+		},
+		{
+			"id": "75109_9440",
+			"name": "Rue de Trévise",
+			"numbers": 46,
+			"url": "https://aucadastre.fr/api/street/75109_9440",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-trevise-9440"
+		},
+		{
+			"id": "75109_9866",
+			"name": "Rue de Vintimille",
+			"numbers": 23,
+			"url": "https://aucadastre.fr/api/street/75109_9866",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-de-vintimille-9866"
+		},
+		{
+			"id": "75109_4759",
+			"name": "Rue des Italiens",
+			"numbers": 9,
+			"url": "https://aucadastre.fr/api/street/75109_4759",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-des-italiens-4759"
+		},
+		{
+			"id": "75109_6147",
+			"name": "Rue des Martyrs",
+			"numbers": 78,
+			"url": "https://aucadastre.fr/api/street/75109_6147",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-des-martyrs-6147"
+		},
+		{
+			"id": "75109_6176",
+			"name": "Rue des Mathurins",
+			"numbers": 26,
+			"url": "https://aucadastre.fr/api/street/75109_6176",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-des-mathurins-6176"
+		},
+		{
+			"id": "75109_2933",
+			"name": "Rue Drouot",
+			"numbers": 34,
+			"url": "https://aucadastre.fr/api/street/75109_2933",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-drouot-2933"
+		},
+		{
+			"id": "75109_1547",
+			"name": "Rue du Cardinal Mercier",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_1547",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-cardinal-mercier-1547"
+		},
+		{
+			"id": "75109_2279",
+			"name": "Rue du Conservatoire",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_2279",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-conservatoire-2279"
+		},
+		{
+			"id": "75109_2685",
+			"name": "Rue du Delta",
+			"numbers": 26,
+			"url": "https://aucadastre.fr/api/street/75109_2685",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-delta-2685"
+		},
+		{
+			"id": "75109_3510",
+			"name": "Rue du Faubourg Montmartre",
+			"numbers": 73,
+			"url": "https://aucadastre.fr/api/street/75109_3510",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-faubourg-montmartre-3510"
+		},
+		{
+			"id": "75109_3512",
+			"name": "Rue du Faubourg Poissonnière",
+			"numbers": 89,
+			"url": "https://aucadastre.fr/api/street/75109_3512",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-faubourg-poissonniere-3512"
+		},
+		{
+			"id": "75109_4507",
+			"name": "Rue du Havre",
+			"numbers": 7,
+			"url": "https://aucadastre.fr/api/street/75109_4507",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-havre-4507"
+		},
+		{
+			"id": "75109_4521",
+			"name": "Rue du Helder",
+			"numbers": 18,
+			"url": "https://aucadastre.fr/api/street/75109_4521",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-du-helder-4521"
+		},
+		{
+			"id": "75109_2994",
+			"name": "Rue Duperré",
+			"numbers": 32,
+			"url": "https://aucadastre.fr/api/street/75109_2994",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-duperre-2994"
+		},
+		{
+			"id": "75109_3161",
+			"name": "Rue Édouard VII",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_3161",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-edouard-vii-3161"
+		},
+		{
+			"id": "75109_3667",
+			"name": "Rue Fléchier",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_3667",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-flechier-3667"
+		},
+		{
+			"id": "75109_3871",
+			"name": "Rue Frochot",
+			"numbers": 14,
+			"url": "https://aucadastre.fr/api/street/75109_3871",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-frochot-3871"
+		},
+		{
+			"id": "75109_3879",
+			"name": "Rue Fromentin",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_3879",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-fromentin-3879"
+		},
+		{
+			"id": "75109_4106",
+			"name": "Rue Geoffroy-Marie",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_4106",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-geoffroy-marie-4106"
+		},
+		{
+			"id": "75109_4159",
+			"name": "Rue Gérando",
+			"numbers": 23,
+			"url": "https://aucadastre.fr/api/street/75109_4159",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-gerando-4159"
+		},
+		{
+			"id": "75109_4205",
+			"name": "Rue Gluck",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_4205",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-gluck-4205"
+		},
+		{
+			"id": "75109_4222",
+			"name": "Rue Godot de Mauroy",
+			"numbers": 45,
+			"url": "https://aucadastre.fr/api/street/75109_4222",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-godot-de-mauroy-4222"
+		},
+		{
+			"id": "75109_4456",
+			"name": "Rue Halévy",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_4456",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-halevy-4456"
+		},
+		{
+			"id": "75109_4531",
+			"name": "Rue Henner",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_4531",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-henner-4531"
+		},
+		{
+			"id": "75109_4571",
+			"name": "Rue Henry Monnier",
+			"numbers": 31,
+			"url": "https://aucadastre.fr/api/street/75109_4571",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-henry-monnier-4571"
+		},
+		{
+			"id": "75109_4632",
+			"name": "Rue Hippolyte Lebas",
+			"numbers": 14,
+			"url": "https://aucadastre.fr/api/street/75109_4632",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-hippolyte-lebas-4632"
+		},
+		{
+			"id": "75109_7484",
+			"name": "Rue Jean-Baptiste Pigalle",
+			"numbers": 73,
+			"url": "https://aucadastre.fr/api/street/75109_7484",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-jean-baptiste-pigalle-7484"
+		},
+		{
+			"id": "75109_4856",
+			"name": "Rue Jean-Baptiste Say",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_4856",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-jean-baptiste-say-4856"
+		},
+		{
+			"id": "75109_5026",
+			"name": "Rue Joubert",
+			"numbers": 42,
+			"url": "https://aucadastre.fr/api/street/75109_5026",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-joubert-5026"
+		},
+		{
+			"id": "75109_5093",
+			"name": "Rue Jules Lefebvre",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_5093",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-jules-lefebvre-5093"
+		},
+		{
+			"id": "75109_5211",
+			"name": "Rue la Bruyère",
+			"numbers": 57,
+			"url": "https://aucadastre.fr/api/street/75109_5211",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-la-bruyere-5211"
+		},
+		{
+			"id": "75109_5240",
+			"name": "Rue la Fayette",
+			"numbers": 89,
+			"url": "https://aucadastre.fr/api/street/75109_5240",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-la-fayette-5240"
+		},
+		{
+			"id": "75109_5242",
+			"name": "Rue Laferrière",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_5242",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-laferriere-5242"
+		},
+		{
+			"id": "75109_5246",
+			"name": "Rue Laffitte",
+			"numbers": 47,
+			"url": "https://aucadastre.fr/api/street/75109_5246",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-laffitte-5246"
+		},
+		{
+			"id": "75109_5279",
+			"name": "Rue Lallier",
+			"numbers": 14,
+			"url": "https://aucadastre.fr/api/street/75109_5279",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-lallier-5279"
+		},
+		{
+			"id": "75109_5291",
+			"name": "Rue Lamartine",
+			"numbers": 47,
+			"url": "https://aucadastre.fr/api/street/75109_5291",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-lamartine-5291"
+		},
+		{
+			"id": "75109_5590",
+			"name": "Rue Le Peletier",
+			"numbers": 40,
+			"url": "https://aucadastre.fr/api/street/75109_5590",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-le-peletier-5590"
+		},
+		{
+			"id": "75109_5519",
+			"name": "Rue Lentonnet",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_5519",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-lentonnet-5519"
+		},
+		{
+			"id": "75109_5381",
+			"name": "Rue Louise-Émilie de La Tour d'Auvergne",
+			"numbers": 61,
+			"url": "https://aucadastre.fr/api/street/75109_5381",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-louise-emilie-de-la-tour-d-auvergne-5381"
+		},
+		{
+			"id": "75109_5979",
+			"name": "Rue Mansart",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_5979",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-mansart-5979"
+		},
+		{
+			"id": "75109_5981",
+			"name": "Rue Manuel",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_5981",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-manuel-5981"
+		},
+		{
+			"id": "75109_8289",
+			"name": "Rue Marguerite de Rochechouart",
+			"numbers": 95,
+			"url": "https://aucadastre.fr/api/street/75109_8289",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-marguerite-de-rochechouart-8289"
+		},
+		{
+			"id": "75109_6125",
+			"name": "Rue Marie-Éléonore de Bellefond",
+			"numbers": 43,
+			"url": "https://aucadastre.fr/api/street/75109_6125",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-marie-eleonore-de-bellefond-6125"
+		},
+		{
+			"id": "75109_6223",
+			"name": "Rue Mayran",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_6223",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-mayran-6223"
+		},
+		{
+			"id": "75109_6311",
+			"name": "Rue Meyerbeer",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_6311",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-meyerbeer-6311"
+		},
+		{
+			"id": "75109_6369",
+			"name": "Rue Milton",
+			"numbers": 40,
+			"url": "https://aucadastre.fr/api/street/75109_6369",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-milton-6369"
+		},
+		{
+			"id": "75109_6424",
+			"name": "Rue Moncey",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_6424",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-moncey-6424"
+		},
+		{
+			"id": "75109_6564",
+			"name": "Rue Morlot",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_6564",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-morlot-6564"
+		},
+		{
+			"id": "75109_6832",
+			"name": "Rue Notre-Dame de Lorette",
+			"numbers": 59,
+			"url": "https://aucadastre.fr/api/street/75109_6832",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-notre-dame-de-lorette-6832"
+		},
+		{
+			"id": "75109_7038",
+			"name": "Rue Papillon",
+			"numbers": 16,
+			"url": "https://aucadastre.fr/api/street/75109_7038",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-papillon-7038"
+		},
+		{
+			"id": "75109_7155",
+			"name": "Rue Paul Escudier",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_7155",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-paul-escudier-7155"
+		},
+		{
+			"id": "75109_7359",
+			"name": "Rue Pétrelle",
+			"numbers": 24,
+			"url": "https://aucadastre.fr/api/street/75109_7359",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-petrelle-7359"
+		},
+		{
+			"id": "75109_3713",
+			"name": "Rue Pierre Fontaine",
+			"numbers": 56,
+			"url": "https://aucadastre.fr/api/street/75109_3713",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-pierre-fontaine-3713"
+		},
+		{
+			"id": "75109_7441",
+			"name": "Rue Pierre Haret",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_7441",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-pierre-haret-7441"
+		},
+		{
+			"id": "75109_7479",
+			"name": "Rue Pierre Semard",
+			"numbers": 35,
+			"url": "https://aucadastre.fr/api/street/75109_7479",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-pierre-semard-7479"
+		},
+		{
+			"id": "75109_7489",
+			"name": "Rue Pillet-Will",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_7489",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-pillet-will-7489"
+		},
+		{
+			"id": "75109_8200",
+			"name": "Rue Riboutté",
+			"numbers": 8,
+			"url": "https://aucadastre.fr/api/street/75109_8200",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-riboutte-8200"
+		},
+		{
+			"id": "75109_8218",
+			"name": "Rue Richer",
+			"numbers": 51,
+			"url": "https://aucadastre.fr/api/street/75109_8218",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-richer-8218"
+		},
+		{
+			"id": "75109_8283",
+			"name": "Rue Rochambeau",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_8283",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-rochambeau-8283"
+		},
+		{
+			"id": "75109_8372",
+			"name": "Rue Rossini",
+			"numbers": 19,
+			"url": "https://aucadastre.fr/api/street/75109_8372",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-rossini-8372"
+		},
+		{
+			"id": "75109_8393",
+			"name": "Rue Rougemont",
+			"numbers": 15,
+			"url": "https://aucadastre.fr/api/street/75109_8393",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-rougemont-8393"
+		},
+		{
+			"id": "75109_8617",
+			"name": "Rue Saint-Georges",
+			"numbers": 54,
+			"url": "https://aucadastre.fr/api/street/75109_8617",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-saint-georges-8617"
+		},
+		{
+			"id": "75109_8673",
+			"name": "Rue Saint-Lazare",
+			"numbers": 103,
+			"url": "https://aucadastre.fr/api/street/75109_8673",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-saint-lazare-8673"
+		},
+		{
+			"id": "75109_8544",
+			"name": "Rue Sainte-Cécile",
+			"numbers": 18,
+			"url": "https://aucadastre.fr/api/street/75109_8544",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-sainte-cecile-8544"
+		},
+		{
+			"id": "75109_8836",
+			"name": "Rue Saulnier",
+			"numbers": 27,
+			"url": "https://aucadastre.fr/api/street/75109_8836",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-saulnier-8836"
+		},
+		{
+			"id": "75109_8887",
+			"name": "Rue Scribe",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_8887",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-scribe-8887"
+		},
+		{
+			"id": "75109_9155",
+			"name": "Rue Taitbout",
+			"numbers": 77,
+			"url": "https://aucadastre.fr/api/street/75109_9155",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-taitbout-9155"
+		},
+		{
+			"id": "75109_9281",
+			"name": "Rue Thimonnier",
+			"numbers": 10,
+			"url": "https://aucadastre.fr/api/street/75109_9281",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-thimonnier-9281"
+		},
+		{
+			"id": "75109_9470",
+			"name": "Rue Tronchet",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_9470",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-tronchet-9470"
+		},
+		{
+			"id": "75109_9508",
+			"name": "Rue Turgot",
+			"numbers": 29,
+			"url": "https://aucadastre.fr/api/street/75109_9508",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-turgot-9508"
+		},
+		{
+			"id": "75109_9775",
+			"name": "Rue Victor Massé",
+			"numbers": 40,
+			"url": "https://aucadastre.fr/api/street/75109_9775",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-victor-masse-9775"
+		},
+		{
+			"id": "75109_9804",
+			"name": "Rue Vignon",
+			"numbers": 22,
+			"url": "https://aucadastre.fr/api/street/75109_9804",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-vignon-9804"
+		},
+		{
+			"id": "75109_9872",
+			"name": "Rue Viollet-Le-Duc",
+			"numbers": 13,
+			"url": "https://aucadastre.fr/api/street/75109_9872",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/rue-viollet-le-duc-9872"
+		},
+		{
+			"id": "75109_6937",
+			"name": "Square d'Orléans",
+			"numbers": 12,
+			"url": "https://aucadastre.fr/api/street/75109_6937",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-d-orleans-6937"
+		},
+		{
+			"id": "75109_6906",
+			"name": "Square de l'Opéra-Louis Jouvet",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_6906",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-de-l-opera-louis-jouvet-6906"
+		},
+		{
+			"id": "75109_6184",
+			"name": "Square de Maubeuge",
+			"numbers": 5,
+			"url": "https://aucadastre.fr/api/street/75109_6184",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-de-maubeuge-6184"
+		},
+		{
+			"id": "75109_3159",
+			"name": "Square Édouard VII",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_3159",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-edouard-vii-3159"
+		},
+		{
+			"id": "75109_5212",
+			"name": "Square la Bruyère",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_5212",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-la-bruyere-5212"
+		},
+		{
+			"id": "75109_6425",
+			"name": "Square Moncey",
+			"numbers": 11,
+			"url": "https://aucadastre.fr/api/street/75109_6425",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-moncey-6425"
+		},
+		{
+			"id": "75109_7360",
+			"name": "Square Pétrelle",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_7360",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-petrelle-7360"
+		},
+		{
+			"id": "75109_9485",
+			"name": "Square Trudaine",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_9485",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/square-trudaine-9485"
+		},
+		{
+			"id": "75109_0645",
+			"name": "Villa Ballu",
+			"numbers": 6,
+			"url": "https://aucadastre.fr/api/street/75109_0645",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/villa-ballu-0645"
+		},
+		{
+			"id": "75109_bfa781",
+			"name": "Voie A/9",
+			"numbers": 4,
+			"url": "https://aucadastre.fr/api/street/75109_bfa781",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/voie-a-9-bfa781"
+		},
+		{
+			"id": "75109_74ab9x",
+			"name": "Voie D/9",
+			"numbers": 12,
+			"url": "https://aucadastre.fr/api/street/75109_74ab9x",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/voie-d-9-74ab9x"
+		},
+		{
+			"id": "75109_4pprby",
+			"name": "Voie E/9",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_4pprby",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/voie-e-9-4pprby"
+		},
+		{
+			"id": "75109_3400",
+			"name": "Voie F/9",
+			"numbers": 3,
+			"url": "https://aucadastre.fr/api/street/75109_3400",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/voie-f-9-3400"
+		},
+		{
+			"id": "75109_wgg6ye",
+			"name": "Voie G/9",
+			"numbers": 1,
+			"url": "https://aucadastre.fr/api/street/75109_wgg6ye",
+			"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109/voie-g-9-wgg6ye"
+		}
+	],
+	"page_url": "https://aucadastre.fr/paris-9e-arrondissement-75109",
+	"markdown_url": "https://aucadastre.fr/paris-9e-arrondissement-75109.md",
+	"source": "Base Adresse Nationale, plan cadastral informatisé (DGFiP, via l'IGN), Géoportail de l'urbanisme, Géorisques (BRGM), Demandes de valeurs foncières (DGFiP), diagnostics de performance énergétique (ADEME), Sitadel (ministère de la Transition écologique), fichiers des personnes morales (DGFiP), IGN, PVGIS, Arcep ; Licence Ouverte 2.0 (Etalab)",
+	"served_by": {
+		"name": "Aucadastre",
+		"url": "https://aucadastre.fr"
+	},
+	"terms": "Licence Ouverte 2.0 (Etalab) : réutilisation libre, en citant la source. https://www.etalab.gouv.fr/licence-ouverte-open-licence/",
+	"documentation": "https://aucadastre.fr/api",
+	"notice": "Le site lit ses sources au chargement et ne stocke rien. Il ne remplace ni le service urbanisme de la mairie, qui seul délivre les certificats, ni le géomètre-expert, qui seul garantit une limite de propriété. Un propriétaire particulier n'est servi par aucune adresse : les fichiers fonciers sont sous convention. Les propriétaires personnes morales (sociétés, SCI, bailleurs sociaux, collectivités, État) le sont, d'après le fichier annuel de la DGFiP, avec leur date de situation."
+}

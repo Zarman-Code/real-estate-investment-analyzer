@@ -1,0 +1,278 @@
+[
+  {
+    "id": "ign_search",
+    "question": "géocodage du point de référence",
+    "requested": "https://data.geopf.fr/geocodage/search",
+    "params": {
+      "q": "6 rue Drouot, 75009 Paris",
+      "index": "address",
+      "limit": 1
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 601,
+    "file": "ign_search.json",
+    "url": "https://data.geopf.fr/geocodage/search?q=6+rue+Drouot,+75009+Paris&index=address&limit=1",
+    "seconds": 2.57
+  },
+  {
+    "id": "ign_openapi_yaml",
+    "question": "spécification officielle du géocodage",
+    "requested": "https://data.geopf.fr/geocodage/openapi.yaml",
+    "params": null,
+    "status": 200,
+    "content_type": "text/yaml; charset=utf-8",
+    "bytes": 64654,
+    "file": "ign_openapi_yaml.yaml",
+    "url": "https://data.geopf.fr/geocodage/openapi.yaml",
+    "seconds": 0.5
+  },
+  {
+    "id": "ecb_euribor",
+    "question": "format CSV réel de la série Euribor 3M",
+    "requested": "https://data-api.ecb.europa.eu/service/data/FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA",
+    "params": {
+      "format": "csvdata",
+      "startPeriod": "2025-01"
+    },
+    "status": 200,
+    "content_type": "text/csv",
+    "bytes": 8589,
+    "file": "ecb_euribor.csv",
+    "url": "https://data-api.ecb.europa.eu/service/data/FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA?format=csvdata&startPeriod=2025-01",
+    "seconds": 0.71
+  },
+  {
+    "id": "dvf_geomut_bbox_500",
+    "question": "liste des typologies (codtypbien/libtypbien) autour du point",
+    "requested": "https://apidf-preprod.cerema.fr/dvf_opendata/geomutations/",
+    "params": {
+      "in_bbox": "2.33148,48.86659,2.34948,48.87859",
+      "anneemut_min": 2021,
+      "page_size": 500
+    },
+    "status": null,
+    "error": "TimeoutError: The read operation timed out",
+    "seconds": 60.41
+  },
+  {
+    "id": "dvf_geomut_codtypbien_14",
+    "question": "le filtre codtypbien=14 renvoie-t-il des locaux d'activité ?",
+    "requested": "https://apidf-preprod.cerema.fr/dvf_opendata/geomutations/",
+    "params": {
+      "in_bbox": "2.33148,48.86659,2.34948,48.87859",
+      "anneemut_min": 2021,
+      "codtypbien": "14",
+      "page_size": 100
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 85695,
+    "file": "dvf_geomut_codtypbien_14.json",
+    "url": "https://apidf-preprod.cerema.fr/dvf_opendata/geomutations/?in_bbox=2.33148,48.86659,2.34948,48.87859&anneemut_min=2021&codtypbien=14&page_size=100",
+    "seconds": 14.11
+  },
+  {
+    "id": "dvf_mutations_bbox",
+    "question": "la route mutations répond-elle (timeout en sonde n°1) ?",
+    "requested": "https://apidf-preprod.cerema.fr/dvf_opendata/mutations/",
+    "params": {
+      "in_bbox": "2.33148,48.86659,2.34948,48.87859",
+      "anneemut_min": 2021,
+      "page_size": 20
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 13387,
+    "file": "dvf_mutations_bbox.json",
+    "url": "https://apidf-preprod.cerema.fr/dvf_opendata/mutations/?in_bbox=2.33148,48.86659,2.34948,48.87859&anneemut_min=2021&page_size=20",
+    "seconds": 0.5
+  },
+  {
+    "id": "firmio_dataset",
+    "question": "fiche data.gouv.fr : URL et date du dernier CSV",
+    "requested": "https://www.data.gouv.fr/api/1/datasets/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/",
+    "params": null,
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 6395,
+    "file": "firmio_dataset.json",
+    "url": "https://www.data.gouv.fr/api/1/datasets/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/",
+    "seconds": 0.47
+  },
+  {
+    "id": "firmio_csv",
+    "question": "colonnes du CSV ; Paris par arrondissement (751xx) ou en une ligne (75056) ?",
+    "requested": "https://static.data.gouv.fr/resources/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/20261003-050036/prix-immobilier-locaux-entreprises-communes.csv",
+    "params": null,
+    "status": 200,
+    "content_type": "text/csv",
+    "bytes": 287369,
+    "file": "firmio_csv.csv",
+    "url": "https://static.data.gouv.fr/resources/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/20261003-050036/prix-immobilier-locaux-entreprises-communes.csv",
+    "seconds": 1.0
+  },
+  {
+    "id": "geo_catnat_75056",
+    "question": "arrêtés CatNat avec le code commune de Paris",
+    "requested": "https://georisques.gouv.fr/api/v1/gaspar/catnat",
+    "params": {
+      "code_insee": "75056",
+      "page_size": 10
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 2943,
+    "file": "geo_catnat_75056.json",
+    "url": "https://georisques.gouv.fr/api/v1/gaspar/catnat?code_insee=75056&page_size=10",
+    "seconds": 0.56
+  },
+  {
+    "id": "geo_catnat_latlon",
+    "question": "arrêtés CatNat par coordonnées",
+    "requested": "https://georisques.gouv.fr/api/v1/gaspar/catnat",
+    "params": {
+      "latlon": "2.340481,48.872592",
+      "rayon": 1000,
+      "page_size": 10
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 2963,
+    "file": "geo_catnat_latlon.json",
+    "url": "https://georisques.gouv.fr/api/v1/gaspar/catnat?latlon=2.340481,48.872592&rayon=1000&page_size=10",
+    "seconds": 0.47
+  },
+  {
+    "id": "geo_risques_latlon",
+    "question": "types de risques par coordonnées",
+    "requested": "https://georisques.gouv.fr/api/v1/gaspar/risques",
+    "params": {
+      "latlon": "2.340481,48.872592",
+      "rayon": 1000
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 359,
+    "file": "geo_risques_latlon.json",
+    "url": "https://georisques.gouv.fr/api/v1/gaspar/risques?latlon=2.340481,48.872592&rayon=1000",
+    "seconds": 0.56
+  },
+  {
+    "id": "geo_risques_75056",
+    "question": "types de risques avec le code commune",
+    "requested": "https://georisques.gouv.fr/api/v1/gaspar/risques",
+    "params": {
+      "code_insee": "75056"
+    },
+    "status": 200,
+    "content_type": "application/json",
+    "bytes": 359,
+    "file": "geo_risques_75056.json",
+    "url": "https://georisques.gouv.fr/api/v1/gaspar/risques?code_insee=75056",
+    "seconds": 0.35
+  },
+  {
+    "id": "geo_rapport_latlon",
+    "question": "synthèse des risques au point",
+    "requested": "https://georisques.gouv.fr/api/v1/resultats_rapport_risque",
+    "params": {
+      "latlon": "2.340481,48.872592"
+    },
+    "status": null,
+    "error": "RemoteDisconnected: Remote end closed connection without response",
+    "seconds": 0.32
+  },
+  {
+    "id": "paris_pvp_within_500",
+    "question": "within_distance fonctionne-t-il (bâtiments protégés, 500 m) ?",
+    "requested": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records",
+    "params": {
+      "where": "within_distance(geo_point_2d, geom'POINT(2.340481 48.872592)', 500m)",
+      "limit": 5
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 5325,
+    "file": "paris_pvp_within_500.json",
+    "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records?where=within_distance%28geo_point_2d,+geom%27POINT%282.340481+48.872592%29%27,+500m%29&limit=5",
+    "seconds": 0.59
+  },
+  {
+    "id": "paris_pvp_arr",
+    "question": "filtre n_sq_ca=<arrondissement> (comptage)",
+    "requested": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records",
+    "params": {
+      "where": "n_sq_ca=9",
+      "limit": 1
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1829,
+    "file": "paris_pvp_arr.json",
+    "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records?where=n_sq_ca%3D9&limit=1",
+    "seconds": 0.49
+  },
+  {
+    "id": "paris_ecm_arr_page",
+    "question": "pagination limit/offset sur plub_ecm filtré",
+    "requested": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_ecm/records",
+    "params": {
+      "where": "n_sq_ca=9",
+      "select": "hauteur,emprise,n_sq_ca",
+      "limit": 100,
+      "offset": 0
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 2577,
+    "file": "paris_ecm_arr_page.json",
+    "url": "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_ecm/records?where=n_sq_ca%3D9&select=hauteur,emprise,n_sq_ca&limit=100&offset=0",
+    "seconds": 0.37
+  },
+  {
+    "id": "ademe_values_secteur",
+    "question": "libellés exacts de secteur_activite (bureaux ?)",
+    "requested": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/values/secteur_activite",
+    "params": {
+      "size": 100
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1306,
+    "file": "ademe_values_secteur.json",
+    "url": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/values/secteur_activite?size=100",
+    "seconds": 0.64
+  },
+  {
+    "id": "ademe_geo_500",
+    "question": "geo_distance lon:lat:500 filtre-t-il bien ?",
+    "requested": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/lines",
+    "params": {
+      "geo_distance": "2.340481:48.872592:500",
+      "size": 5,
+      "select": "etiquette_dpe,secteur_activite,_geopoint"
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 1163,
+    "file": "ademe_geo_500.json",
+    "url": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/lines?geo_distance=2.340481%3A48.872592%3A500&size=5&select=etiquette_dpe,secteur_activite,_geopoint",
+    "seconds": 0.32
+  },
+  {
+    "id": "ademe_agg_500",
+    "question": "forme de la réponse values_agg",
+    "requested": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/values_agg",
+    "params": {
+      "field": "etiquette_dpe",
+      "geo_distance": "2.340481:48.872592:500"
+    },
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "bytes": 326,
+    "file": "ademe_agg_500.json",
+    "url": "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/values_agg?field=etiquette_dpe&geo_distance=2.340481%3A48.872592%3A500",
+    "seconds": 0.32
+  }
+]

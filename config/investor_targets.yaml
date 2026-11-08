@@ -1,0 +1,32 @@
+# Objectifs d'investissement du fonds (politique Braxton AM).
+#
+# ATTENTION : le case ne communique AUCUN objectif chiffré.
+# Les valeurs ci-dessous sont des hypothèses de travail, usuelles pour une
+# stratégie value-add de bureaux parisiens, à confirmer par l'équipe Investissement.
+# Chaque cible porte donc status: assumption et sa justification ; elles seront
+# affichées comme hypothèses dans le dashboard et la note.
+
+fund: "Braxton AM"
+strategy: "value-add bureaux Paris"
+
+targets:
+  levered_irr_min:
+    value: 0.15
+    unit: "fraction"
+    status: assumption
+    rationale: "Fourchette usuelle 12-18 % de TRI fonds propres en value-add ; point central retenu, à confirmer."
+  equity_multiple_min:
+    value: 1.5
+    unit: "x"
+    status: assumption
+    rationale: "Multiple usuel pour une opération de 2 à 3 ans avec restructuration lourde, à confirmer."
+  margin_on_cost_min:
+    value: 0.15
+    unit: "fraction"
+    status: assumption
+    rationale: "Marge de promotion / restructuration usuelle (15 % du coût total), à confirmer."
+  yoc_spread_min_bps:
+    value: 150
+    unit: "bps"
+    status: assumption
+    rationale: "Écart minimal usuel entre yield on cost et taux de sortie pour rémunérer le risque de développement, à confirmer."

@@ -1,0 +1,223 @@
+# Catalogue des sources de données.
+# Ne contient AUCUNE donnée de marché : uniquement la description des sources.
+#
+# verified: false  -> endpoint / paramètres / champs repris du plan, PAS encore
+#                     contrôlés sur la documentation officielle ni sur une vraie
+#                     réponse. Chaque connecteur (phase 2) passe la source à
+#                     verified: true après ce contrôle (règle : ne jamais deviner).
+# url: null        -> endpoint inconnu à ce stade, à renseigner depuis doc_url.
+# <placeholders>   -> résolus à l'exécution depuis asset_config.json, le géocodage
+#                     et defaults.yaml (aucune donnée du deal dans ce fichier).
+
+sources:
+  # ---------------------------------------------------------------- Localisation
+  - id: ign_geocodage
+    name: "IGN Géoplateforme - Géocodage"
+    type: api
+    url: "https://data.geopf.fr/geocodage/search"
+    doc_url: "https://data.geopf.fr/geocodage/openapi.yaml"
+    params: {q: "<adresse de référence>", index: address, limit: 1}
+    indicators: [latitude, longitude, citycode_insee, ban_street_id, geocoding_score]
+    priority: high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "50 requêtes/s max par IP ; index parcel non utilisé"
+
+  - id: ign_geocodage_reverse
+    name: "IGN Géoplateforme - Géocodage inverse"
+    type: api
+    url: "https://data.geopf.fr/geocodage/reverse"
+    doc_url: "https://data.geopf.fr/geocodage/openapi"
+    params: {lat: "<lat>", lon: "<lon>", index: address}
+    indicators: [nearby_streets]
+    priority: high
+    verified: false
+    limits: "Sert uniquement à lister les voies du rayon d'étude"
+
+  # ---------------------------------------------------------------- Transactions
+  - id: dvf
+    name: "DVF+ open data (Cerema, API données foncières)"
+    type: api
+    # Chemins et paramètres lus dans le client officiel du Cerema (github.com/cerema/apifoncier) :
+    # base https://apidf-preprod.cerema.fr/, /dvf_opendata/mutations/ et /geomutations/,
+    # filtres code_insee | in_bbox (max 0,02° x 0,02°) | anneemut_min | codtypbien | sbati_min...,
+    # pagination {count, next, results}, page_size. DVF+ open data = accès libre (DV3F = accès restreint).
+    # Noms des champs de réponse : à confirmer sur une vraie réponse (scripts/probe_sources.py).
+    url: "https://apidf-preprod.cerema.fr/dvf_opendata/mutations/"
+    doc_url: "https://apidf-preprod.cerema.fr/swagger/"
+    indicators: [transaction_price, price_per_sqm, transaction_date]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Ne donne pas de loyers ; mutations parfois multi-biens ; share deals absents ; âge et état du bâtiment non disponibles"
+
+  - id: firmio_dvf_entreprises
+    name: "Firmio (data.gouv.fr) - Prix des locaux d'entreprises par commune et par mètre carré, d'après DVF"
+    type: file
+    # URL STABLE de la fiche data.gouv.fr : le connecteur y lit l'URL du dernier fichier CSV
+    # (l'URL du fichier change à chaque millésime, ex. .../20261003-050036/prix-immobilier-locaux-entreprises-communes.csv)
+    url: "https://www.data.gouv.fr/api/1/datasets/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/"
+    doc_url: "https://www.data.gouv.fr/datasets/prix-de-limmobilier-des-locaux-dentreprises-par-commune-dapres-dvf/"
+    indicators: [price_per_sqm]
+    priority: medium               # recoupement et repli du DVF Cerema, jamais prioritaire
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Producteur privé (Firmio), Licence Ouverte 2.0 ; médiane annuelle par COMMUNE ; MÉLANGE bureaux, commerces et entrepôts ; uniquement les ventes rattachées à un SIREN ; prix hors [100 ; 50 000] €/m² écartés ; communes de moins de 5 entreprises exclues ; niveaux relatifs entre communes, pas des valeurs d'expertise (avertissement du producteur)"
+
+  - id: aucadastre_dvf
+    name: "aucadastre.fr - ventes DVF par voie et commune"
+    type: api
+    url: "https://aucadastre.fr/api/street/{street_id}"
+    params: {number: "<numéro, optionnel>"}
+    # RETIRÉ des sources de prix/m² de bureaux : les médianes observées portent sur les APPARTEMENTS.
+    indicators: [residential_price_per_sqm]
+    priority: high                  # agrégateur tiers : passe APRÈS la source officielle du Cerema
+    verified: false
+    limits: "Agrégateur tiers (disponibilité, fraîcheur à vérifier) ; code INSEE requis ; données de parcelle et propriétaires écartées ; repli sur dvf officiel"
+
+  - id: aucadastre_commune
+    name: "aucadastre.fr - marché et urbanisme de la commune"
+    type: api
+    url: "https://aucadastre.fr/api/commune/{insee}"
+    indicators: [residential_price_per_sqm, natural_disaster_orders_count]   # contrôle croisé de Géorisques
+    priority: high
+    verified: false
+    limits: "Médianes d'APPARTEMENTS, inutilisables pour des bureaux ; agrégateur tiers ; sert de recoupement"
+
+  # ---------------------------------------------------------------- Urbanisme (Paris uniquement)
+  - id: paris_plu_protections
+    name: "Paris Open Data - PLU bioclimatique, bâtiments protégés"
+    type: api
+    url: "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_surf_pvp/records"
+    params: {where: "within_distance(geo_point_2d, geom'POINT(<lon> <lat>)', <radius_m>m)", select: "n_sq_ca, st_area_shape, geo_point_2d", limit: 100}
+    indicators: [protected_buildings_count, protected_buildings_area]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Paris uniquement ; champs vérifiés (n_sq_ca = n° d'arrondissement, geo_point_2d) ; filtre within_distance à confirmer (0 résultat sur plub_ecm) : comptage à l'arrondissement en attendant"
+
+  - id: paris_plu_emprises
+    name: "Paris Open Data - PLU bioclimatique, emprises et hauteurs constructibles"
+    type: api
+    url: "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plub_ecm/records"
+    params: {where: "within_distance(geo_point_2d, geom'POINT(<lon> <lat>)', <radius_m>m)", select: "emprise, hauteur, st_area_shape, geo_point_2d", limit: 100}
+    indicators: [max_height, max_footprint]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "hauteur et emprise valent 0 quand le plan ne les indique pas ; ne confirme pas la faisabilité du rooftop ni de l'extension ; within_distance à confirmer"
+
+  - id: paris_autorisations_urbanisme
+    name: "Paris Open Data - Autorisations d'urbanisme (historique)"
+    type: api
+    url: "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/autorisations-durbanisme-h/records"
+    params: {where: "arrondissement='<code_postal>' AND type_dossier='Permis de construire'", order_by: "date_depot DESC", limit: 100}
+    indicators: [building_permits, permit_decisions, office_to_housing_conversions]
+    priority: high
+    verified: false
+    limits: "Surtout des dossiers anciens : filtrer par date et décision ; paginer avec total_count"
+
+  - id: aucadastre_permits
+    name: "aucadastre.fr - permis Sitadel de la commune"
+    type: api
+    url: "https://aucadastre.fr/api/commune/{insee}/permits"
+    params: {limit: 1000, offset: 0}
+    indicators: [building_permits]
+    priority: medium
+    verified: false
+    limits: "Recoupement avec paris_autorisations_urbanisme"
+
+  # ---------------------------------------------------------------- Risques naturels
+  - id: georisques
+    name: "Géorisques (BRGM / MTE)"
+    type: api
+    url: "https://georisques.gouv.fr/api/v1/"
+    doc_url: "https://www.georisques.gouv.fr/api/v3/api-docs"
+    indicators: [natural_risks, catnat_events, polluted_sites]
+    priority: low
+    verified: false
+    limits: "OpenAPI lu (v1 : gaspar/catnat, gaspar/risques, resultats_rapport_risque ; params code_insee, latlon, rayon) ; avec code_insee=75109 la réponse est VIDE alors qu'aucadastre compte 20 arrêtés : code commune 75056 ou latlon à confirmer"
+
+  # ---------------------------------------------------------------- Énergie
+  - id: ademe_dpe_tertiaire
+    name: "ADEME - DPE tertiaire (depuis juillet 2021)"
+    type: api
+    url: "https://data.ademe.fr/data-fair/api/v1/datasets/dpe01tertiaire/lines"
+    doc_url: "https://data.ademe.fr/datasets/dpe01tertiaire/api-doc"
+    params: {geo_distance: "<lon>:<lat>:<radius_m>", size: 1000}
+    indicators: [energy_class, ghg_class, energy_consumption, building_surface, construction_year, dpe_date]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Base non représentative du parc ; un actif fictif n'a pas de DPE propre"
+
+  # ---------------------------------------------------------------- Marché tertiaire
+  - id: immostat
+    name: "ImmoStat - indicateurs du marché tertiaire Île-de-France"
+    type: file
+    url: "https://www.immostat.com/wp-content/uploads/2026/10/2026_10_06-ImmoStatoutputwebindic-1.xlsx"
+    # contenu RÉEL de l'onglet « Classique » (inventorié le 2026-11-08) : pas de loyer prime, de taux de vacance,
+    # de rendement ni de mesures d'accompagnement dans ce fichier.
+    indicators: [average_rent, take_up, immediate_supply, investment_volume, investment_price_per_sqm]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "URL datée, change à chaque édition ; zones ImmoStat (Paris Centre Ouest...) et non QCA ; loyer moyen de seconde main seulement à l'échelle de la zone ; unités non écrites dans le fichier"
+
+  - id: market_reports
+    name: "Rapports de marché (conseils en immobilier)"
+    type: report
+    url: null
+    indicators: [prime_rent, average_rent, incentives, vacancy, future_supply, take_up, prime_yield, investment_volume]
+    priority: very_high
+    verified: false
+    limits: "Au moins 2 sources par indicateur clé ; ne stocker que valeurs et références"
+
+  # ---------------------------------------------------------------- Taux et indices
+  - id: ecb_euribor
+    name: "BCE - Euribor 3 mois"
+    type: api
+    url: "https://data-api.ecb.europa.eu/service/data/FM/M.U2.EUR.RT.MM.EURIBOR3MD_.HSTA"
+    params: {format: csvdata, startPeriod: "2015-01"}
+    indicators: [euribor_3m]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    expect_title_contains: "Euribor 3-month"
+    limits: "Moyenne mensuelle historique, pas une prévision ; OBS_VALUE publié en POURCENTAGE (UNIT=PCPA), converti en fraction"
+
+  - id: insee_ilat
+    name: "INSEE BDM - Indice des loyers des activités tertiaires (ILAT)"
+    type: api
+    url: "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/001617112"
+    params: {startPeriod: "2015-Q1", detail: dataonly}
+    indicators: [ilat_index, ilat_yoy]
+    priority: medium
+    verified: true
+    verified_on: "2026-11-08"
+    expect_title_contains: "Indice des loyers des activités tertiaires"
+    limits: "idbank confirmé par TITLE_FR ; indice national : tendance, pas le loyer du secteur"
+
+  - id: insee_icc
+    name: "INSEE BDM - Indice du coût de la construction (ICC)"
+    type: api
+    url: "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/000008630"
+    params: {startPeriod: "2015-Q1", detail: dataonly}
+    indicators: [icc_index, icc_yoy]
+    priority: medium
+    verified: true
+    verified_on: "2026-11-08"
+    expect_title_contains: "Indice du coût de la construction"
+    limits: "idbank confirmé : ICC des immeubles À USAGE D'HABITATION (pas spécifique aux bureaux) ; contexte seulement, ne remplace pas un devis"
+
+  - id: insee_bt01
+    name: "INSEE BDM - Index bâtiment tous corps d'état (BT01)"
+    type: api
+    url: "https://bdm.insee.fr/series/sdmx/data/SERIES_BDM/001710986"
+    params: {startPeriod: "2015-01", detail: dataonly}
+    indicators: [bt01_index]
+    priority: medium
+    verified: true
+    verified_on: "2026-11-08"
+    expect_title_contains: "BT01"
+    limits: "idbank confirmé par TITLE_FR ; série mensuelle ; réponse SDMX-ML (XML) ; plus pertinent que l'ICC pour des travaux de bureaux"
