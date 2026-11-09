@@ -55,7 +55,7 @@ def from_registry(ctx: RuleContext, key: str, label: str, field_name: str | None
 
 
 def from_config(path: str, label: str, value: Any) -> EvidenceRef:
-    return EvidenceRef(key=f"asset_config.json:{path}", label=label, value=value, source="Case Braxton AM")
+    return EvidenceRef(key=f"asset_config.json:{path}", label=label, value=value, source="Dossier de l'opération (asset_config.json)")
 
 
 def cap(p: int) -> int:

@@ -2,7 +2,7 @@
 
 Format vérifié sur une vraie réponse (tests/fixtures/ign_search.json, 2026-11-08) :
 GeoJSON FeatureCollection ; features[0].geometry.coordinates = [lon, lat] ;
-properties : label, score, citycode (code INSEE, 75109 pour Paris 9e), postcode, district, type.
+properties : label, score, citycode (code INSEE de la commune ou de l'arrondissement), postcode, district, type.
 """
 from __future__ import annotations
 

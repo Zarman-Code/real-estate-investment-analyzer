@@ -1,0 +1,1329 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<style>
+/* ================================================================== système de design (aucune donnée du deal) */
+:root {
+  --bg: #f4f3ef; --panel: #ffffff; --ink: #1b1f24; --muted: #525b65; --faint: #8a939c; --line: #dedbd4; --soft: #efede8; --soft2: #f8f7f4;
+  --accent: #27537c; --accent-soft: #e3ebf3;
+  --go: #1d6a43; --go-soft: #e1f1e7; --cond: #87540b; --cond-soft: #f8ecd5; --nogo: #9e2f2f; --nogo-soft: #f7e1df;
+  --undet: #525b65; --undet-soft: #e9ecef;
+  --pos: #2b7a4f; --neg: #ad3636;
+  --lvl-faible: #3d7851; --lvl-modere: #85660b; --lvl-eleve: #a3531e; --lvl-critique: #9e2f2f; --lvl-incertain: #5d6671;
+  --c1: #27537c; --c2: #b98419; --c3: #7c8691; --c4: #a3b7cb;
+  --dot: #8a939c;
+  --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px;
+  --r1: 12px; --r2: 16px;
+  --shadow: 0 1px 2px rgba(20, 24, 30, .06), 0 2px 8px rgba(20, 24, 30, .05);
+  --bar-h: 48px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: calc(var(--bar-h) + 12px); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.5; padding-bottom: 44px; }
+a { color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.v, .num, table, .tile, svg text { font-variant-numeric: tabular-nums; }
+.prose, .message, .synth, .drivers { max-width: 70ch; }
+
+/* A1. barre du haut : une ligne fine, collante */
+.topbar { position: sticky; top: 0; z-index: 30; height: var(--bar-h); background: rgba(255,255,255,.97); border-bottom: 1px solid var(--line); }
+.topbar-inner { max-width: 1280px; height: 100%; margin: 0 auto; padding: 0 var(--s3); display: flex; align-items: center; gap: 12px; }
+.brand { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand-date { color: var(--muted); font-size: 14px; white-space: nowrap; }
+nav.anchors { margin-left: auto; display: flex; gap: 4px; }
+nav.anchors a { color: var(--muted); text-decoration: none; font-size: 14px; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+nav.anchors a:hover, nav.anchors a:focus-visible { color: var(--ink); background: var(--soft); }
+nav.anchors a[aria-current="true"] { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+/* A2. bandeau des valeurs modifiées : sous la barre, masqué tant qu'aucun curseur n'a bougé */
+.modified-banner { position: sticky; top: var(--bar-h); z-index: 25; background: var(--cond-soft); color: var(--cond); border-bottom: 1px solid #e3c896;
+  padding: 6px var(--s3); font-size: 14px; font-weight: 600; text-align: center; }
+.modified-banner button { margin-left: var(--s1); }
+main { max-width: 1280px; margin: 0 auto; padding: var(--s2) var(--s3) var(--s4); }
+.toolbar { display: flex; justify-content: flex-end; margin-bottom: var(--s1); }
+section.block { scroll-margin-top: calc(var(--bar-h) + 16px); background: var(--panel); border: 1px solid var(--line); border-radius: var(--r2);
+  box-shadow: var(--shadow); padding: var(--s3); margin: 0 0 var(--s3); }
+section.block > h2 { margin: 0 0 var(--s1); font-size: 21px; }
+section.compact { padding: var(--s1) var(--s2); }
+section.compact details.fold { margin: 0; border: 0; background: none; }
+.qtag { display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 7px; margin-right: 8px; vertical-align: 3px; }
+.message { font-size: 17px; margin: 0 0 var(--s2); }
+h3 { font-size: 16px; margin: var(--s3) 0 var(--s1); }
+.grid { display: grid; gap: var(--s2); }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(440px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid > *, .cols2 > *, .sim > *, .risk-layout > *, .verdict-grid > * { min-width: 0; }
+.card { border: 1px solid var(--line); border-radius: var(--r1); padding: var(--s2); background: var(--panel); position: relative; }
+.card h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+.section-error { background: var(--cond-soft); border-left: 3px solid var(--cond); padding: 8px 12px; border-radius: 8px; font-size: 14px; }
+.box { border-radius: var(--r1); padding: 12px var(--s2); font-size: 15px; margin: var(--s2) 0; }
+.box h4 { margin: 0 0 4px; font-size: 15px; }
+.box.limits { background: var(--soft2); border: 1px solid var(--line); }
+.box.hyp { background: #fdf4e7; border: 1px solid #ecd3a9; }
+.box.warn { background: var(--cond-soft); border-left: 4px solid var(--cond); }
+.box.keymiss { background: #fdf4e7; border: 1px solid #e3c896; border-left: 4px solid var(--cond); margin-top: 0; }
+.box.keymiss h4::before { content: "⚠ "; }
+.box.na { background: var(--soft2); border: 1px dashed var(--line); color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--soft); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 14px; }
+td.r, th.r { text-align: right; }
+.neg, .neg .num { color: var(--neg); }
+button.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 7px 14px; cursor: pointer; font: inherit; font-size: 14px; color: var(--ink); }
+button.btn:hover { background: var(--soft); }
+button.btn:focus-visible, summary:focus-visible, .chip:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* A3. blocs repliables : ligne-résumé avec chiffre clé */
+details.fold { border: 1px solid var(--line); border-radius: var(--r1); margin: var(--s2) 0; background: var(--soft2); }
+details.fold > summary { cursor: pointer; list-style: none; padding: 12px var(--s2); display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "▸"; color: var(--muted); width: 12px; }
+details.fold[open] > summary::before { content: "▾"; }
+details.fold > summary .sum-title { font-weight: 600; }
+details.fold > summary .sum-key { color: var(--muted); font-size: 14px; }
+details.fold > .fold-body { padding: var(--s1) var(--s2) var(--s2); background: var(--panel); border-top: 1px solid var(--line); border-radius: 0 0 var(--r1) var(--r1); }
+
+/* D. valeurs, pastilles, légende */
+.v .num { white-space: nowrap; }
+.v.is-text .num { white-space: normal; }
+.v.is-hyp .num { font-style: italic; }
+.v.is-low { outline: 1.5px dashed var(--faint); outline-offset: 2px; border-radius: 4px; }
+.v.is-na .num { color: var(--muted); font-style: normal; }
+.v.is-sim .num { color: var(--cond); }
+.v.neg .num { color: var(--neg); }               /* écart négatif en rouge, toujours avec son signe */
+.pill { position: relative; display: inline-flex; align-items: center; justify-content: center; border: 0; background: none; padding: 0; margin-left: 3px;
+  cursor: pointer; color: var(--dot); font: 12px/1 system-ui, sans-serif; vertical-align: 1px; }
+.pill.dot { width: 12px; height: 12px; font-size: 10px; }
+.pill.word { font-size: 11.5px; color: var(--muted); margin-left: 6px; font-weight: 400; font-style: normal; }
+.pill.dot:hover::after, .pill.dot:focus-visible::after { content: attr(data-word); position: absolute; bottom: 140%; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: #fff; font-size: 11.5px; padding: 2px 6px; border-radius: 6px; white-space: nowrap; z-index: 5; pointer-events: none; font-weight: 400; }
+.pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 4px; }
+.corner-pill { position: absolute; top: 8px; right: 10px; }
+.caption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.caption .src-name { border: 0; background: none; padding: 0; font: inherit; color: var(--muted); text-decoration: underline dotted; text-underline-offset: 3px; cursor: pointer; }
+.caption .src-name:hover, .caption .src-name:focus-visible { color: var(--ink); }
+.legend-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; background: rgba(255,255,255,.97); border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted); padding: 6px var(--s3); display: flex; gap: var(--s2); justify-content: center; flex-wrap: wrap; }
+.legend-bar .sym { color: var(--dot); margin-right: 4px; }
+#src-popover { position: absolute; z-index: 50; width: max-content; max-width: min(420px, calc(100vw - 16px)); background: var(--panel);
+  border: 1px solid var(--line); border-radius: var(--r1); box-shadow: 0 8px 24px rgba(0,0,0,.14); padding: 12px 14px; font-size: 14px; }
+#src-popover h4 { margin: 0 22px 6px 0; font-size: 14px; }
+#src-popover dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+#src-popover dt { color: var(--muted); }
+#src-popover dd { margin: 0; overflow-wrap: anywhere; }
+#src-popover ul { margin: 6px 0 0; padding-left: 18px; }
+#src-popover .close { position: absolute; top: 4px; right: 8px; border: 0; background: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+abbr.term { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+
+/* graphiques SVG */
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: inherit; fill: var(--ink); font-size: 13px; }
+svg .tick, svg .lab { fill: var(--muted); font-size: 12.5px; }
+svg .val { font-weight: 600; }
+svg .axis { stroke: var(--line); }
+svg .gridl { stroke: var(--soft); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13.5px; color: var(--muted); margin: 6px 0; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: 14px; vertical-align: middle; margin-left: 8px; }
+.seg button { border: 0; background: var(--panel); padding: 4px 11px; cursor: pointer; color: var(--muted); font: inherit; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.clickable { cursor: pointer; }
+
+/* C. verdict */
+.verdict-grid { display: grid; grid-template-columns: minmax(250px, 1fr) 2.3fr; gap: var(--s3); align-items: start; }
+.decision { border-radius: var(--r2); padding: var(--s3); display: flex; gap: 14px; align-items: flex-start; }
+.decision .icon { font-size: 30px; line-height: 1; font-weight: 800; }
+.decision .kicker { font-size: 13px; text-transform: uppercase; letter-spacing: .07em; }
+.decision .label { font-size: 40px; font-weight: 800; line-height: 1.05; margin: 2px 0 4px; overflow-wrap: anywhere; }
+.decision .label.long { font-size: 30px; }
+.decision .sub { font-size: 14px; color: var(--ink); }
+.decision .margin { margin-top: 12px; color: var(--ink); font-size: 14px; }
+.decision .margin .num { font-size: 24px; font-weight: 700; }
+.d-GO { background: var(--go-soft); color: var(--go); }
+.d-GO_SOUS_CONDITIONS { background: var(--cond-soft); color: var(--cond); }
+.d-GO_AVEC_CONTRAINTES { background: var(--go-soft); color: var(--go); }
+.d-NO_GO { background: var(--nogo-soft); color: var(--nogo); }
+.d-NON_DETERMINE { background: var(--undet-soft); color: var(--undet); }
+.bigcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.bigcard { border: 1px solid var(--line); border-radius: var(--r1); padding: 12px var(--s2); position: relative; }
+.bigcard .k { font-size: 14px; color: var(--muted); padding-right: 64px; }
+.bigcard .val { font-size: 27px; font-weight: 700; margin-top: 2px; }
+.pricebar { margin-top: var(--s2); }
+.synth { margin: var(--s2) 0 4px; }
+.drivers { margin: 4px 0 8px; color: var(--muted); font-size: 15px; }
+.riskcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: var(--s2); }
+.riskcard { border: 1px solid var(--line); border-radius: var(--r1); padding: 12px 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; text-decoration: none; color: var(--ink); background: var(--panel); }
+.riskcard:hover { box-shadow: var(--shadow); }
+.riskcard .ico { grid-row: span 3; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--soft); font-size: 18px; color: var(--muted); }
+.riskcard .name { font-weight: 600; line-height: 1.3; }
+.badge { display: inline-block; font-size: 12.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.riskcard .score { font-size: 14px; color: var(--muted); }
+.lv-faible { color: var(--lvl-faible); } .lv-modéré { color: var(--lvl-modere); } .lv-élevé { color: var(--lvl-eleve); }
+.lv-critique { color: var(--lvl-critique); } .lv-incertain { color: var(--lvl-incertain); }
+.dot-lv { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: currentColor; flex: none; }
+
+/* B. note go/no-go */
+.note-box { border-left: 4px solid var(--accent); background: var(--soft2); border-radius: 0 var(--r1) var(--r1) 0; padding: 12px var(--s2); }
+.note-box p { margin: 6px 0; max-width: 95ch; }
+.note-actions { display: flex; gap: var(--s1); align-items: center; margin: 12px 0 0; }
+.copied { color: var(--go); font-size: 14px; }
+.explanation { margin-top: var(--s3); }
+.explanation .expl-title { margin: 0 0 var(--s1); font-size: 17px; }
+.expl-sec { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.expl-sec h4 { margin: 0 0 6px; font-size: 15px; color: var(--accent); }
+.expl-sec .prose { max-width: 95ch; margin: 0 0 6px; }
+.expl-sec ul.args li { max-width: 95ch; }
+
+/* tuiles, simulateur, risques */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.tile { border: 1px solid var(--line); border-radius: var(--r1); padding: 12px 14px; background: var(--panel); }
+.tile .k { font-size: 14px; color: var(--muted); }
+.tile .val { font-size: 22px; font-weight: 700; margin: 2px 0; }
+.tile .val.sm { font-size: 19px; }
+.tile .t { font-size: 13.5px; }
+.ok { color: var(--pos); } .ko { color: var(--neg); }
+.status-ok::before { content: "✓ "; } .status-ko::before { content: "✗ "; }
+.minis { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--s2); margin-top: var(--s2); }
+.minis svg { max-width: 460px; }
+.sim { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(340px, 1.1fr); gap: var(--s3); }
+.slider { margin: 8px 0 14px; }
+.slider label { display: flex; justify-content: space-between; gap: 8px; font-size: 15px; }
+.slider input { width: 100%; accent-color: var(--accent); }
+.slider .range { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+.slider.changed label > span:first-child::after { content: " (modifié)"; color: var(--cond); font-size: 13px; }
+.risk-layout { display: grid; grid-template-columns: minmax(340px, 1fr) minmax(320px, 1.2fr); gap: var(--s3); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; font-size: 14px; cursor: pointer; background: var(--panel); font-family: inherit; color: var(--ink); }
+.chip[aria-pressed="true"] { border-color: var(--ink); background: var(--soft); }
+.risk-list { list-style: none; padding: 0; margin: 8px 0; }
+.risk-list li { border-bottom: 1px solid var(--soft); display: flex; align-items: center; gap: 8px; }
+.risk-list > li > button { flex: 1; text-align: left; background: none; border: 0; padding: 7px 4px; cursor: pointer; font: inherit; display: flex; gap: 8px; align-items: center; color: var(--ink); }
+.risk-list > li > button[aria-current="true"] { background: var(--soft); border-radius: 8px; }
+.risk-list .crit { color: var(--muted); font-size: 14px; white-space: nowrap; }
+.uncertain-box { border: 1px dashed var(--lvl-incertain); border-radius: var(--r1); padding: 8px 12px; font-size: 14px; margin-top: 8px; }
+.scards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.scard { border: 1px solid var(--line); border-radius: var(--r1); padding: 12px 14px; }
+.scard h3 { margin: 0 0 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.scard .verdict-ico { font-size: 13px; font-weight: 700; }
+.scard dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; font-size: 15px; }
+.scard dt { color: var(--muted); }
+.scard dd { margin: 0; text-align: right; font-weight: 600; }
+.cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+ul.args { padding-left: 20px; margin: 6px 0; }
+ul.args li { margin: 5px 0; max-width: 80ch; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+.filters input[type=search] { font: inherit; padding: 5px 9px; border: 1px solid var(--line); border-radius: 8px; min-width: 220px; }
+.opstrip { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.map-inset { max-width: 260px; }
+footer { max-width: 1280px; margin: 0 auto; padding: 0 var(--s3) var(--s4); color: var(--muted); font-size: 13.5px; }
+
+@media (max-width: 900px) {
+  .verdict-grid, .sim, .risk-layout, .cols2, .g2 { grid-template-columns: 1fr; }
+  .bigcards, .riskcards { grid-template-columns: 1fr; }
+  .decision .label { font-size: 32px; }
+  .brand-date { display: none; }
+  nav.anchors a { padding: 6px 6px; font-size: 13px; }
+  .topbar-inner, main { padding-left: var(--s2); padding-right: var(--s2); }
+  section.block { padding: var(--s2); }
+  .v .num { white-space: normal; }
+  td, th { overflow-wrap: anywhere; padding: 6px 4px; }
+  table { font-size: 14px; }
+}
+@media (max-width: 560px) { nav.anchors a:not([aria-current="true"]) { display: none; } .brand { max-width: 50vw; } }
+@media print {
+  body { background: #fff; padding: 0; font-size: 11pt; }
+  .topbar, .legend-bar, .toolbar, .modified-banner, .seg, button.btn, .note-actions, nav.anchors { display: none !important; }
+  .expl-sec { break-inside: avoid-page; }
+  section.block { break-before: page; border: 0; box-shadow: none; padding: 0; margin: 0 0 12pt; }
+  #verdict, section.compact { break-before: auto; }
+  #note .note-box { border-left: 2px solid #000; background: none; padding-left: 10pt; }
+  #note .note-box p { max-width: none; }
+  .pill { display: none !important; }
+  details.fold { border: 0; background: none; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+  <span class="brand" id="brand"></span><span class="brand-date" id="brand-date"></span>
+  <nav class="anchors" aria-label="Sections">
+    <a href="#verdict" data-group="verdict">Verdict</a><a href="#prix" data-group="marche">Marché</a><a href="#cout" data-group="rentabilite">Rentabilité</a><a href="#risques" data-group="risques">Risques</a><a href="#annexes" data-group="annexes">Annexes</a>
+  </nav>
+</div></header>
+<div class="modified-banner" id="modified-banner" role="status" hidden>Valeurs modifiées par l'utilisateur dans le simulateur : ces résultats ne sont pas la recommandation officielle.
+  <button type="button" class="btn" id="modified-reset">Revenir au scénario central</button></div>
+
+<main>
+  <div class="toolbar"><button type="button" class="btn" id="toggle-all" aria-pressed="false">Tout déplier</button></div>
+  <section class="block" id="verdict" data-group="verdict" aria-labelledby="h-verdict"><h2 id="h-verdict" class="sr-only">Décision</h2><div id="verdict-body"></div></section>
+  <section class="block" id="note" data-group="verdict" aria-labelledby="h-note"><h2 id="h-note">Note go/no-go</h2><div id="note-body"></div></section>
+  <section class="block compact" id="operation" data-group="verdict" aria-label="L'opération en un coup d'œil"><div id="operation-body"></div></section>
+  <section class="block" id="prix" data-group="marche" aria-labelledby="h-prix"><h2 id="h-prix"><span class="qtag">Q1</span>Prix : cohérence avec les transactions du quartier</h2><div id="prix-body"></div></section>
+  <section class="block" id="loyer" data-group="marche" aria-labelledby="h-loyer"><h2 id="h-loyer"><span class="qtag">Q2</span>Loyer espéré après restructuration</h2><div id="loyer-body"></div></section>
+  <section class="block compact" id="marche" data-group="marche" aria-label="Contexte de marché"><div id="marche-body"></div></section>
+  <section class="block" id="cout" data-group="rentabilite" aria-labelledby="h-cout"><h2 id="h-cout"><span class="qtag">Q3</span>Coût total et valeur de sortie</h2><div id="cout-body"></div></section>
+  <section class="block" id="rentabilite" data-group="rentabilite" aria-labelledby="h-rent"><h2 id="h-rent"><span class="qtag">Q4</span>Rentabilité face aux taux et aux objectifs</h2><div id="rentabilite-body"></div></section>
+  <section class="block" id="sensibilites" data-group="rentabilite" aria-labelledby="h-sens"><h2 id="h-sens"><span class="qtag">Q5</span>Ce qui fait basculer la décision</h2><div id="sensibilites-body"></div></section>
+  <section class="block" id="scenarios" data-group="rentabilite" aria-labelledby="h-scen"><h2 id="h-scen">Scénarios : plusieurs hypothèses ensemble</h2><div id="scenarios-body"></div></section>
+  <section class="block" id="risques" data-group="risques" aria-labelledby="h-risques"><h2 id="h-risques"><span class="qtag">Q6</span>Principaux risques</h2><div id="risques-body"></div></section>
+  <section class="block" id="annexes" data-group="annexes" aria-labelledby="h-annexes"><h2 id="h-annexes">Annexes</h2><div id="annexes-body"></div></section>
+</main>
+<footer id="footer"></footer>
+<div class="legend-bar" aria-label="Légende des pastilles"><span><span class="sym" aria-hidden="true">■</span>Saisi</span><span><span class="sym" aria-hidden="true">◆</span>Calculé</span><span><span class="sym" aria-hidden="true">▲</span>Hypothèse</span><span><span class="sym" aria-hidden="true">●</span>Source</span><span>· cliquer une pastille ou une source pour le détail</span></div>
+<div id="src-popover" role="dialog" aria-label="Fiche de la source" hidden></div>
+
+<script>window.DATA = {{ data_json }};</script>
+<script>{{ engine_js }}</script>
+<script>
+{% raw %}
+"use strict";
+const D = window.DATA, E = window.HeliosEngine;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const isNum = v => typeof v === "number" && Number.isFinite(v);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// ================================================================== formats (français), sans aucune valeur du deal
+const nf = (v, d = 0) => v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const sign = v => (v > 0 ? "+" : "");
+const FORMATS = {
+  meur: v => nf(v / 1e6, 1) + " M€", meur2: v => nf(v / 1e6, 2) + " M€", meur_abs: v => nf(Math.abs(v) / 1e6, 1) + " M€", eur: v => nf(v, 0) + " €",
+  pct: v => nf(v * 100, 1) + " %", pct0: v => nf(v * 100, 0) + " %", pct2: v => nf(v * 100, 2) + " %",
+  pct_abs: v => nf(Math.abs(v) * 100, 1) + " %", pct100: v => nf(v, 1) + " %", pct_signed: v => sign(v) + nf(v * 100, 1) + " %",
+  bps: v => nf(v, 0) + " pb", bps_signed: v => sign(v) + nf(v, 0) + " pb", pts: v => sign(v) + nf(v, 1) + " pt",
+  sqm: v => nf(v, 0) + " €/m²", rent: v => nf(v, 0) + " €/m²/an", m2: v => nf(v, 0) + " m²",
+  int: v => nf(v, 0), dec: v => nf(v, 2), dec1: v => nf(v, 1), mult: v => nf(v, 2) + "x", months: v => nf(v, Number.isInteger(v) ? 0 : 1) + " mois",
+  months_signed: v => sign(v) + nf(v, 0) + " mois", crit: v => nf(v, 0) + "/25", prob: v => nf(v, 0) + "/5", year: v => String(v), raw: v => String(v),
+  date: v => { const p = String(v).slice(0, 10).split("-"); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : String(v); },
+};
+const UNIT_FORMAT = { "€": "meur", "€/m²": "sqm", "€/m²/an": "rent", "fraction": "pct", "%": "pct100", "bps": "bps",
+                      "m²": "m2", "mois": "months", "x": "mult", "pts": "pts" };
+const NO_NEG = ["meur_abs", "pct_abs", "raw", "year", "date"];
+const METHOD_LABEL = { api: "API publique", report_extraction: "extraction d'un rapport", computed: "calculé par le moteur",
+                       assumption: "hypothèse", user_input: "saisi (dossier de l'opération)", none: "aucune source n'a répondu", sim: "simulateur" };
+const STATUS_LABEL = { ok: "donnée valide", partial: "donnée partielle", missing: "donnée manquante", assumption: "hypothèse",
+                       rejected: "donnée écartée par les contrôles" };
+const CONF_LABEL = { high: "élevée", medium: "moyenne", low: "faible" };
+const FMT_MISSING = new Map();      // clé -> raison des valeurs affichées « non disponible »
+
+const dpOf = key => D.datapoints[key];
+const labelOf = key => (dpOf(key) && dpOf(key).label) || key;
+function pathOf(field) { return field === undefined || field === null ? [] : Array.isArray(field) ? field : String(field).split("."); }
+// valeur brute (pour dessiner ou comparer) : jamais affichée sans passer par fmt ou fig.n
+function val(key, field) {
+  const dp = dpOf(key); if (!dp || dp.status === "missing" || dp.status === "rejected") return null;
+  let v = dp.value;
+  for (const p of pathOf(field)) v = (v === null || v === undefined) ? undefined : v[p];
+  if (!field && v !== null && typeof v === "object" && !Array.isArray(v)) { const f = ["last", "median", "value"].find(k => k in v); v = f ? v[f] : v; }
+  return v === undefined ? null : v;
+}
+const wrapDate = s => `<span class="date">${esc(s)}</span>`;
+const lbl = s => `<span class="lbl">${esc(s)}</span>`;
+
+// ================================================================== D9-D10. pastilles
+const KIND = {
+  na: { cls: "pill-na", sym: "○", word: "Non disponible" }, sim: { cls: "pill-sim", sym: "✱", word: "Simulé" },
+  hyp: { cls: "pill-hyp", sym: "▲", word: "Hypothèse" }, user: { cls: "pill-user", sym: "■", word: "Saisi" },
+  calc: { cls: "pill-calc", sym: "◆", word: "Calculé" }, src: { cls: "pill-src", sym: "●", word: "Source" },
+};
+function kindOf(dp) {
+  if (!dp || dp.status === "missing" || dp.status === "rejected") return KIND.na;
+  if (dp.method === "sim") return KIND.sim;
+  if (dp.method === "assumption" || dp.status === "assumption") return KIND.hyp;
+  if (dp.method === "user_input") return KIND.user;
+  if (dp.method === "computed") return KIND.calc;
+  return KIND.src;
+}
+function hoverText(key) {
+  const dp = dpOf(key);
+  return !dp ? "clé absente des données" : dp.method === "computed" ? `${dp.label || key} — calcul : ${dp.notes || ""}`
+    : `${dp.label || key} — ${dp.source_name}${dp.data_date ? ", donnée du " + dp.data_date : ""}`;
+}
+// mode : "dot" (point discret, mot au survol / focus), "word" (mot court en clair), "corner" (une pastille en coin de carte)
+function pill(key, mode = "dot") {
+  const k = kindOf(dpOf(key)), h = hoverText(key), word = mode !== "dot";
+  const cls = `pill ${k.cls} ${word ? "word" : "dot"}${mode === "corner" ? " corner-pill" : ""}`;
+  return `<button type="button" class="${cls}" data-key="${esc(key)}" data-word="${esc(k.word)}" title="${esc(k.word + " — " + h)}" aria-label="${esc(k.word + " : " + h)}">${word ? esc(k.word) : k.sym}</button>`;
+}
+
+/* Fonction UNIQUE d'affichage d'un chiffre (spécification, 4.3) : lit DATA.datapoints[key], formate, ajoute la pastille.
+   options : field, format, signed, show ("notes"), pill ("dot" | "word" | "none" : la carte porte alors sa pastille en coin). */
+function fmt(key, options = {}) {
+  const dp = dpOf(key), mode = options.pill || "dot";
+  const p = mode === "none" ? "" : pill(key, mode);
+  if (options.show === "notes") {
+    if (!dp || !dp.notes) return `<span class="v is-na"><span class="num">— non disponible</span>${p}</span>`;
+    return `<span class="v is-text"><span class="num">${esc(dp.notes)}</span>${p}</span>`;
+  }
+  let v = dp ? dp.value : undefined;
+  if (dp) for (const q of pathOf(options.field)) v = (v === null || v === undefined) ? undefined : v[q];
+  if (dp && !options.field && v !== null && typeof v === "object" && !Array.isArray(v)) { const f = ["last", "median", "value"].find(k => k in v); v = f ? v[f] : undefined; }
+  if (!dp || dp.status === "missing" || dp.status === "rejected" || v === null || v === undefined || typeof v === "object") {
+    const why = !dp ? "clé absente des données" : dp.status === "rejected" ? "donnée écartée par les contrôles" : (dp.notes || "valeur non disponible");
+    FMT_MISSING.set(key + (options.field ? ":" + pathOf(options.field).join(".") : ""), { label: labelOf(key), why });
+    return `<span class="v is-na"><span class="num">— non disponible</span>${p}</span>`;
+  }
+  const txt = fmtValue(dp, v, options), kind = kindOf(dp);
+  const neg = isNum(v) && v < 0 && !NO_NEG.includes(options.format) ? "neg" : "";
+  const cls = ["v", kind === KIND.hyp ? "is-hyp" : "", kind === KIND.sim ? "is-sim" : "", dp.confidence === "low" ? "is-low" : "", !isNum(v) && String(v).length > 24 ? "is-text" : "", neg].filter(Boolean).join(" ");
+  const full = isNum(v) && (options.format || UNIT_FORMAT[dp.unit]) === "meur" ? ` title="${esc(nf(v, 0) + " €")}"` : "";
+  return `<span class="${cls}"><span class="num"${full}>${esc(txt)}</span>${p}</span>`;
+}
+function fmtValue(dp, v, options = {}) {
+  if (isNum(v)) {
+    const f = FORMATS[options.format || UNIT_FORMAT[dp.unit] || (Number.isInteger(v) ? "int" : "dec")] || FORMATS.dec;
+    return (options.signed && v > 0 ? "+" : "") + f(v);
+  }
+  return (options.format === "date" || /^\d{4}-\d{2}-\d{2}$/.test(String(v))) ? FORMATS.date(v) : String(v);
+}
+// texte brut (copie de la note) : même formatage, sans pastille
+function fmtPlain(key, options = {}) {
+  const dp = dpOf(key); let v = dp ? dp.value : undefined;
+  if (dp) for (const q of pathOf(options.field)) v = (v === null || v === undefined) ? undefined : v[q];
+  if (dp && !options.field && v !== null && typeof v === "object" && !Array.isArray(v)) { const f = ["last", "median", "value"].find(k => k in v); v = f ? v[f] : undefined; }
+  if (!dp || dp.status === "missing" || dp.status === "rejected" || v === null || v === undefined || typeof v === "object") return "non disponible";
+  return fmtValue(dp, v, options);
+}
+const TOKEN_RE = /\{([a-zA-Z0-9_.@#-]+)(?::([a-zA-Z0-9_.]+))?(?:\|([a-z_0-9]+))?\}/g;
+function fmtText(template, mode = "dot") {
+  let out = "", last = 0;
+  for (const m of String(template).matchAll(TOKEN_RE)) {
+    out += esc(template.slice(last, m.index)) + fmt(m[1], { field: m[2], format: m[3], pill: mode });
+    last = m.index + m[0].length;
+  }
+  return out + esc(String(template).slice(last));
+}
+const textPlain = template => String(template).replace(TOKEN_RE, (_, k, f, fo) => fmtPlain(k, { field: f, format: fo }));
+
+// graphique : chaque valeur affichée est rattachée à une donnée ; la légende donne « Sources : A, B, C » (D11)
+function Fig() {
+  const keys = new Set();
+  return {
+    n(key, value, format) { keys.add(key); if (!isNum(value)) return "n.d."; return (FORMATS[format] || FORMATS.dec)(value); },
+    use(key) { keys.add(key); },
+    caption(prefix = "") { return keys.size ? `<div class="caption">${prefix}${srcLine([...keys])}</div>` : (prefix ? `<div class="caption">${prefix}</div>` : ""); },
+  };
+}
+function srcName(key) {
+  const dp = dpOf(key); if (!dp) return "donnée absente";
+  if (dp.method === "computed") return "calcul du modèle";
+  if (dp.method === "assumption" || dp.status === "assumption") return "hypothèses du modèle";
+  if (dp.method === "user_input") return "dossier de l'opération";
+  if (dp.method === "sim") return "simulateur";
+  return dp.source_name.split(" - ")[0].split(" (")[0];
+}
+function srcLine(keys) {
+  const groups = new Map();
+  keys.forEach(k => { const n = srcName(k); if (!groups.has(n)) groups.set(n, []); groups.get(n).push(k); });
+  return "Sources : " + [...groups].map(([n, ks]) => {
+    const dp = dpOf(ks[0]), tip = dp ? [dp.data_date ? "donnée du " + dp.data_date : "", METHOD_LABEL[dp.method] || dp.method, "confiance " + (CONF_LABEL[dp.confidence] || dp.confidence)].filter(Boolean).join(" · ") : "";
+    return `<button type="button" class="src-name" data-keys="${esc(ks.join(" "))}" title="${esc(tip)}">${lbl(n)}</button>`;
+  }).join(", ");
+}
+
+// ================================================================== fiche source (survol : title ; clic ou Entrée : fiche)
+function cardRows(key) {
+  const dp = dpOf(key), file = dp && dp.source_url && /\.(xlsx?|csv|pdf|zip)(\?|$)/i.test(dp.source_url);
+  return dp ? [
+    ["Donnée", esc(dp.label || key)], ["Source", esc(dp.source_name)], ["Date de la donnée", esc(dp.data_date || "non précisée")],
+    ["Méthode", esc(METHOD_LABEL[dp.method] || dp.method)], ["Statut", esc(STATUS_LABEL[dp.status] || dp.status)],
+    ["Confiance", esc(CONF_LABEL[dp.confidence] || dp.confidence)],
+    file && dp.retrieved_at ? ["Fichier", `fichier téléchargé le ${esc(FORMATS.date(dp.retrieved_at))}`] : null,
+    dp.notes ? [dp.method === "computed" ? "Formule" : "Notes", esc(dp.notes)] : null,
+    dp.source_url ? ["Lien", `<a href="${esc(dp.source_url)}" target="_blank" rel="noopener noreferrer">${esc(dp.source_url)}</a>`] : null,
+  ].filter(Boolean) : [["Statut", "absente des données"]];
+}
+function showPopover(btn) {
+  const pop = $("src-popover");
+  if (btn.classList.contains("src-name")) {
+    const keys = btn.dataset.keys.split(" ");
+    const rows = cardRows(keys[0]).filter(([a]) => !["Donnée", "Formule", "Notes"].includes(a));
+    pop.innerHTML = `<button type="button" class="close" aria-label="Fermer">×</button><h4>${esc(btn.textContent)}</h4><dl>${rows.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>
+      <ul>${keys.map(k => `<li>${esc(labelOf(k))}${dpOf(k) && dpOf(k).method === "computed" && dpOf(k).notes ? " — " + esc(dpOf(k).notes) : ""}</li>`).join("")}</ul>`;
+  } else {
+    const dp = dpOf(btn.dataset.key);
+    pop.innerHTML = `<button type="button" class="close" aria-label="Fermer">×</button><h4>${esc(kindOf(dp).word)}</h4><dl>${cardRows(btn.dataset.key).map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`;
+  }
+  pop.hidden = false;
+  const r = btn.getBoundingClientRect();
+  pop.style.top = `${window.scrollY + r.bottom + 6}px`;
+  pop.style.left = `${Math.max(8, Math.min(window.scrollX + r.left - 20, window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 8))}px`;
+  pop.querySelector(".close").focus();
+}
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".pill, .src-name");
+  if (btn) { e.preventDefault(); e.stopPropagation(); showPopover(btn); return; }
+  if (e.target.closest(".close") || !e.target.closest("#src-popover")) $("src-popover").hidden = true;
+}, true);
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("src-popover").hidden = true; });
+window.addEventListener("resize", () => { $("src-popover").hidden = true; });
+
+// ================================================================== glossaire
+const GLOSSARY = {
+  yoc: ["Yield on cost (YoC)", "Rendement sur coût total : revenu net stabilisé divisé par le coût total de l'opération.",
+        "Ici : {financials.noi_stabilized|meur} ÷ {financials.total_cost.total|meur} = {financials.yoc_pct|pct2}."],
+  noi: ["NOI", "Revenu net d'exploitation : loyers encaissés une fois l'immeuble loué, moins les charges non refacturées.",
+        "Ici : {financials.noi_stabilized|meur} par an une fois stabilisé."],
+  exit: ["Taux de sortie (exit yield)", "Rendement exigé par l'acquéreur final ; valeur de revente = revenu net ÷ taux de sortie. Plus le taux est bas, plus l'immeuble vaut cher.",
+         "Ici : {market.yields.exit_assumed|pct2}, soit une valeur nette de sortie de {financials.exit_value|meur}."],
+  spread: ["Spread", "Écart entre le yield on cost et le taux de sortie, en points de base : la création de valeur de la restructuration.",
+           "Ici : {financials.spread_bps|bps} pour un objectif de {targets.min_spread_vs_exit_bps|bps}."],
+  tri: ["TRI", "Taux de rendement interne : taux annuel qui annule la valeur actuelle des flux. TRI projet sans dette, TRI fonds propres avec dette.",
+        "Ici : TRI projet {financials.irr_project|pct}, TRI fonds propres {financials.irr_equity|pct}."],
+  multiple: ["Multiple des fonds propres", "Somme des distributions divisée par la somme des apports des fonds propres.",
+             "Ici : {financials.equity_multiple|mult} pour un objectif de {targets.min_equity_multiple|mult}."],
+  ltv: ["LTV", "Loan to value : part de l'opération financée par la dette.", "Ici : {deal.ltv|pct0}."],
+  ilat: ["ILAT", "Indice des loyers des activités tertiaires (INSEE), sert à indexer les loyers de bureaux.", "Dernière valeur : {index.ilat|dec}."],
+  qca: ["QCA", "Quartier central des affaires : le secteur de bureaux le plus central et le plus recherché d'un marché, où loyers et valeurs sont les plus élevés.", ""],
+  dvf: ["DVF", "Demandes de valeurs foncières : base publique des ventes immobilières (prix, surface, date), sans les loyers.",
+        "Ici : {market.dvf_price_per_sqm:n|int} transactions retenues."],
+  dpe: ["DPE", "Diagnostic de performance énergétique, de A (sobre) à G (énergivore).", "Ici : {deal.dpe_current} aujourd'hui, objectif {deal.dpe_target}."],
+  franchise: ["Franchise", "Période sans loyer accordée au locataire à la signature : réduit le loyer économique.", "Ici : {market.rents.incentives_months|months}."],
+  incentive: ["Mesures d'accompagnement (incentives)", "Avantages consentis au locataire (franchise, travaux), en part de la valeur du bail ferme.", ""],
+  marge: ["Marge sur coût", "(valeur nette de sortie − coût total) ÷ coût total.", "Ici : {financials.margin_pct|pct}, soit {financials.margin_eur|meur}."],
+  maxprice: ["Prix maximum", "Prix d'acquisition le plus élevé qui respecte encore les objectifs du fonds (TRI fonds propres et marge).", "Ici : {financials.max_price.central|meur}."],
+};
+function term(id, text) { const g = GLOSSARY[id]; return g ? `<abbr class="term" title="${esc(g[1])}">${esc(text || g[0])}</abbr>` : esc(text); }
+
+// ================================================================== outils : blocs repliés, SVG
+// A3 : bloc repliable FERMÉ par défaut (aucun attribut open) avec une ligne-résumé portant son chiffre clé
+const fold = (id, title, key, body) => `<details class="fold" id="${id}"><summary><span class="sum-title">${title}</span>${key ? `<span class="sum-key">${key}</span>` : ""}</summary><div class="fold-body">${body}</div></details>`;
+const T = (x, y, s, cls = "lab", anchor = "start", extra = "") => `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}" ${extra}>${esc(s)}</text>`;
+const V = (x, y, s, key, anchor = "start", extra = "") => `<text x="${x}" y="${y}" class="val" data-key="${esc(key)}" text-anchor="${anchor}" ${extra}>${esc(s)}</text>`;
+const svg = (w, h, body, aria) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(aria || "")}">${body}</svg>`;
+function niceTicks(min, max, n = 4) {
+  const span = max - min || Math.abs(max) || 1, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= n) || 10 * mag;
+  const out = []; for (let v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) out.push(+v.toFixed(10)); return out;
+}
+// E12 : étiquettes d'axe sans chevauchement — on n'en garde une que si elle ne touche pas la précédente ; la dernière est prioritaire
+// chaque étiquette occupe [gauche, droite] selon son ancrage (première : début, dernière : fin, autres : milieu) ;
+// on n'en garde une que si elle laisse un blanc avec la précédente ; la dernière est toujours gardée
+function spacedLabels(items, minGap, charW = 8) {
+  const n = items.length, ext = (it, i) => { const w = String(it.t).length * charW; return i === 0 ? [it.x, it.x + w] : i === n - 1 ? [it.x - w, it.x] : [it.x - w / 2, it.x + w / 2]; };
+  const out = [];
+  items.forEach((it, i) => {
+    const [l] = ext(it, i), prev = out[out.length - 1];
+    if (!prev || l - prev.r >= minGap) out.push({ ...it, i, r: ext(it, i)[1] });
+    else if (i === n - 1) { while (out.length > 1 && l - out[out.length - 1].r < minGap) out.pop(); out.push({ ...it, i, r: it.x }); }
+  });
+  return out.map(o => ({ x: o.x, t: o.t, anchor: o.i === 0 ? "start" : o.i === n - 1 ? "end" : "middle" }));
+}
+const LV = { "critique": "--lvl-critique", "élevé": "--lvl-eleve", "modéré": "--lvl-modere", "faible": "--lvl-faible", "incertain": "--lvl-incertain" };
+const negStyle = v => (isNum(v) && v < 0 ? `style="fill:${css("--neg")}"` : "");
+
+// barres horizontales ; items : {label, key, field, format, color, missing}
+function hbars(fig, items, { w = 640, row = 32, labelW = 230, refs = [] } = {}) {
+  const vals = items.map(i => val(i.key, i.field)).filter(isNum).concat(refs.map(r => val(r.key, r.field)).filter(isNum));
+  let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals); const pad = (hi - lo) * 0.22 || 1; hi += pad; if (lo < 0) lo -= pad;
+  const top = refs.length * 16 + 4, x0 = labelW, x1 = w - 12, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0), h = items.length * row + top + 10;
+  let b = `<line class="axis" x1="${X(0)}" x2="${X(0)}" y1="${top}" y2="${h - 6}"/>`;
+  items.forEach((it, i) => {
+    const y = top + 2 + i * row, v = val(it.key, it.field);
+    b += T(labelW - 8, y + row / 2 + 2, it.label, "lab", "end");
+    if (!isNum(v)) { fig.use(it.key); b += `<text x="${X(0) + 6}" y="${y + row / 2 + 2}" class="lab" style="font-style:italic">${esc(it.missing || "non disponible")}</text>`; return; }
+    const a = Math.min(X(0), X(v)), bw = Math.max(1, Math.abs(X(v) - X(0))), txt = fig.n(it.key, v, it.format);
+    b += `<rect x="${a}" y="${y + 5}" width="${bw}" height="${row - 12}" rx="4" fill="${it.color || css("--c1")}"><title>${esc(it.label)} : ${esc(txt)}</title></rect>`;
+    b += V(v >= 0 ? X(v) + 6 : X(v) - 6, y + row / 2 + 2, txt, it.key, v >= 0 ? "start" : "end", negStyle(v));
+  });
+  refs.forEach((r, k) => {
+    const v = val(r.key, r.field); if (!isNum(v)) return;
+    const xr = X(v), ly = 12 + k * 16, end = xr > w - 200, txt = fig.n(r.key, v, r.format);
+    b += `<line x1="${xr}" x2="${xr}" y1="${ly + 3}" y2="${h - 6}" stroke="${r.color}" stroke-dasharray="4 3"/>`;
+    b += `<text x="${end ? xr - 4 : xr + 4}" y="${ly}" class="val" data-key="${esc(r.key)}" text-anchor="${end ? "end" : "start"}" style="fill:${r.color};font-weight:500">${esc(r.label + " " + txt)}</text>`;
+  });
+  return svg(w, h, b, items.map(i => i.label).join(", "));
+}
+// série temporelle (E12 : trois graduations, étiquettes de dates espacées)
+function lineChart(fig, key, points, { w = 560, h = 230, format = "dec", refs = [], color } = {}) {
+  fig.use(key);
+  if (!points || points.length < 2) return `<p class="muted small">Série non disponible.</p>`;
+  const vals = points.map(p => p.value).concat(refs.map(r => r.value).filter(isNum));
+  let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.18 || Math.abs(hi) * 0.05 || 1; lo -= pad; hi += pad;
+  const L = 62, R = w - 16, Tp = 22, B = h - 30, X = i => L + i / (points.length - 1) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - Tp);
+  const f = FORMATS[format] || FORMATS.dec;
+  let b = "";
+  niceTicks(lo, hi, 3).forEach(t => { b += `<line class="gridl" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 8, Y(t) + 4, f(t), "tick", "end"); });
+  spacedLabels(points.map((p, i) => ({ x: X(i), t: p.date })), 14).forEach(it => { b += T(it.x, h - 8, it.t, "tick", it.anchor); });
+  const lp = points[points.length - 1], ly = Y(lp.value);
+  refs.forEach(r => {
+    if (!isNum(r.value)) return;
+    const yr = Y(r.value), above = yr - 6 > Tp && Math.abs(yr - 6 - (ly - 10)) > 14;
+    b += `<line x1="${L}" x2="${R}" y1="${yr}" y2="${yr}" stroke="${r.color || css("--muted")}" stroke-dasharray="4 3"/>`
+       + `<text x="${L + 6}" y="${above ? yr - 6 : yr + 15}" class="val" data-key="${esc(r.key)}" style="fill:${r.color || css("--muted")};font-weight:500">${esc(r.label + " " + fig.n(r.key, r.value, format))}</text>`;
+  });
+  b += `<polyline fill="none" stroke="${color || css("--c1")}" stroke-width="2.2" points="${points.map((p, i) => `${X(i)},${Y(p.value)}`).join(" ")}"/>`;
+  b += `<circle cx="${X(points.length - 1)}" cy="${ly}" r="4" fill="${color || css("--c1")}"/>` + V(X(points.length - 1) - 8, ly < Tp + 14 ? ly + 18 : ly - 10, fig.n(key, lp.value, format), key, "end");
+  points.forEach((p, i) => { b += `<circle cx="${X(i)}" cy="${Y(p.value)}" r="7" fill="transparent"><title>${esc(p.date)} : ${esc(f(p.value))}</title></circle>`; });
+  return svg(w, h, b, "série");
+}
+// F17 : effet sur la marge quand une hypothèse varie seule dans sa fourchette (points calculés par l'agent)
+function sweepChart(key, title, xFormat, centralKey) {
+  const fig = Fig(), pts = val(key); fig.use(key);
+  if (!Array.isArray(pts) || pts.length < 2) return `<div class="card"><h3 class="small">${title}</h3><p class="muted small">Non disponible ${fmt(key)}.</p></div>`;
+  const W = 400, H = 180, L = 48, R = W - 16, Tp = 26, B = H - 34;
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.margin_pct).filter(isNum), c = val(centralKey);
+  let lo = Math.min(0, ...ys), hi = Math.max(0, ...ys); const pad = (hi - lo) * 0.18 || 0.02; lo -= pad; hi += pad;
+  const X = x => L + (x - xs[0]) / (xs[xs.length - 1] - xs[0]) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - Tp);
+  let b = `<line class="axis" x1="${L}" x2="${R}" y1="${Y(0)}" y2="${Y(0)}"/>` + T(L - 6, Y(0) + 4, "0 %", "tick", "end");
+  b += `<polyline fill="none" stroke="${css("--c1")}" stroke-width="2.2" points="${pts.filter(p => isNum(p.margin_pct)).map(p => `${X(p.x)},${Y(p.margin_pct)}`).join(" ")}"/>`;
+  [0, pts.length - 1].forEach((i, j) => {
+    const p = pts[i]; if (!isNum(p.margin_pct)) return;
+    const nb = pts[j ? pts.length - 2 : 1], yy = Y(p.margin_pct), below = isNum(nb.margin_pct) && Y(nb.margin_pct) < yy, ty = below || yy - 10 < Tp ? yy + 18 : yy - 10;
+    b += `<circle cx="${X(p.x)}" cy="${yy}" r="3.5" fill="${css("--c1")}"/>` + V(X(p.x) + (j ? -4 : 4), ty, fig.n(key, p.margin_pct, "pct"), key, j ? "end" : "start", negStyle(p.margin_pct))
+       + T(X(p.x), H - 10, (FORMATS[xFormat] || FORMATS.dec)(p.x), "tick", j ? "end" : "start");
+  });
+  if (isNum(c) && c >= Math.min(...xs) && c <= Math.max(...xs)) { fig.use(centralKey); b += `<line x1="${X(c)}" x2="${X(c)}" y1="${Tp - 4}" y2="${B}" stroke="${css("--ink")}" stroke-dasharray="3 3"/>` + T(X(c), Tp - 8, "central", "tick", "middle"); }
+  return `<div class="card"><h3 class="small">${title}</h3>${svg(W, H, b, title)}${fig.caption("Marge sur coût quand l'hypothèse varie seule dans sa fourchette. ")}</div>`;
+}
+
+// ================================================================== données de base
+const REC = D.recommendation, FIN = D.financials, MK = D.market, SENS = D.sensitivity, TG = D.targets;
+const targetNote = () => TG.source === "assumption" ? `<span class="small muted"> (objectifs fixés par hypothèse)</span>` : "";
+const missingKey = key => { const dp = dpOf(key); return !dp || dp.status === "missing" || dp.status === "rejected" || dp.value === null; };
+const sortedTornado = metric => (val(`sensitivity.tornado.${metric}`) || []).slice().sort((a, b) => Math.abs(b.delta_high - b.delta_low) - Math.abs(a.delta_high - a.delta_low));
+// F16 : donnée clé manquante -> valeur de repli et son effet sur la marge (lu dans le tornado)
+function keyMissingBox(missKey, what, fallbackKey, fallbackFormat, tornadoVar) {
+  if (!missingKey(missKey)) return "";
+  const tk = "sensitivity.tornado.margin_pct", arr = val(tk) || [], i = arr.findIndex(r => r.variable === tornadoVar);
+  const effect = i >= 0 ? ` Effet sur la marge si cette valeur se dégrade : ${fmt(tk, { field: [i, "delta_low"], format: "pts" })} ; si elle s'améliore : ${fmt(tk, { field: [i, "delta_high"], format: "pts" })} (bornes des sensibilités).` : "";
+  return `<div class="box keymiss" role="note"><h4>Donnée clé manquante : la conclusion repose sur une valeur de repli</h4><span class="prose">${esc(what)} : ${fmt(missKey)}. Valeur retenue à la place : ${fmt(fallbackKey, { format: fallbackFormat })}.${effect}</span></div>`;
+}
+
+// ================================================================== C. verdict
+const DECISION = {
+  GO: { label: "GO", icon: "✓", sub: "les objectifs du fonds sont atteints" },
+  GO_AVEC_CONTRAINTES: { label: "GO AVEC CONTRAINTES", icon: "✓!", sub: "objectifs atteints, mais le prix doit être négocié avant de s'engager" },
+  GO_SOUS_CONDITIONS: { label: "GO SOUS CONDITIONS", icon: "!", sub: "des conditions doivent être levées avant validation" },
+  NO_GO: { label: "NO-GO", icon: "✕", sub: "l'opération ne respecte pas les règles du fonds au prix demandé" },
+  NON_DETERMINE: { label: "NON DÉTERMINÉ", icon: "?", sub: "des données nécessaires à la décision manquent" },
+};
+const CAT = { "marché_locatif": ["marché locatif", "⌂"], "travaux": ["travaux", "⚒"], "financier": ["taux et financement", "€"],
+              "réglementaire": ["réglementation", "§"], "environnemental": ["environnement", "❦"] };
+function priceBar() {
+  const fig = Fig(), ask = val("deal.asking_price_eur"), mp = val("financials.max_price.central"), fl = val("rules.negotiable_floor_price");
+  const tg = val("rules.market_price_target");
+  if (!isNum(ask)) return "";
+  const hi = Math.max(ask, mp || 0) * 1.04, W = 760, L = 6, R = W - 6, X = v => L + Math.max(0, v) / hi * (R - L), H = 150, y = 58;
+  let b = `<rect x="${L}" y="${y}" width="${X(ask) - L}" height="14" rx="7" fill="${css("--soft")}"/>`;
+  if (isNum(fl)) b += `<rect x="${X(fl)}" y="${y}" width="${Math.max(1, X(ask) - X(fl))}" height="14" fill="${css("--cond-soft")}" stroke="${css("--cond")}" stroke-dasharray="3 2"><title>décote jugée négociable</title></rect>`;
+  if (isNum(mp)) b += `<rect x="${L}" y="${y + 3}" width="${Math.max(2, X(mp) - L)}" height="8" rx="4" fill="${css("--c1")}"/>`;
+  const marks = [[ask, "deal.asking_price_eur", "prix demandé", css("--ink"), "meur"], [fl, "rules.negotiable_floor_price", "plancher négociable", css("--cond"), "meur"],
+                 [tg, "rules.market_price_target", "cible marché", css("--go"), "meur2"], [mp, "financials.max_price.central", "prix maximum", css("--c1"), "meur"]]
+    .filter(m => isNum(m[0])).sort((a, b) => a[0] - b[0]);
+  // étiquettes placées sur quatre lignes (dessous, dessus, plus bas, plus haut) sans chevauchement : largeur estimée du texte
+  const rows = [{ ty: y + 48, y1: y, y2: y + 32, end: -1e9 }, { ty: 38, y1: 44, y2: y + 14, end: -1e9 },
+                { ty: y + 72, y1: y, y2: y + 58, end: -1e9 }, { ty: 16, y1: 22, y2: y + 14, end: -1e9 }];
+  marks.forEach(([v, k, t, col, f]) => {
+    const label = t + " " + fig.n(k, v, f), w = label.length * 7.2, x = X(v);
+    const anchor = x + w / 2 > R ? "end" : x - w / 2 < L ? "start" : "middle";
+    const left = anchor === "end" ? x - w : anchor === "start" ? x : x - w / 2;
+    const row = rows.find(r => left > r.end + 8) || rows[rows.length - 1];
+    row.end = left + w;
+    b += `<line x1="${x}" x2="${x}" y1="${row.y1}" y2="${row.y2}" stroke="${col}" stroke-width="2"/>`;
+    b += `<text x="${x}" y="${row.ty}" class="val" data-key="${esc(k)}" text-anchor="${anchor}" style="fill:${col}">${esc(label)}</text>`;
+  });
+  return `<div class="pricebar">${svg(W, H, b, "prix maximum, plancher négociable et prix demandé, à l'échelle")}<div class="legend"><span><i style="background:${css("--c1")}"></i>prix maximum recommandé</span><span><i style="background:${css("--cond-soft")};border:1px dashed ${css("--cond")}"></i>décote jugée négociable sous le prix demandé</span>${isNum(tg) ? `<span><i style="background:${css("--go")}"></i>cible de négociation : prix sous la référence de marché au m²</span>` : ""}</div>${fig.caption()}</div>`;
+}
+function renderVerdict() {
+  const d = DECISION[REC.decision], tk = "sensitivity.tornado.margin_pct", arr = val(tk) || [], top = sortedTornado("margin_pct").slice(0, 2);
+  const rng = r => `de ${fmt(tk, { field: [arr.indexOf(r), "delta_low"], format: "pts" })} à ${fmt(tk, { field: [arr.indexOf(r), "delta_high"], format: "pts" })}`;
+  const verb = REC.decision === "NO_GO" ? "expliquent le plus le NO-GO" : "pèsent le plus sur la marge";
+  const drivers = top.length === 2 ? `Les deux hypothèses qui ${verb} : « ${lbl(top[0].label)} » (${rng(top[0])} de marge) et « ${lbl(top[1].label)} » (${rng(top[1])}).` : "";
+  const risks = REC.priority_risks.slice(0, 3).map(id => D.risks.find(r => r.id === id)).filter(Boolean);
+  const big = (label, key, opts) => `<div class="bigcard">${pill(key, "corner")}<div class="k">${label}</div><div class="val">${fmt(key, Object.assign({ pill: "none" }, opts))}</div></div>`;
+  $("verdict-body").innerHTML = `
+    <div class="verdict-grid">
+      <div class="decision d-${esc(REC.decision)}" role="status">
+        <span class="icon" aria-hidden="true">${d.icon}</span>
+        <div><div class="kicker">Recommandation de l'agent</div><div class="label${d.label.length > 14 ? " long" : ""}">${esc(d.label)}</div>
+          <div class="sub">${esc(d.sub)}</div>
+          <div class="margin">Marge du scénario central<br>${fmt("financials.margin_pct", { pill: "word" })}</div></div>
+      </div>
+      <div>
+        <div class="bigcards">${big("Prix demandé", "deal.asking_price_eur", { format: "meur" })}${big("Prix maximum recommandé", "financials.max_price.central", { format: "meur" })}${big("Écart au prix demandé", "financials.max_price_gap_pct", { format: "pct", signed: true })}</div>
+        ${priceBar()}
+        <p class="synth">${fmtText(REC.rationale)}</p>
+        ${drivers ? `<p class="drivers">${drivers}</p>` : ""}
+        <a class="small" href="#note">Voir la note go/no-go</a>
+      </div>
+    </div>
+    ${risks.length ? `<div class="riskcards" aria-label="Risques principaux">${risks.map(r => `<a class="riskcard" href="#risques" data-risk="${esc(r.id)}">
+      <span class="ico" aria-hidden="true">${(CAT[r.category] || ["", "•"])[1]}</span><span class="name">${esc(r.title)}</span>
+      <span><span class="badge lv-${esc(r.level)}">${esc(r.level)}</span> <span class="small muted">${esc((CAT[r.category] || [r.category])[0])}</span></span>
+      <span class="score">P ${fmt("risks." + r.id + ".probability", { format: "int" })} × I ${fmt("risks." + r.id + ".impact", { format: "int" })} = ${fmt("risks." + r.id + ".criticality", { format: "crit" })}</span></a>`).join("")}</div>` : ""}`;
+  document.querySelectorAll("#verdict-body [data-risk]").forEach(a => a.addEventListener("click", () => selectRisk(a.dataset.risk, true)));
+}
+
+// ================================================================== B. note go/no-go (lue dans DATA.recommendation.note)
+const noteHtml = line => fmtText(line).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[ ;:])(\d)\) /g, (m, a, n) => `${a}${lbl(n + ")")} `);
+function renderNote() {
+  const list = items => items.length ? `<ul class="args">${items.map(t => `<li>${fmtText(t)}</li>`).join("")}</ul>` : `<p class="muted small">Aucun élément.</p>`;
+  const plain = items => items.length ? `<ul class="args">${items.map(t => `<li>${lbl(t)}</li>`).join("")}</ul>` : `<p class="muted small">Aucun élément.</p>`;
+  const first = items => items.length ? `${fmtText(items[0])}${items.length > 1 ? ` <span class="muted">(et d'autres)</span>` : ""}` : "aucun";
+  const note = REC.note || [];
+  $("note-body").innerHTML = (note.length
+    ? `<div class="note-box" id="note-text">${note.map(l => `<p>${noteHtml(l)}</p>`).join("")}</div>
+       <div class="note-actions"><button type="button" class="btn" id="copy-note">Copier la note</button><span class="copied" id="copy-done" role="status"></span></div>`
+    : `<p class="box na">Note non générée : l'agent n'a pas produit de note pour cette analyse.</p>`)
+    + explanationHtml()
+    + fold("note-pros", "Arguments favorables", first(REC.pros), list(REC.pros))
+    + fold("note-cons", "Arguments défavorables", first(REC.cons), list(REC.cons))
+    + fold("note-kpi", "Indicateurs déterminants", REC.key_indicators.slice(0, 2).map(k => `${lbl(labelOf(k))} ${fmt(k)}`).join(" · "),
+           `<div class="tiles">${REC.key_indicators.map(k => `<div class="tile"><div class="k">${lbl(labelOf(k))}</div><div class="val">${fmt(k, { pill: "word" })}</div></div>`).join("")}</div>`)
+    + fold("note-cond", REC.decision === "NO_GO" ? "Conditions d'un réexamen" : "Conditions avant validation", first(REC.conditions), list(REC.conditions))
+    + fold("note-missing", "Informations manquantes", REC.missing_information.length ? lbl(REC.missing_information[0]) + (REC.missing_information.length > 1 ? ` <span class="muted">(et d'autres)</span>` : "") : "aucune", plain(REC.missing_information));
+  const copy = (id, text, msg) => { const b = $(id); if (!b) return; b.addEventListener("click", () => {
+    const done = () => { $("copy-done").textContent = msg; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text()).then(done, () => fallbackCopy(text(), done)); else fallbackCopy(text(), done);
+  }); };
+  copy("copy-note", () => note.map(l => textPlain(l).replace(/\*\*/g, "")).join("\n"), "Note copiée.");
+  copy("copy-expl", () => (REC.explanation || []).map(s => s.title.toUpperCase() + "\n" + s.paragraphs.map((p, i) => (i ? "- " : "") + textPlain(p)).join("\n")).join("\n\n"), "Explication copiée.");
+}
+// texte explicatif final : décision et raisons, risques déclarés, hypothèses à valider, seuils de bascule
+function explanationHtml() {
+  const ex = REC.explanation || [];
+  if (!ex.length) return `<p class="box na">Explication non générée (relancer l'agent pour l'obtenir).</p>`;
+  return `<div class="explanation" id="explanation"><h3 class="expl-title">Explication de la décision</h3>
+    ${ex.map(s => `<section class="expl-sec" aria-label="${esc(s.title)}"><h4>${esc(s.title)}</h4>${s.paragraphs.length ? `<p class="prose">${fmtText(s.paragraphs[0])}</p>` : ""}
+      ${s.paragraphs.length > 1 ? `<ul class="args">${s.paragraphs.slice(1).map(p => `<li>${fmtText(p)}</li>`).join("")}</ul>` : ""}</section>`).join("")}
+    <div class="note-actions"><button type="button" class="btn" id="copy-expl">Copier l'explication</button></div></div>`;
+}
+function fallbackCopy(text, done) {
+  const t = document.createElement("textarea"); t.value = text; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+  document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) { $("copy-done").textContent = "Copie impossible : sélectionner le texte."; } t.remove();
+}
+
+// ================================================================== E15. L'opération en un coup d'œil (repliée)
+function renderOperation() {
+  const leases = val("deal.current_leases") || [];
+  const tiles = `<div class="opstrip">
+    <div class="tile"><div class="k">Surfaces avant → après travaux</div><div class="val sm">${fmt("deal.surface_before_sqm", { format: "m2" })} → ${fmt("deal.surface_after_sqm", { format: "m2" })}</div></div>
+    <div class="tile"><div class="k">${term("dpe", "DPE")} actuel → visé</div><div class="val sm">${fmt("deal.dpe_current")} → ${fmt("deal.dpe_target")}</div></div>
+    <div class="tile"><div class="k">Locataire actuel</div><div class="val sm">${leases.length ? fmt("deal.current_leases", { field: [0, "surface_sqm"], format: "m2" }) : "aucun"}</div>
+      ${leases.length ? `<div class="t">à ${fmt("deal.current_leases", { field: [0, "rent_eur_sqm_year"], format: "rent" })}, jusqu'au ${fmt("deal.current_leases", { field: [0, "end_date"], format: "date" })}</div>` : ""}</div>
+    <div class="tile"><div class="k">Prix demandé</div><div class="val sm">${fmt("deal.asking_price_eur", { format: "meur" })}</div><div class="t">${fmt("deal.operation.price_basis")}</div></div></div>`;
+  const fig = Fig(), figMap = Fig();
+  const geo = MK.transactions.some(t => isNum(t.lat) && isNum(t.lon));
+  const body = `${tiles}
+    <p class="prose">État actuel : ${fmt("deal.asset.condition")} · ${lbl("construction")} ${fmt("deal.asset.year_built_decade", { format: "year" })} · ${fmt("deal.asset.floors")}.</p>
+    <h3>Calendrier du dossier</h3>${timeline(fig)}${fig.caption()}
+    <h3>Zone d'étude</h3><div class="${geo ? "" : "map-inset"}">${locationMap(figMap, geo)}</div>${figMap.caption(geo ? "" : "Encart réduit : les transactions ne sont pas géolocalisées. ")}`;
+  $("operation-body").innerHTML = fold("operation-detail", "L'opération en un coup d'œil",
+    `${fmt("deal.surface_before_sqm", { format: "m2" })} → ${fmt("deal.surface_after_sqm", { format: "m2" })} · ${lbl("DPE")} ${fmt("deal.dpe_current")} → ${fmt("deal.dpe_target")} · prix demandé ${fmt("deal.asking_price_eur", { format: "meur" })}`, body);
+}
+// frise tirée de deal.operation.timeline (datapoint deal.timeline) et des baux en place
+function timeline(fig) {
+  const tl = val("deal.timeline"); fig.use("deal.timeline");
+  const need = tl && ["acquisition_date", "works_start", "works_duration_months", "letting_year", "exit_year"].every(k => tl[k] !== null && tl[k] !== undefined);
+  if (!need) return `<p class="box na">Calendrier non disponible ${fmt("deal.timeline")}.</p>`;
+  const leases = val("deal.current_leases") || []; if (leases.length) fig.use("deal.current_leases");
+  const toT = s => Date.parse(String(s).slice(0, 10) + "T00:00:00Z");
+  const addM = (s, m) => { const d = new Date(toT(s)); d.setUTCMonth(d.getUTCMonth() + m); return d.toISOString().slice(0, 10); };
+  const worksEnd = addM(tl.works_start, tl.works_duration_months);
+  const t0 = toT(tl.acquisition_date), t1 = toT(`${tl.exit_year}-12-31`);
+  const rows = [];
+  leases.forEach(l => rows.push(["Bail en place", tl.acquisition_date, l.end_date, css("--c4"), "jusqu'au " + FORMATS.date(l.end_date), 1]));
+  rows.push(["Travaux", tl.works_start, worksEnd, css("--c2"), FORMATS.months(tl.works_duration_months), 1]);
+  rows.push(["Relocation", `${tl.letting_year}-01-01`, `${tl.letting_year}-12-31`, css("--c3"), "année " + tl.letting_year, 0.55]);
+  rows.push(["Cession", `${tl.exit_year}-01-01`, `${tl.exit_year}-12-31`, css("--c1"), "année " + tl.exit_year, 0.55]);
+  const W = 1000, L = 140, R = W - 20, H = rows.length * 28 + 34, X = s => L + (Math.min(Math.max(toT(s), t0), t1) - t0) / (t1 - t0) * (R - L);
+  let b = "";
+  for (let y = new Date(t0).getUTCFullYear() + 1; y <= tl.exit_year; y++) { const s = `${y}-01-01`; b += `<line class="gridl" x1="${X(s)}" x2="${X(s)}" y1="2" y2="${H - 24}"/>` + T(X(s) + 4, H - 8, String(y), "tick"); }
+  rows.forEach(([lab, a, z, col, note, op], i) => {
+    const y = 4 + i * 28, xa = X(a), w = Math.max(3, X(z) - xa), inside = w > 120;
+    b += T(L - 8, y + 16, lab, "lab", "end") + `<rect x="${xa}" y="${y + 4}" width="${w}" height="18" rx="4" fill="${col}" fill-opacity="${op}"><title>${esc(lab + " : " + note)}</title></rect>`;
+    b += inside ? T(xa + 8, y + 17, note, "tick", "start", 'style="fill:#1b1f24"') : T(xa + w + 6 > R - 110 ? xa - 6 : xa + w + 6, y + 17, note, "tick", xa + w + 6 > R - 110 ? "end" : "start");
+  });
+  b += `<line x1="${L}" x2="${L}" y1="2" y2="${H - 24}" stroke="${css("--ink")}" stroke-width="1.5"/>` + T(L + 4, H - 8, "acquisition " + FORMATS.date(tl.acquisition_date), "tick", "start", 'style="font-weight:600"');
+  return svg(W, H, b, "calendrier du dossier");
+}
+function locationMap(fig, geo) {
+  fig.use("location.reference_point");
+  const lat0 = val("location.reference_point", "lat"), lon0 = val("location.reference_point", "lon");
+  if (!isNum(lat0) || !isNum(lon0)) return `<p class="box na">Point de référence non géocodé : schéma non disponible.</p>`;
+  const kx = 111320 * Math.cos(lat0 * Math.PI / 180), ky = 110540, toM = (lon, lat) => [(lon - lon0) * kx, (lat - lat0) * ky];
+  let extent = 300; const shapes = [];
+  const bbox = val("market.dvf_price_per_sqm", "bbox");
+  if (bbox) { fig.use("market.dvf_price_per_sqm"); const [x1, y1, x2, y2] = String(bbox).split(",").map(Number); const a = toM(x1, y1), c = toM(x2, y2); shapes.push(["rect", a, c]); extent = Math.max(extent, ...[a, c].flat().map(Math.abs)); }
+  const rA = val("energy.dpe_comparables", "radius_m");
+  if (isNum(rA)) { fig.use("energy.dpe_comparables"); shapes.push(["circle", rA]); extent = Math.max(extent, rA); }
+  const tx = MK.transactions.filter(t => isNum(t.lat) && isNum(t.lon));
+  tx.forEach(t => { const [x, y] = toM(t.lon, t.lat); extent = Math.max(extent, Math.abs(x), Math.abs(y)); });
+  extent *= 1.15;
+  const W = geo ? 440 : 260, H = geo ? 320 : 200, s = Math.min(W, H) / 2 / extent, cx = W / 2, cy = H / 2, P = ([x, y]) => [cx + x * s, cy - y * s];
+  let b = `<rect x="0" y="0" width="${W}" height="${H}" fill="${css("--soft")}" rx="10"/>`;
+  shapes.forEach(sh => {
+    if (sh[0] === "rect") { const [ax, ay] = P(sh[1]), [bx, by] = P(sh[2]); b += `<rect x="${Math.min(ax, bx)}" y="${Math.min(ay, by)}" width="${Math.abs(bx - ax)}" height="${Math.abs(by - ay)}" fill="${css("--accent-soft")}" stroke="${css("--accent")}" stroke-dasharray="5 3"><title>zone de recherche des transactions</title></rect>`; }
+    else b += `<circle cx="${cx}" cy="${cy}" r="${sh[1] * s}" fill="none" stroke="${css("--c2")}" stroke-width="2"><title>rayon des DPE voisins</title></circle>`;
+  });
+  tx.forEach(t => { const [x, y] = P(toM(t.lon, t.lat)); b += `<circle cx="${x}" cy="${y}" r="5" fill="${css("--c1")}" fill-opacity=".55"><title>${esc(FORMATS.date(t.date))} : ${esc(FORMATS.sqm(t.price_per_sqm))}</title></circle>`; });
+  b += `<circle cx="${cx}" cy="${cy}" r="6" fill="${css("--nogo")}"><title>point de référence</title></circle>`;
+  const bar = 200 * s; b += `<line x1="12" x2="${12 + bar}" y1="${H - 12}" y2="${H - 12}" stroke="${css("--ink")}" stroke-width="2"/>` + T(12 + bar / 2, H - 18, "200 m", "tick", "middle") + T(W - 10, 16, "N ↑", "tick", "end");
+  return svg(W, H, b, "schéma de la zone d'étude") + `<div class="legend"><span><i style="background:${css("--nogo")};border-radius:50%"></i>actif</span><span><i style="background:${css("--accent-soft")};border:1px dashed ${css("--accent")}"></i>zone des transactions</span><span><i style="border:2px solid ${css("--c2")};border-radius:50%"></i>rayon des DPE</span></div>`;
+}
+
+// ================================================================== Q1 Prix
+function renderPrice() {
+  const gap = val("financials.price_vs_median_pct"), n = val("market.dvf_price_per_sqm", "n"), minN = val("rules.min_comparables");
+  const msg = isNum(gap)
+    ? `Le prix demandé (${fmt("financials.price_per_sqm_asked")}) est ${fmt("financials.price_vs_median_pct", { format: "pct_abs" })} ${gap >= 0 ? "au-dessus" : "en dessous"} de la médiane des ${fmt("market.dvf_price_per_sqm", { field: "n", format: "int" })} transactions comparables (${fmt("market.dvf_price_per_sqm", { field: "median", format: "sqm" })}).`
+    : `Comparaison avec les transactions non disponible ${fmt("financials.price_vs_median_pct")}.`;
+  const fig = Fig(), figY = Fig();
+  const rows = [{ label: "Transactions (toutes surfaces)", key: "market.dvf_price_per_sqm", q1: "q1", med: "median", q3: "q3", n: "n" }];
+  if (val("market.dvf_price_per_sqm", ["large_lots", "median"]) !== null)
+    rows.push({ label: "Transactions (grandes surfaces)", key: "market.dvf_price_per_sqm", q1: "large_lots.q1", med: "large_lots.median", q3: "large_lots.q3", n: "large_lots.n" });
+  Object.keys(D.datapoints).filter(k => /^market\.dvf_price_per_sqm@\d+$/.test(k)).forEach(k => rows.push({ label: `Recoupement : ${dpOf(k).source_name.split(" - ")[0]}`, key: k, med: "median", n: "n" }));
+  rows.push({ label: "Prix d'investissement bureaux", key: "market.investment_price_per_sqm", med: "last", after: true });
+  const ask = val("financials.price_per_sqm_asked");
+  const vals = rows.flatMap(r => [val(r.key, r.q1), val(r.key, r.med), val(r.key, r.q3)]).filter(isNum).concat(isNum(ask) ? [ask] : []);
+  let chart = `<p class="box na">Aucune référence de transaction collectée.</p>`;
+  if (vals.length) {
+    const hi = Math.max(...vals) * 1.15, W = 680, L = 230, R = W - 14, row = 52, top = 34, H = rows.length * row + top + 28, X = v => L + v / hi * (R - L);
+    let b = "";
+    niceTicks(0, hi, 3).forEach(t => { b += `<line class="gridl" x1="${X(t)}" x2="${X(t)}" y1="${top - 4}" y2="${H - 24}"/>` + T(X(t), H - 6, nf(t, 0), "tick", "middle"); });
+    rows.forEach((r, i) => {
+      const y = top + i * row + row / 2, q1 = val(r.key, r.q1), med = val(r.key, r.med), q3 = val(r.key, r.q3), cnt = val(r.key, r.n);
+      b += T(L - 10, y - 3, r.label, "lab", "end") + `<text x="${L - 10}" y="${y + 13}" class="tick" text-anchor="end" style="font-size:11px">${esc(r.after ? "base surface après travaux" : isNum(cnt) ? fig.n(r.key, cnt, "int") + " transactions" : "")}</text>`;
+      if (isNum(q1) && isNum(q3)) { b += `<rect x="${X(q1)}" y="${y - 9}" width="${X(q3) - X(q1)}" height="18" rx="4" fill="${css("--accent-soft")}" stroke="${css("--accent")}"><title>1er au 3e quartile : ${esc(FORMATS.sqm(q1))} à ${esc(FORMATS.sqm(q3))}</title></rect>`; fig.use(r.key); }
+      if (isNum(med)) {
+        // étiquette de la médiane posée au-dessus de la barre : elle ne touche ni le quartile ni la ligne du prix demandé
+        const xm = X(med), right = !isNum(ask) || ask <= med ? xm < R - 80 : xm < L + 80;
+        b += `<line x1="${xm}" x2="${xm}" y1="${y - 11}" y2="${y + 11}" stroke="${css("--accent")}" stroke-width="3"/>` + V(right ? xm + 4 : xm - 4, y - 14, fig.n(r.key, med, "sqm"), r.key, right ? "start" : "end", 'style="font-size:12px"');
+      } else fig.use(r.key);
+    });
+    if (isNum(ask)) {
+      const xa = X(ask), anchor = xa > R - 120 ? "end" : "middle";
+      b += `<line x1="${xa}" x2="${xa}" y1="${top - 12}" y2="${H - 24}" stroke="${css("--nogo")}" stroke-width="2" stroke-dasharray="5 3"/>` + `<text x="${xa}" y="${top - 18}" class="val" data-key="financials.price_per_sqm_asked" text-anchor="${anchor}" style="fill:${css("--nogo")}">${esc("prix demandé " + fig.n("financials.price_per_sqm_asked", ask, "sqm"))}</text>`;
+    }
+    chart = svg(W, H, b, "prix au mètre carré : prix demandé et transactions") + `<div class="legend"><span><i style="background:${css("--accent-soft")};border:1px solid ${css("--accent")}"></i>${lbl("du 1er au 3e quartile")}</span><span><i style="background:${css("--accent")}"></i>médiane</span><span><i style="background:${css("--nogo")}"></i>prix demandé (surface avant travaux)</span></div>`;
+  }
+  const byYear = MK.transactions_stats.by_year || [];
+  let years = `<p class="box na">Évolution annuelle non disponible (une seule année de transactions).</p>`;
+  if (byYear.length >= 2) {
+    figY.use("market.dvf_price_per_sqm");
+    const W = 540, H = 240, L = 64, R = W - 34, Tp = 34, B = H - 52, ms = byYear.map(y => y.median).filter(isNum);
+    const lo = Math.min(...ms) * 0.9, hi = Math.max(...ms) * 1.05, X = i => L + 36 + i / (byYear.length - 1) * (R - L - 36), Y = v => B - (v - lo) / (hi - lo) * (B - Tp);
+    let b = "";
+    niceTicks(lo, hi, 3).forEach(t => { b += `<line class="gridl" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 10, Y(t) + 4, nf(t, 0), "tick", "end"); });
+    b += `<polyline fill="none" stroke="${css("--c1")}" stroke-width="2.2" points="${byYear.map((y, i) => `${X(i)},${Y(y.median)}`).join(" ")}"/>`;
+    byYear.forEach((y, i) => {
+      if (!isNum(y.median)) return;
+      // valeurs alternées au-dessus / au-dessous du point pour ne jamais se toucher
+      const up = i === 0 || byYear[i - 1].median <= y.median || (byYear[i + 1] && byYear[i + 1].median <= y.median), ty = up ? Y(y.median) - 11 : Y(y.median) + 20;
+      b += `<circle cx="${X(i)}" cy="${Y(y.median)}" r="4" fill="${css("--c1")}"/>` + V(X(i), ty, figY.n("market.dvf_price_per_sqm", y.median, "int"), "market.dvf_price_per_sqm", "middle", 'style="font-size:12px"')
+         + T(X(i), H - 28, String(y.year), "tick", "middle") + `<text x="${X(i)}" y="${H - 12}" class="val" data-key="market.dvf_price_per_sqm" text-anchor="middle" style="font-size:11px;font-weight:500;fill:${css("--muted")}">${esc(figY.n("market.dvf_price_per_sqm", y.count, "int") + " ventes")}</text>`;
+    });
+    years = svg(W, H, b, "médiane annuelle des transactions") + figY.caption("Médiane en €/m² et nombre de ventes par année. ");
+  }
+  const low = isNum(n) && isNum(minN) && n < minN;
+  $("prix-body").innerHTML = `
+    <p class="message">${msg}</p>
+    ${low ? `<div class="box warn" role="alert"><h4>Échantillon faible</h4>Seulement ${fmt("market.dvf_price_per_sqm", { field: "n", format: "int" })} transactions, sous le seuil de ${fmt("rules.min_comparables", { format: "int" })} : confiance basse.</div>` : ""}
+    <div class="tiles">
+      <div class="tile"><div class="k">Prix demandé au m²</div><div class="val">${fmt("financials.price_per_sqm_asked", { pill: "word" })}</div><div class="t muted">base ${fmt("deal.surface_before_sqm", { format: "m2" })} avant travaux</div></div>
+      <div class="tile"><div class="k">Écart à la médiane des transactions</div><div class="val">${fmt("financials.price_vs_median_pct", { signed: true, pill: "word" })}</div></div>
+      <div class="tile"><div class="k">Fourchette de valeur indicative</div><div class="val sm">${fmt("financials.value_range.low")} à ${fmt("financials.value_range.high")}</div><div class="t muted">${lbl("1er et 3e quartiles × surface actuelle")}</div></div>
+      <div class="tile"><div class="k">Comparables retenus</div><div class="val">${fmt("market.dvf_price_per_sqm", { field: "n", format: "int", pill: "word" })}</div>${val("market.dvf_price_per_sqm@1.gap_pct") !== null ? `<div class="t">recoupement : écart ${fmt("market.dvf_price_per_sqm@1.gap_pct", { signed: true })}</div>` : ""}</div>
+    </div>
+    <div class="grid g2" style="margin-top:16px"><div><h3>Prix au m² : prix demandé et références</h3>${chart}${fig.caption()}</div>
+      <div><h3>Évolution annuelle de la médiane</h3>${years}</div></div>
+    <div class="box limits"><h4>Limites</h4><span class="prose">${term("dvf", "DVF")} ne qualifie pas parfaitement les immeubles de bureaux et une mutation peut porter sur plusieurs biens ; elle ne donne pas les loyers.
+      L'actif est décrit comme « ${fmt("deal.asset.condition")} » : une décote est attendue face à des références d'immeubles en état d'usage ou rénovés.</span></div>`;
+}
+
+// ================================================================== Q2 Loyer
+function renderRent() {
+  const fig = Fig(), figS = Fig();
+  const leases = val("deal.current_leases") || [];
+  const items = [];
+  leases.forEach((l, i) => items.push({ label: "Loyer actuel (bail en place)", key: "deal.current_leases", field: [i, "rent_eur_sqm_year"], format: "rent", color: css("--c4") }));
+  items.push({ label: "Loyer moyen de seconde main", key: "market.average_rent", format: "rent", color: css("--c1") });
+  Object.keys(D.datapoints).filter(k => /^market\.average_rent@\d+$/.test(k)).forEach(k => items.push({ label: `Loyer moyen (${dpOf(k).source_name.split(" - ")[0]})`, key: k, format: "rent", color: css("--c1") }));
+  items.push({ label: "Loyer prime du sous-marché", key: "market.prime_rent", format: "rent", color: css("--c1"), missing: "non disponible (rapports de marché non collectés)" });
+  Object.keys(D.datapoints).filter(k => /^market\.prime_rent@\d+$/.test(k)).forEach(k => items.push({ label: `Loyer prime (${dpOf(k).source_name.split(" - ")[0]})`, key: k, format: "rent", color: css("--c1") }));
+  items.push({ label: "Loyer de relocation retenu", key: "market.rents.relet_assumed", format: "rent", color: css("--ink") });
+  items.push({ label: "Loyer économique (après franchise)", key: "market.rents.effective", format: "rent", color: css("--c3") });
+  const refs = [{ key: "sensitivity.breakeven.rent.breakeven", label: "marge nulle à", format: "rent", color: css("--nogo") },
+                { key: "sensitivity.breakeven.rent.irr_target", label: "TRI à l'objectif à", format: "rent", color: css("--go") }];
+  const relet = val("market.rents.relet_assumed"), avg = val("market.average_rent");
+  const msg = isNum(relet) && isNum(avg)
+    ? `Le loyer retenu après restructuration est de ${fmt("market.rents.relet_assumed")}, ${relet > avg ? "au-dessus du" : relet < avg ? "en dessous du" : "égal au"} loyer moyen de seconde main (${fmt("market.average_rent")}) ; la marge ne s'annule qu'à ${fmt("sensitivity.breakeven.rent.breakeven")}.`
+    : `Loyer de relocation non disponible ${fmt("market.rents.relet_assumed")}.`;
+  const series = (val("market.average_rent", "series") || []).map(p => ({ date: p.period, value: p.value }));
+  $("loyer-body").innerHTML = `
+    ${keyMissingBox("market.prime_rent", "Loyer prime du sous-marché", "market.rents.relet_assumed", "rent", "rent")}
+    ${keyMissingBox("market.vacancy", "Taux de vacance du sous-marché", "params.stabilised_occupancy", "pct0", "occupancy")}
+    <p class="message">${msg}</p>
+    <div class="grid g2"><div><h3>Loyers comparés (€/m²/an)</h3>${hbars(fig, items, { refs, labelW: 250 })}${fig.caption()}</div>
+      <div><h3>Loyer moyen de seconde main du sous-marché</h3>${lineChart(figS, "market.average_rent", series, { format: "int" })}${figS.caption()}</div></div>
+    <div class="tiles" style="margin-top:12px">
+      <div class="tile"><div class="k">Position du loyer retenu entre moyen et prime</div><div class="val">${fmt("market.rents.relet_position_pct", { format: "pct0", pill: "word" })}</div><div class="t muted">${lbl("0 % = loyer moyen, 100 % = loyer prime")}</div></div>
+      <div class="tile"><div class="k">${term("franchise", "Franchise")} accordée</div><div class="val">${fmt("market.rents.incentives_months", { pill: "word" })}</div></div>
+      <div class="tile"><div class="k">Loyer économique</div><div class="val">${fmt("market.rents.effective", { pill: "word" })}</div></div>
+    </div>
+    <div class="minis">${sweepChart("sensitivity.sweep.relet_rent", "Effet sur la marge : loyer retenu", "rent", "engine.inputs.relet_rent")}${sweepChart("sensitivity.sweep.rent_free_months", "Effet sur la marge : franchise", "months", "params.rent_free_months")}</div>
+    <div class="box hyp"><h4>Justification du loyer retenu (hypothèse)</h4><span class="prose">${fmt("market.rents.relet_assumed", { show: "notes" })}<br>Franchise : ${fmt("market.rents.incentives_months", { show: "notes" })}</span></div>`;
+}
+
+// ================================================================== contexte de marché (replié)
+function renderMarket() {
+  const card = (title, key, series, fmtName, extra = "", refs = []) => { const f = Fig(); return `<div class="card"><h3>${title}</h3>${lineChart(f, key, series, { w: 460, h: 210, format: fmtName, refs })}${extra}${f.caption()}</div>`; };
+  const ser = key => (val(key, "series") || []).map(p => ({ date: p.period, value: p.value }));
+  const eurib = card(lbl("Euribor 3 mois"), "rates.euribor_3m", ser("rates.euribor_3m"), "pct2",
+    `<p class="small">Dernière valeur ${fmt("rates.euribor_3m", { format: "pct2" })} ; ${lbl("moyenne sur 12 mois")} ${fmt("rates.euribor_3m", { field: "avg_12m", format: "pct2" })} ; hypothèse centrale du modèle ${fmt("params.euribor", { format: "pct2" })}.</p>`,
+    [{ key: "params.euribor", value: val("params.euribor"), label: "hypothèse centrale", color: css("--c2") }]);
+  const ilat = card(term("ilat", "ILAT"), "index.ilat", ser("index.ilat"), "dec1", `<p class="small">Variation sur un an : ${fmt("index.ilat", { field: "yoy", format: "pct", signed: true })}.</p>`);
+  const takeup = card("Demande placée (m², par trimestre)", "market.take_up", ser("market.take_up"), "int", `<p class="small">Dernier trimestre ${fmt("market.take_up", { format: "m2" })}, ${fmt("market.take_up", { field: "yoy", format: "pct", signed: true })} sur un an.</p>`);
+  const supply = card("Offre immédiate (m²)", "market.immediate_supply", ser("market.immediate_supply"), "int", `<p class="small">Dernière valeur ${fmt("market.immediate_supply", { format: "m2" })}, ${fmt("market.immediate_supply", { field: "yoy", format: "pct", signed: true })} sur un an.</p>`);
+  const dist = MK.dpe_comparables.distribution, figD = Fig(); figD.use("energy.dpe_comparables");
+  const classes = "ABCDEFG".split(""), counts = classes.map(c => dist[c]), maxc = Math.max(1, ...counts.filter(isNum));
+  const cur = val("deal.dpe_current"), tgt = val("deal.dpe_target");
+  let db = ""; const W = 460, H = 210, L = 30, R = W - 10, B = H - 46, bw = (R - L) / 7;
+  classes.forEach((c, i) => {
+    const v = counts[i], x = L + i * bw + bw * 0.18, w = bw * 0.64, hh = isNum(v) ? v / maxc * (B - 30) : 0;
+    db += `<rect x="${x}" y="${B - hh}" width="${w}" height="${hh}" rx="3" fill="${css("--c1")}" fill-opacity=".75"/>` + T(x + w / 2, B + 16, c, "lab", "middle", 'style="font-weight:700"');
+    if (isNum(v)) db += V(x + w / 2, B - hh - 5, figD.n("energy.dpe_comparables", v, "int"), "energy.dpe_comparables", "middle");
+    if (c === cur) db += T(x + w / 2, B + 32, "▼ actuel", "lab", "middle", `style="fill:${css("--nogo")};font-weight:600"`);
+    if (c === tgt) db += T(x + w / 2, B + 32, "▲ visé", "lab", "middle", `style="fill:${css("--go")};font-weight:600"`);
+  });
+  const dpeCard = `<div class="card"><h3>Classes ${term("dpe", "DPE")} des bureaux voisins</h3>${svg(W, H, db, "distribution des classes DPE")}
+    <p class="small">${fmt("energy.dpe_comparables", { field: "n_with_label", format: "int" })} DPE classés sur ${fmt("energy.dpe_comparables", { field: "n_dpe", format: "int" })} dans le rayon d'étude. Actif : ${fmt("deal.dpe_current")} aujourd'hui, objectif ${fmt("deal.dpe_target")}.</p>
+    <p class="box warn small">Base non représentative du parc : seuls les bâtiments ayant fait un DPE tertiaire récent y figurent.</p>${figD.caption()}</div>`;
+  const yields = `<div class="card"><h3>Rendements</h3><p>Taux de rendement prime : ${fmt("market.prime_yield", { format: "pct2" })}<br>Taux de sortie retenu : ${fmt("market.yields.exit_assumed", { format: "pct2" })}</p></div>`;
+  const sd = `<div class="card"><h3>Offre et demande</h3><p>Taux de vacance : ${fmt("market.vacancy", { format: "pct" })}<br>Offre future : ${fmt("market.future_supply", { format: "m2" })}<br>${lbl("Demande placée sur 12 mois")} : ${fmt("market.take_up", { field: "rolling_12m", format: "m2" })}</p></div>`;
+  const plu = `<div class="card"><h3>Urbanisme (PLU)</h3><p>Zonage : ${fmt("market.plu.zone")}<br>Hauteur maximale constructible : ${fmt("urbanism.plu_constraints", { field: "max_height", format: "dec" })}<br>
+    Bâtiments protégés à proximité : ${fmt("urbanism.protected_buildings", { field: "count", format: "int" })}<br>Contraintes patrimoniales : ${fmt("market.plu.heritage_constraints")}<br>Faisabilité du rooftop et de l'extension : ${fmt("market.plu.rooftop_extension_notes")}</p></div>`;
+  $("marche-body").innerHTML = fold("marche-detail", "Contexte de marché",
+    `${lbl("Euribor 3 mois")} ${fmt("rates.euribor_3m", { format: "pct2" })} · offre immédiate ${fmt("market.immediate_supply", { field: "yoy", format: "pct", signed: true })} sur un an · prix d'investissement ${fmt("market.investment_price_per_sqm", { field: "yoy", format: "pct", signed: true })} sur un an`,
+    `<div class="grid g3">${eurib}${takeup}${supply}${ilat}${dpeCard}${yields}${sd}${plu}</div>`);
+}
+
+// ================================================================== Q3 Coût et valeur
+function renderCost() {
+  const tc = FIN.total_cost, fig = Fig(), fig2 = Fig();
+  if (!isNum(tc.total)) { $("cout-body").innerHTML = `<p class="box na">Coût total non disponible : modèle financier incomplet ${fmt("financials.total_cost.total")}.</p>`; return; }
+  const steps = [["Prix d'acquisition", "acquisition"], ["Frais d'acquisition", "fees"], ["Travaux", "works"], ["Honoraires et aléas", "contingency"],
+                 ["Frais financiers", "financing_costs"], ["Portage et commercialisation", "other"]];
+  const W = 1100, H = 350, L = 46, R = W - 10, Tp = 28, B = H - 64, n = steps.length + 3, gap = (R - L) / n, bw = gap * 0.66;
+  const ev = FIN.exit_value, m = FIN.margin_eur, hi = Math.max(tc.total, ev || 0) * 1.1, Y = v => B - v / hi * (B - Tp);
+  let b = "", cum = 0;
+  niceTicks(0, hi, 4).forEach(t => { b += `<line class="gridl" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 6, Y(t) + 4, nf(t / 1e6, 0), "tick", "end"); });
+  const bar = (i, y0, y1, color, label, key, fmtName = "meur") => {
+    const x = L + i * gap + (gap - bw) / 2, v = val(key);
+    b += `<rect x="${x}" y="${Y(Math.max(y0, y1))}" width="${bw}" height="${Math.max(1, Math.abs(Y(y0) - Y(y1)))}" fill="${color}" rx="3"><title>${esc(label)}</title></rect>`;
+    b += V(x + bw / 2, Y(Math.max(y0, y1)) - 7, fig.n(key, v, fmtName), key, "middle", negStyle(v));
+    const words = label.split(" "); let line = "", ly = B + 16;
+    words.forEach(w => { if (line && (line + " " + w).length > 14) { b += T(x + bw / 2, ly, line.trim(), "lab", "middle"); ly += 14; line = w; } else line += " " + w; });
+    b += T(x + bw / 2, ly, line.trim(), "lab", "middle");
+  };
+  steps.forEach(([lab, k], i) => { const v = tc[k] || 0; bar(i, cum, cum + v, i === 0 ? css("--c3") : css("--c2"), lab, `financials.total_cost.${k}`); cum += v; });
+  bar(steps.length, 0, tc.total, css("--ink"), "Coût total", "financials.total_cost.total");
+  if (isNum(ev)) bar(steps.length + 1, 0, ev, css("--c1"), "Valeur nette de sortie", "financials.exit_value");
+  if (isNum(m) && isNum(ev)) bar(steps.length + 2, Math.min(ev, tc.total), Math.max(ev, tc.total), m < 0 ? css("--neg") : css("--pos"), m < 0 ? "Perte" : "Marge", "financials.margin_eur");
+  b += T(L, 14, "M€", "tick");
+  const per = val("financials.total_cost.per_sqm_after"), inv = val("market.investment_price_per_sqm");
+  $("cout-body").innerHTML = `
+    <p class="message">Le coût total atteint ${fmt("financials.total_cost.total")}, soit ${fmt("financials.total_cost.per_sqm_after")} sur ${fmt("deal.surface_after_sqm", { format: "m2" })} après travaux, pour une valeur nette de sortie de ${fmt("financials.exit_value")} : ${isNum(m) && m < 0 ? "perte" : "marge"} de ${fmt("financials.margin_eur", { format: "meur_abs" })} (${fmt("financials.margin_pct")} du coût total).</p>
+    ${svg(W, H, b, "cascade : du prix d'acquisition au coût total, puis valeur de sortie et marge")}${fig.caption()}
+    <h3>Coût au m² face à la valeur des bureaux du secteur</h3>
+    ${hbars(fig2, [{ label: "Coût total au m² (après travaux)", key: "financials.total_cost.per_sqm_after", format: "sqm", color: css("--ink") },
+                  { label: "Prix d'investissement bureaux du sous-marché", key: "market.investment_price_per_sqm", format: "sqm", color: css("--c4") }], { labelW: 330, w: 1100, row: 34 })}
+    ${fig2.caption()}
+    <p class="small prose">Bases de surface : coût et prix au m² rapportés à ${fmt("deal.surface_after_sqm", { format: "m2" })} après travaux ; prix demandé au m² rapporté à ${fmt("deal.surface_before_sqm", { format: "m2" })} avant travaux. La valeur d'un immeuble <em>restructuré</em> du secteur n'est pas disponible : la référence est le prix moyen d'investissement des bureaux, toutes qualités confondues ${isNum(per) && isNum(inv) ? (per > inv ? "(le coût la dépasse)" : "(le coût reste en dessous)") : ""}.</p>`;
+}
+
+// ================================================================== Q4 Rentabilité
+function tile(label, key, targetKey, opts = {}) {
+  const v = val(key), t = targetKey ? val(targetKey) : null, ok = isNum(v) && isNum(t) ? v >= t : null;
+  return `<div class="tile"><div class="k">${label}</div><div class="val">${fmt(key, Object.assign({ pill: "word" }, opts))}</div>
+    ${targetKey ? `<div class="t"><span class="${ok === null ? "" : ok ? "ok status-ok" : "ko status-ko"}">${ok === null ? "comparaison impossible" : ok ? "conforme" : "en dessous"}</span> · objectif ${fmt(targetKey, opts)}</div>` : ""}</div>`;
+}
+function renderReturns() {
+  const fig = Fig(), figC = Fig();
+  const yoc = val("financials.yoc_pct"), rate = val("market.rates.debt_rate_all_in"), spread = val("financials.spread_bps");
+  const msg = isNum(spread)
+    ? `Le ${term("yoc", "yield on cost")} (${fmt("financials.yoc_pct", { format: "pct2" })}) ${spread >= 0 ? "dépasse" : "est inférieur au"} ${term("exit", "taux de sortie")} (${fmt("market.yields.exit_assumed", { format: "pct2" })}) : ${term("spread", "spread")} de ${fmt("financials.spread_bps")} pour un minimum de ${fmt("targets.min_spread_vs_exit_bps")}${targetNote()}. Face à un coût de la dette de ${fmt("market.rates.debt_rate_all_in", { format: "pct2" })}, ${isNum(yoc) && isNum(rate) && yoc < rate ? "l'effet de levier est négatif : la dette coûte plus que l'opération ne rapporte." : "l'effet de levier est positif."}`
+    : `Rentabilité non disponible ${fmt("financials.yoc_pct")}.`;
+  const g = hbars(fig, [{ label: "Yield on cost", key: "financials.yoc_pct", format: "pct2", color: css("--ink") },
+                        { label: "Taux de sortie", key: "market.yields.exit_assumed", format: "pct2", color: css("--c1") },
+                        { label: "Coût de la dette", key: "market.rates.debt_rate_all_in", format: "pct2", color: css("--c2") }], { labelW: 170, w: 560 });
+  const cf = FIN.cashflows || [];
+  let cfChart = `<p class="box na">Flux non disponibles.</p>`;
+  if (cf.length) {
+    figC.use("financials.cashflows");
+    const W = 900, H = 250, L = 56, R = W - 10, Tp = 16, B = H - 36, vals = cf.flatMap(c => [c.net, c.debt_draw]).filter(isNum);
+    const lo = Math.min(0, ...vals) * 1.1, hi = Math.max(0, ...vals) * 1.1, Y = v => B - (v - lo) / (hi - lo) * (B - Tp), gw = (R - L) / cf.length;
+    let b = "";
+    niceTicks(lo, hi, 4).forEach(t => { b += `<line class="gridl" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 6, Y(t) + 4, nf(t / 1e6, 0), "tick", "end"); });
+    b += `<line class="axis" x1="${L}" x2="${R}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+    cf.forEach((c, i) => {
+      const x = L + i * gw + gw * 0.15, w = gw * 0.34;
+      [[c.net, c.net < 0 ? css("--neg") : css("--pos"), "flux net du projet"], [c.debt_draw, css("--c4"), "tirage de dette"]].forEach(([v, col, lab], j) => {
+        if (!isNum(v)) return; b += `<rect x="${x + j * (w + 2)}" y="${Y(Math.max(0, v))}" width="${w}" height="${Math.max(0.5, Math.abs(Y(v) - Y(0)))}" fill="${col}"><title>${esc(c.period)}, ${lab} : ${esc(figC.n("financials.cashflows", v, "meur"))}</title></rect>`; });
+    });
+    spacedLabels(cf.map((c, i) => ({ x: L + i * gw + gw * 0.5, t: c.period.replace("-", " ") })), 16, 6.5).forEach(it => { b += T(it.x, H - 14, it.t, "tick", it.anchor, 'style="font-size:11px"'); });
+    b += T(L, 10, "M€", "tick");
+    cfChart = svg(W, H, b, "flux trimestriels") + `<div class="legend"><span><i style="background:${css("--neg")}"></i>flux net négatif (apports)</span><span><i style="background:${css("--pos")}"></i>flux net positif</span><span><i style="background:${css("--c4")}"></i>tirage de dette</span></div>`;
+  }
+  $("rentabilite-body").innerHTML = `
+    ${keyMissingBox("market.prime_yield", "Taux de rendement prime", "params.exit_yield", "pct2", "exit_yield")}
+    <p class="message">${msg}</p>
+    <div class="grid g2"><div><h3>Rendement sur coût, taux de sortie et coût de la dette</h3>${g}${fig.caption()}</div>
+      <div><h3>Contexte de taux</h3><p>${lbl("Euribor 3 mois")} : ${fmt("rates.euribor_3m", { format: "pct2", pill: "word" })}<br>Marge bancaire : ${fmt("deal.debt_margin_bps", { format: "bps", pill: "word" })}<br>Coût de la dette tout compris : ${fmt("market.rates.debt_rate_all_in", { format: "pct2", pill: "word" })}<br>
+      Hypothèse centrale du modèle : Euribor constant à ${fmt("params.euribor", { format: "pct2", pill: "word" })}.</p></div></div>
+    <h3>Indicateurs face aux objectifs du fonds ${targetNote()}</h3>
+    <div class="tiles">
+      ${tile(term("tri", "TRI projet") + " (sans dette)", "financials.irr_project")}
+      ${tile(term("tri", "TRI fonds propres"), "financials.irr_equity", "targets.min_levered_irr_pct")}
+      ${tile(term("multiple", "Multiple des fonds propres"), "financials.equity_multiple", "targets.min_equity_multiple")}
+      ${tile(term("marge", "Marge sur coût"), "financials.margin_pct", "targets.min_margin_on_cost_pct")}
+      ${tile("Marge en euros", "financials.margin_eur")}
+      ${tile("Besoin maximal en fonds propres", "financials.peak_equity")}
+    </div>
+    <div class="minis">${sweepChart("sensitivity.sweep.exit_yield", "Effet sur la marge : taux de sortie", "pct2", "params.exit_yield")}</div>
+    ${fold("flux-detail", "Flux de trésorerie trimestriels", `besoin maximal en fonds propres ${fmt("financials.peak_equity")}`, cfChart + figC.caption())}`;
+}
+
+// ================================================================== Q5 Sensibilités (+ grilles et simulateur repliés)
+let tornadoMetric = "margin_pct", heatMetric = "margin_pct";
+const BETTER_HIGH = { relet_rent: true, stabilised_occupancy: true };
+function renderSensitivity() {
+  const be = SENS.breakeven || [];
+  const beRows = be.map(b => {
+    const unitFmt = b.unit === "€/m²/an" ? "rent" : b.unit === "€/m²" ? "sqm" : b.unit === "fraction" ? "pct2" : b.unit === "mois" ? "months" : "dec";
+    const field = ((SENS.engine_params.variables || {})[b.variable] || { pessimistic: [{}] }).pessimistic[0].field;
+    const up = BETTER_HIGH[field] === true, bev = val(`sensitivity.breakeven.${b.variable}.breakeven`);
+    const reading = !isNum(bev) ? "la marge ne change pas de signe sur la plage testée"
+      : b.unit === "mois" ? `marge nulle au-delà de ${fmt(`sensitivity.breakeven.${b.variable}.breakeven`, { format: "months_signed" })} de délai`
+      : `l'opération devient rentable ${up ? "au-dessus" : "en dessous"} de ${fmt(`sensitivity.breakeven.${b.variable}.breakeven`, { format: unitFmt })}`;
+    return `<tr><td>${lbl(b.label.split(" (")[0])}</td><td class="r">${b.unit === "mois" ? "central" : fmt(`sensitivity.breakeven.${b.variable}.base`, { format: unitFmt })}</td><td>${reading}</td>
+      <td class="r">${fmt(`sensitivity.breakeven.${b.variable}.irr_target`, { format: b.unit === "mois" ? "months_signed" : unitFmt })}</td></tr>`;
+  }).join("");
+  const tk = "sensitivity.tornado.margin_pct", tarr = val(tk) || [], top = sortedTornado("margin_pct")[0], ti = tarr.indexOf(top);
+  const msg = top ? `L'hypothèse la plus déterminante pour la marge est « ${lbl(top.label)} » : ${fmt(tk, { field: [ti, "delta_low"], format: "pts" })} de marge si elle se dégrade, ${fmt(tk, { field: [ti, "delta_high"], format: "pts" })} si elle s'améliore.` : `Sensibilités non disponibles ${fmt(tk)}.`;
+  const tm = val("targets.min_margin_on_cost_pct"), mm = (SENS.heatmaps || []).filter(h => h.metric === "margin_pct");
+  const anyReach = isNum(tm) && mm.some(h => h.z.flat().some(v => isNum(v) && v >= tm));
+  const heatSummary = !mm.length ? "non disponibles" : anyReach ? "certaines combinaisons atteignent l'objectif de marge" : `aucune combinaison testée n'atteint l'objectif de marge de ${fmt("targets.min_margin_on_cost_pct")}`;
+  $("sensibilites-body").innerHTML = `
+    <p class="message">${msg}</p>
+    <div class="grid g2">
+      <div><h3>Effet de chaque hypothèse prise seule
+        <span class="seg" role="group" aria-label="Indicateur du tornado"><button type="button" data-m="margin_pct" aria-pressed="true">marge</button><button type="button" data-m="irr_equity" aria-pressed="false">TRI fonds propres</button></span></h3>
+        <div id="tornado"></div></div>
+      <div><h3>Seuils de bascule</h3><table><thead><tr><th>Hypothèse</th><th class="r">Central</th><th>Lecture</th><th class="r">TRI à l'objectif à</th></tr></thead><tbody>${beRows}</tbody></table>
+        <p class="small muted">Valeur de l'hypothèse, les autres restant au central, pour laquelle la marge s'annule ou le TRI fonds propres atteint l'objectif du fonds.</p></div>
+    </div>
+    ${fold("grilles-detail", "Grilles croisées", heatSummary, `<p><span class="seg" role="group" aria-label="Indicateur des grilles" style="margin-left:0"><button type="button" data-h="margin_pct" aria-pressed="true">marge</button><button type="button" data-h="irr_equity" aria-pressed="false">TRI fonds propres</button></span></p><div class="grid g2" id="heatmaps"></div>`)}
+    ${fold("simulateur", "Simulateur", `faire varier les hypothèses ; au central, marge ${fmt("financials.margin_pct")}`, `<div id="sim-panel"></div>`)}`;
+  document.querySelectorAll("#sensibilites-body [data-m]").forEach(b => b.addEventListener("click", () => { tornadoMetric = b.dataset.m; document.querySelectorAll("#sensibilites-body [data-m]").forEach(x => x.setAttribute("aria-pressed", x === b)); safe(drawTornado, "tornado"); }));
+  document.querySelectorAll("#sensibilites-body [data-h]").forEach(b => b.addEventListener("click", () => { heatMetric = b.dataset.h; document.querySelectorAll("#sensibilites-body [data-h]").forEach(x => x.setAttribute("aria-pressed", x === b)); safe(drawHeatmaps, "heatmaps"); }));
+  safe(drawTornado, "tornado"); safe(drawHeatmaps, "heatmaps"); safe(setupSimulator, "sim-panel");
+}
+function drawTornado() {
+  const key = `sensitivity.tornado.${tornadoMetric}`, rows = sortedTornado(tornadoMetric), all = val(key) || [], fig = Fig();
+  if (!rows.length) { $("tornado").innerHTML = `<p class="box na">Sensibilités non disponibles ${fmt(key)}.</p>`; return; }
+  const m = Math.max(...rows.flatMap(r => [Math.abs(r.delta_low), Math.abs(r.delta_high)]).filter(isNum)) * 1.3 || 1;
+  const W = 640, L = 230, R = W - 12, row = 32, H = rows.length * row + 40, X = v => L + (v + m) / (2 * m) * (R - L);
+  let b = `<line class="axis" x1="${X(0)}" x2="${X(0)}" y1="0" y2="${H - 26}"/>`;
+  niceTicks(-m, m, 4).forEach(t => { b += T(X(t), H - 8, (t > 0 ? "+" : "") + nf(t, 0), "tick", "middle"); });
+  rows.forEach((r, i) => {
+    const y = 6 + i * row;
+    b += T(L - 8, y + row / 2 + 2, r.label, "lab", "end");
+    [[r.delta_low, css("--neg"), "pessimistic", "pessimiste"], [r.delta_high, css("--pos"), "optimistic", "optimiste"]].forEach(([v, col, side, lab]) => {
+      if (!isNum(v)) return;
+      const a = Math.min(X(0), X(v)), w = Math.max(1, Math.abs(X(v) - X(0))), txt = fig.n(key, v, "pts");
+      b += `<rect x="${a}" y="${y + 6}" width="${w}" height="${row - 13}" fill="${col}" rx="3" class="clickable" tabindex="0" role="button" data-var="${esc(r.variable)}" data-side="${side}" aria-label="${esc(r.label + ", hypothèse " + lab + " : " + txt + " ; appliquer au simulateur")}"><title>${esc(r.label)}, ${lab} : ${esc(txt)} (cliquer : appliquer au simulateur)</title></rect>`;
+      b += V(v >= 0 ? X(v) + 4 : X(v) - 4, y + row / 2 + 2, txt, key, v >= 0 ? "start" : "end", `style="font-size:11.5px;${v < 0 ? "fill:" + css("--neg") : ""}"`);
+    });
+  });
+  $("tornado").innerHTML = svg(W, H, b, "tornado des sensibilités") + `<div class="legend"><span><i style="background:${css("--pos")}"></i>hypothèse optimiste</span><span><i style="background:${css("--neg")}"></i>hypothèse pessimiste</span><span>en points ; cliquer une barre l'applique au simulateur</span></div>`
+    + (tornadoMetric === "irr_equity" ? `<p class="small muted">Sur une opération déficitaire, le TRI réagit de façon très non linéaire : le classement par la marge est plus lisible.</p>` : "") + fig.caption();
+  document.querySelectorAll("#tornado [data-var]").forEach(el => { const go = () => applyVariableToSliders(el.dataset.var, el.dataset.side); el.addEventListener("click", go); el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }); });
+}
+// E13 : échelle divergente centrée sur l'objectif du fonds ; message clair si aucune case ne l'atteint
+function drawHeatmaps() {
+  const maps = (SENS.heatmaps || []).filter(h => h.metric === heatMetric);
+  const tgtKey = heatMetric === "margin_pct" ? "targets.min_margin_on_cost_pct" : "targets.min_levered_irr_pct", tgt = val(tgtKey);
+  if (!maps.length) { $("heatmaps").innerHTML = `<p class="box na">Grilles non disponibles.</p>`; return; }
+  if (!isNum(tgt)) { $("heatmaps").innerHTML = `<p class="box na">Objectif du fonds non disponible ${fmt(tgtKey)} : échelle centrée impossible.</p>`; return; }
+  $("heatmaps").innerHTML = maps.map(h => {
+    const key = `sensitivity.heatmaps.${h.id}`, fig = Fig(); fig.use(tgtKey);
+    const cells = h.z.flat().filter(isNum);
+    const spanUp = Math.max(1e-6, ...cells.filter(v => v >= tgt).map(v => v - tgt)), spanDown = Math.max(1e-6, ...cells.filter(v => v < tgt).map(v => tgt - v));
+    const shade = v => { if (!isNum(v)) return [css("--soft"), "#1b1f24"]; const t = Math.min(1, Math.max(0.15, Math.abs(v - tgt) / (v >= tgt ? spanUp : spanDown)));
+      return v >= tgt ? [`rgba(29,106,67,${(0.2 + 0.7 * t).toFixed(3)})`, t > 0.55 ? "#ffffff" : "#1b1f24"] : [`rgba(173,54,54,${(0.1 + 0.8 * t).toFixed(3)})`, t > 0.55 ? "#ffffff" : "#1b1f24"]; };
+    const reach = cells.some(v => v >= tgt);
+    const flat = h.z.flat(), best = cells.length ? Math.max(...cells) : null, bi = flat.indexOf(best), bj = Math.floor(bi / h.x_values.length), bx = bi % h.x_values.length;
+    const xs = h.x_values, ys = h.y_values, W = 580, L = 84, Tp = 6, cw = (W - L - 8) / xs.length, ch = 32, H = ys.length * ch + 60;
+    const isMult = h.x_label.includes("x"), fx = v => isMult ? "×" + nf(v, 2) : nf(v, 2);
+    const fy = v => h.y_label.includes("points") ? (v > 0 ? "+" : "") + nf(v * 100, 2) + " pt" : (v > 0 ? "+" : "") + nf(v, 0);
+    let b = "";
+    ys.forEach((yv, j) => {
+      b += T(L - 6, Tp + j * ch + ch / 2 + 4, fy(yv), "tick", "end");
+      xs.forEach((xv, i) => {
+        const v = h.z[j][i], central = Math.abs(xv - (isMult ? 1 : 0)) < 1e-9 && Math.abs(yv) < 1e-9, txt = isNum(v) ? fig.n(key, v, "pct0") : "–", [bg, ink] = shade(v);
+        b += `<rect x="${L + i * cw}" y="${Tp + j * ch}" width="${cw - 2}" height="${ch - 2}" rx="3" fill="${bg}" ${central ? `stroke="${css("--ink")}" stroke-width="2.5"` : ""}><title>${esc(h.x_label)} ${fx(xv)} ; ${esc(h.y_label)} ${fy(yv)} : ${isNum(v) ? esc(txt) : "non calculable"}${isNum(v) && v >= tgt ? " (objectif atteint)" : ""}${central ? " (scénario central)" : ""}</title></rect>`;
+        b += `<text x="${L + i * cw + (cw - 2) / 2}" y="${Tp + j * ch + ch / 2 + 4}" class="val" data-key="${esc(key)}" text-anchor="middle" style="font-size:11px;font-weight:${isNum(v) && v >= tgt ? 700 : 500};fill:${ink}">${esc((isNum(v) && v >= tgt ? "✓" : "") + (isNum(v) ? txt.replace(" %", "") : "–"))}</text>`;
+      });
+    });
+    xs.forEach((xv, i) => { b += T(L + i * cw + cw / 2, Tp + ys.length * ch + 16, fx(xv), "tick", "middle"); });
+    b += T(L + (W - L) / 2, H - 6, h.x_label, "lab", "middle");
+    const msg = reach ? "" : `<p class="box warn small" role="note">Aucune combinaison de cette grille n'atteint l'objectif de ${fmt(tgtKey)}. Meilleure case : ${fmt(key, { field: [bj, bx], format: "pct" })} (${lbl(h.x_label + " " + fx(xs[bx]) + ", " + h.y_label + " " + fy(ys[bj]))}).</p>`;
+    return `<div class="card"><h3 class="small">${lbl(h.y_label)} (lignes) × ${lbl(h.x_label)} (colonnes), en %</h3>${msg}${svg(W, H, b, "grille " + h.x_label + " par " + h.y_label)}${fig.caption()}</div>`;
+  }).join("") + `<div class="legend" style="grid-column:1/-1"><span><i style="background:rgba(29,106,67,.8)"></i>✓ objectif atteint (${fmt(tgtKey)})</span><span><i style="background:rgba(173,54,54,.8)"></i>sous l'objectif : couleur d'autant plus foncée que l'écart est grand</span><span>case encadrée : scénario central</span></div>`;
+}
+
+// ================================================================== simulateur (section 7) : moteur JS embarqué
+const SIM = [];
+const OUTPUTS = [
+  ["noi_stabilized", "Revenu net stabilisé (NOI)", "meur", null, r => r.revenue.noi_stabilised],
+  ["yoc_pct", "Yield on cost", "pct2", null, r => r.profitability.yield_on_cost],
+  ["spread_bps", "Spread", "bps", "targets.min_spread_vs_exit_bps", r => r.profitability.spread_bps],
+  ["exit_value", "Valeur nette de sortie", "meur", null, r => r.exit.net_value],
+  ["margin_eur", "Marge (€)", "meur", null, r => r.profitability.margin],
+  ["margin_pct", "Marge sur coût", "pct", "targets.min_margin_on_cost_pct", r => r.profitability.margin_on_cost],
+  ["irr_project", "TRI projet", "pct", null, r => r.returns.unlevered_irr],
+  ["irr_equity", "TRI fonds propres", "pct", "targets.min_levered_irr_pct", r => r.returns.levered_irr],
+  ["equity_multiple", "Multiple des fonds propres", "mult", "targets.min_equity_multiple", r => r.returns.equity_multiple],
+];
+function sliderGeometry(s, base) {
+  const c = base[s.field];
+  if (s.kind === "abs_pts") return { lo: Math.ceil(Math.round((s.min - c) * 1e6) / 1e4), hi: Math.floor(Math.round((s.max - c) * 1e6) / 1e4), step: s.step };
+  if (s.kind === "abs_int") return { lo: s.min - c, hi: s.max - c, step: s.step };
+  return { lo: s.min, hi: s.max, step: s.step };
+}
+function sliderChanges(s, k) {
+  if (k === 0) return [];
+  const ch = s.kind === "mult_pct" ? [{ field: s.field, op: "mult", value: 1 + k / 100 }] : s.kind === "add_bps" ? [{ field: s.field, op: "add", value: k / 10000 }]
+    : s.kind === "abs_pts" ? [{ field: s.field, op: "add", value: k / 100 }] : [{ field: s.field, op: "add", value: k }];
+  if (s.shift_exit) ch.push({ field: "exit_date", op: "add_months", value: k });
+  return ch;
+}
+function sliderShow(s, base, k) {
+  const c = base[s.field];
+  const v = s.kind === "mult_pct" ? c * (1 + k / 100) : s.kind === "add_bps" ? c + k / 10000 : s.kind === "abs_pts" ? c + k / 100 : c + k;
+  const f = s.field === "relet_rent" ? FORMATS.rent : s.field === "capex_per_sqm" ? FORMATS.sqm : s.field === "price" ? FORMATS.meur
+    : ["exit_yield", "euribor"].includes(s.field) ? FORMATS.pct2 : s.field === "stabilised_occupancy" ? FORMATS.pct0 : FORMATS.months;
+  const d = s.kind === "mult_pct" ? ` (${sign(k)}${k} %)` : s.kind === "add_bps" ? ` (${sign(k)}${k} pb)` : s.kind === "abs_pts" ? ` (${sign(k)}${k} pt)` : k ? ` (${sign(k)}${k} mois)` : "";
+  return f(v) + (k ? d : "");
+}
+const cfgVal = text => `<span class="v"><span class="num">${esc(text)}</span>${pill("dashboard.sliders")}</span>`;
+const simVal = text => `<span class="v is-sim"><span class="num">${esc(text)}</span>${pill("sim.inputs")}</span>`;
+const centralFormat = f => ({ relet_rent: "rent", capex_per_sqm: "sqm", price: "meur", exit_yield: "pct2", euribor: "pct2", stabilised_occupancy: "pct0" })[f] || "months";
+function setupSimulator() {
+  const ep = SENS.engine_params || {};
+  if (!ep.inputs || !E || !(ep.sliders || []).length) { $("sim-panel").innerHTML = `<p class="box na">Simulateur indisponible : entrées du moteur absentes (modèle incomplet).</p>`; return; }
+  const base = E.prepare(ep.inputs);
+  D.datapoints["sim.inputs"] = { key: "sim.inputs", label: "position des curseurs", value: null, unit: null, source_name: "Simulateur du dashboard (saisie de l'utilisateur)", source_url: null, data_date: null, retrieved_at: null, method: "sim", status: "ok", confidence: "high", notes: "valeur choisie avec le curseur ; le scénario central est la position 0" };
+  ep.sliders.forEach(s => SIM.push(Object.assign({}, s, sliderGeometry(s, base))));
+  $("sim-panel").innerHTML = `<p class="small muted prose">Moteur de calcul embarqué : port fidèle du moteur Python, vérifié par un test de non-régression. La décision officielle n'est pas recalculée ; le simulateur indique seulement si chaque indicateur atteint son objectif.</p>
+    <div class="sim"><div>${SIM.map(s => `<div class="slider" id="sl-${esc(s.id)}"><label for="s-${esc(s.id)}"><span>${lbl(s.label)}</span><b id="v-${esc(s.id)}"></b></label>
+      <input type="range" id="s-${esc(s.id)}" min="${s.lo}" max="${s.hi}" step="${s.step}" value="0">
+      <div class="range"><span>${cfgVal(sliderShow(s, base, s.lo))}</span><span>central ${fmt("engine.inputs." + s.field, { format: centralFormat(s.field) })}</span><span>${cfgVal(sliderShow(s, base, s.hi))}</span></div></div>`).join("")}</div>
+    <div><div id="sim-out" aria-live="polite"></div><button type="button" class="btn" id="sim-reset">Réinitialiser (scénario central)</button></div></div>`;
+  SIM.forEach(s => $("s-" + s.id).addEventListener("input", scheduleSim));
+  const reset = () => { SIM.forEach(s => { $("s-" + s.id).value = 0; }); runSim(); };
+  $("sim-reset").addEventListener("click", reset); $("modified-reset").addEventListener("click", reset);
+  runSim();
+}
+let simTimer = null;
+function scheduleSim() { clearTimeout(simTimer); simTimer = setTimeout(runSim, 40); }
+function runSim() {
+  const ep = SENS.engine_params, base = E.prepare(ep.inputs);
+  let modified = false;
+  const changes = SIM.flatMap(s => { const k = +$("s-" + s.id).value; $("v-" + s.id).innerHTML = simVal(sliderShow(s, base, k)); $("sl-" + s.id).classList.toggle("changed", k !== 0); if (k) modified = true; return sliderChanges(s, k); });
+  $("modified-banner").hidden = !modified;                     // A2 : visible seulement si un curseur s'écarte du central
+  let html;
+  try {
+    const r = E.runModel(changes.length ? E.applyChanges(base, changes) : base);
+    const note = changes.length ? "curseurs : " + SIM.filter(s => +$("s-" + s.id).value).map(s => `${s.label} ${sliderShow(s, base, +$("s-" + s.id).value)}`).join(" ; ") : "scénario central";
+    OUTPUTS.forEach(([id, label, , , get]) => { D.datapoints["sim." + id] = { key: "sim." + id, label: label + " (simulé)", value: get(r), unit: null, source_name: "Simulateur du dashboard (moteur embarqué)", source_url: null, data_date: null, retrieved_at: null, method: "sim", status: get(r) === null ? "missing" : "ok", confidence: "high", notes: note }; });
+    html = `<table><thead><tr><th>Indicateur</th><th class="r">Central</th><th class="r">Simulé</th><th>Objectif</th></tr></thead><tbody>${OUTPUTS.map(([id, label, f, tk]) => {
+      const sv = val("sim." + id), t = tk ? val(tk) : null, ok = isNum(sv) && isNum(t) ? sv >= t : null;
+      return `<tr><td>${esc(label)}</td><td class="r">${fmt("financials." + id, { format: f })}</td><td class="r">${fmt("sim." + id, { format: f })}</td>
+        <td>${tk ? `<span class="${ok === null ? "" : ok ? "ok status-ok" : "ko status-ko"}">${ok === null ? "—" : ok ? "atteint" : "n'atteint pas"}</span> ${fmt(tk, { format: f })}` : ""}</td></tr>`; }).join("")}</tbody></table>
+      <p class="small muted">Cession simulée le ${wrapDate(FORMATS.date(r.timeline.exit))}${r.timeline.let_at_exit ? "" : " (immeuble pas encore loué à cette date)"}.</p>`;
+  } catch (e) { html = `<div class="box warn">Combinaison non modélisable : ${esc(e.message)}</div>`; }
+  $("sim-out").innerHTML = html;
+}
+function applyVariableToSliders(variable, side) {
+  const def = (SENS.engine_params.variables || {})[variable]; if (!def || !SIM.length) return;
+  const base = E.prepare(SENS.engine_params.inputs);
+  def[side].forEach(c => {
+    const s = SIM.find(x => x.field === c.field); if (!s) return;
+    const cur = base[c.field];
+    let k = c.op === "mult" ? (c.value - 1) * 100 : c.op === "add" ? (s.kind === "add_bps" ? c.value * 10000 : s.kind === "abs_pts" ? c.value * 100 : c.value)
+      : c.op === "set" ? (s.kind === "abs_pts" ? (c.value - cur) * 100 : c.value - cur) : 0;
+    k = Math.max(s.lo, Math.min(s.hi, Math.round(k / s.step) * s.step));
+    $("s-" + s.id).value = k;
+  });
+  runSim();
+  $("simulateur").open = true;
+  $("simulateur").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ================================================================== scénarios (E14)
+function renderScenarios() {
+  const sc = D.scenarios;
+  if (!sc.length) { $("scenarios-body").innerHTML = `<p class="box na">Scénarios non disponibles.</p>`; return; }
+  const LABEL = { favorable: "Favorable", central: "Central", defavorable: "Défavorable", stress: "Stress" };
+  const vars = SENS.engine_params.variables || {};
+  const tm = val("targets.min_margin_on_cost_pct"), ti = val("targets.min_levered_irr_pct");
+  const cards = sc.map(s => {
+    const ok = isNum(s.margin_pct) && isNum(s.irr_equity) && isNum(tm) && isNum(ti) ? s.margin_pct >= tm && s.irr_equity >= ti : null;
+    return `<div class="scard"><h3>${esc(LABEL[s.name] || s.name)}<span class="verdict-ico ${ok === null ? "muted" : ok ? "ok" : "ko"}">${ok === null ? "? non comparable" : ok ? "✓ objectifs atteints" : "✗ objectifs non atteints"}</span></h3>
+    <dl><dt>Marge</dt><dd>${fmt(`scenarios.${s.name}.margin_pct`)}</dd><dt>TRI fonds propres</dt><dd>${fmt(`scenarios.${s.name}.irr_equity`)}</dd><dt>Prix maximum</dt><dd>${fmt(`scenarios.${s.name}.max_price`, { format: "meur" })}</dd></dl></div>`;
+  }).join("");
+  const fig = Fig(), figP = Fig(); fig.use("targets.min_margin_on_cost_pct");
+  const W = 620, H = 280, L = 52, R = W - 10, Tp = 22, B = H - 46;
+  const all = sc.flatMap(s => [s.margin_pct, s.irr_equity]).filter(isNum).concat([0, tm || 0]);
+  const lo = Math.min(...all) * 1.18, hi = Math.max(...all) * 1.3 + 0.02, Y = v => B - (v - lo) / (hi - lo) * (B - Tp), gw = (R - L) / sc.length;
+  let b = "";
+  niceTicks(lo, hi, 4).forEach(t => { b += `<line class="gridl" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 6, Y(t) + 4, nf(t * 100, 0) + " %", "tick", "end"); });
+  b += `<line class="axis" x1="${L}" x2="${R}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+  if (isNum(tm)) b += `<line x1="${L}" x2="${R}" y1="${Y(tm)}" y2="${Y(tm)}" stroke="${css("--go")}" stroke-dasharray="4 3"/>` + `<text x="${R}" y="${Y(tm) - 5}" class="val" data-key="targets.min_margin_on_cost_pct" text-anchor="end" style="fill:${css("--go")};font-weight:500">${esc("objectif de marge " + fig.n("targets.min_margin_on_cost_pct", tm, "pct0"))}</text>`;
+  sc.forEach((s, i) => {
+    const x = L + i * gw, w = gw * 0.3;
+    [["margin_pct", css("--c1"), "marge"], ["irr_equity", css("--c2"), "TRI FP"]].forEach(([m, c, lab], j) => {
+      const key = `scenarios.${s.name}.${m}`, v = s[m], xx = x + gw * 0.17 + j * (w + 4);
+      if (!isNum(v)) { b += T(xx + w / 2, Y(0) - 6, "n.c.", "lab", "middle"); fig.use(key); return; }
+      const txt = fig.n(key, v, "pct");
+      b += `<rect x="${xx}" y="${Y(Math.max(0, v))}" width="${w}" height="${Math.abs(Y(v) - Y(0))}" rx="3" fill="${c}"><title>${esc((LABEL[s.name] || s.name) + ", " + lab + " : " + txt)}</title></rect>` + V(xx + w / 2, v < 0 ? Y(v) + 14 : Y(v) - 5, txt.replace(" %", ""), key, "middle", `style="font-size:11px;${v < 0 ? "fill:" + css("--neg") : ""}"`);
+    });
+    b += T(x + gw / 2, H - 22, LABEL[s.name] || s.name, "lab", "middle", 'style="font-weight:600;fill:#1b1f24"');
+  });
+  const chart = svg(W, H, b, "marge et TRI par scénario") + `<div class="legend"><span><i style="background:${css("--c1")}"></i>marge sur coût (%)</span><span><i style="background:${css("--c2")}"></i>TRI fonds propres (%) ; n.c. : non calculable</span></div>`;
+  const price = hbars(figP, sc.map(s => ({ label: LABEL[s.name] || s.name, key: `scenarios.${s.name}.max_price`, format: "meur", color: css("--c1") })),
+    { labelW: 120, refs: [{ key: "deal.asking_price_eur", label: "prix demandé", format: "meur", color: css("--nogo") }] });
+  const nonOpt = sc.filter(s => s.name !== "favorable"), rentable = nonOpt.length && nonOpt.every(s => isNum(s.margin_pct) && s.margin_pct >= 0);
+  const hasCD = sc.some(s => s.name === "central") && sc.some(s => s.name === "defavorable");
+  const msg = rentable ? "L'opération reste rentable hors scénario optimiste."
+    : hasCD ? `L'opération n'est pas rentable hors scénario optimiste : marge de ${fmt("scenarios.central.margin_pct")} au central et ${fmt("scenarios.defavorable.margin_pct")} en défavorable.` : "L'opération n'est pas rentable dans tous les scénarios non optimistes.";
+  const assumptions = sc.map(s => `<p class="small"><b>${esc(LABEL[s.name] || s.name)}</b> : ${Object.entries(s.assumptions || {}).map(([v, side]) => `${lbl((vars[v] || {}).label || v)} ${side === "optimistic" ? "optimiste" : "pessimiste"}`).join(" · ") || "toutes les hypothèses au central"}</p>`).join("");
+  const pr = sc.map(s => s.max_price).filter(isNum);
+  const sumKey = pr.length ? (() => { const lo2 = sc.reduce((a, s) => isNum(s.max_price) && (!a || s.max_price < a.max_price) ? s : a, null), hi2 = sc.reduce((a, s) => isNum(s.max_price) && (!a || s.max_price > a.max_price) ? s : a, null);
+    return `prix maximum de ${fmt(`scenarios.${lo2.name}.max_price`, { format: "meur" })} à ${fmt(`scenarios.${hi2.name}.max_price`, { format: "meur" })} selon le scénario`; })() : "prix maximum non disponible";
+  $("scenarios-body").innerHTML = `<p class="message">${msg}</p><div class="scards">${cards}</div>
+    ${fold("scenarios-detail", "Détail des scénarios", sumKey,
+      `${assumptions}<div class="grid g2"><div><h3>Marge et TRI par scénario</h3>${chart}${fig.caption()}</div><div><h3>Prix maximum par scénario : marge de sécurité</h3>${price}${figP.caption()}</div></div>`)}`;
+}
+
+// ================================================================== Q6 Risques
+let selectedRisk = null, riskFilter = "toutes";
+function levelOf(c) { for (const [n, [a, b]] of Object.entries({ faible: [1, 4], "modéré": [5, 9], "élevé": [10, 16], critique: [17, 25] })) if (c >= a && c <= b) return n; return "faible"; }
+function renderRisks() {
+  const all = D.risks.slice().sort((a, b) => (b.criticality || 0) - (a.criticality || 0));
+  const risks = all.filter(r => riskFilter === "toutes" || r.category === riskFilter);
+  const rated = risks.filter(r => !r.uncertain && isNum(r.probability) && isNum(r.impact)), uncertain = risks.filter(r => r.uncertain || !isNum(r.probability) || !isNum(r.impact));
+  const W = 460, L = 62, Tp = 8, cs = 76, H = 5 * cs + 56;
+  const bg = { critique: "#f2d3d0", "élevé": "#f6ddc8", "modéré": "#f4ebc9", faible: "#e1eee5" };
+  let b = "";
+  for (let i = 1; i <= 5; i++) for (let p = 1; p <= 5; p++) {
+    const x = L + (p - 1) * cs, y = Tp + (5 - i) * cs;
+    b += `<rect x="${x}" y="${y}" width="${cs - 2}" height="${cs - 2}" fill="${bg[levelOf(p * i)]}" rx="6"><title>probabilité ${p} × impact ${i} = ${p * i} (${levelOf(p * i)})</title></rect>`;
+    rated.filter(r => r.probability === p && r.impact === i).forEach((r, k) => {
+      const cx = x + 15 + (k % 3) * 23, cy = y + 16 + Math.floor(k / 3) * 23;
+      b += `<g class="clickable" data-risk="${esc(r.id)}" tabindex="0" role="button" aria-label="${esc(r.id + " " + r.title + ", niveau " + r.level)}"><circle cx="${cx}" cy="${cy}" r="10.5" fill="${css(LV[r.level])}" stroke="${selectedRisk === r.id ? css("--ink") : "#fff"}" stroke-width="2.2"/>`
+        + `<text x="${cx}" y="${cy + 4}" text-anchor="middle" class="tick" style="font-size:9.5px;font-weight:700;fill:#fff">${esc(r.id)}</text><title>${esc(r.id + " " + r.title)}</title></g>`;
+    });
+  }
+  for (let k = 1; k <= 5; k++) b += T(L + (k - 1) * cs + cs / 2, Tp + 5 * cs + 15, String(k), "tick", "middle") + T(L - 8, Tp + (5 - k) * cs + cs / 2 + 4, String(k), "tick", "end");
+  b += T(L + 2.5 * cs, H - 8, "Probabilité", "lab", "middle", 'style="font-weight:600"') + `<text x="16" y="${Tp + 2.5 * cs}" transform="rotate(-90 16 ${Tp + 2.5 * cs})" text-anchor="middle" class="lab" style="font-weight:600">Impact</text>`;
+  const cats = ["toutes", ...new Set(all.map(r => r.category))];
+  const sel = D.risks.find(x => x.id === selectedRisk) || all[0];
+  $("risques-body").innerHTML = `
+    <p class="message">${D.risks.length ? `Risques critiques : ${fmt("risks.critical_count", { format: "int" })} ; le plus critique est « ${esc(all[0].title)} » (${fmt("risks." + all[0].id + ".criticality", { format: "crit" })}). Seuls les risques caractérisés par des données sont affichés.` : "Aucun risque caractérisé par des données."}</p>
+    <div class="chips" role="group" aria-label="Filtrer par catégorie">${cats.map(c => `<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="${riskFilter === c}">${esc(c === "toutes" ? "toutes les catégories" : (CAT[c] || [c])[0])}</button>`).join("")}</div>
+    <div class="risk-layout">
+      <div>${svg(W, H, b, "matrice des risques : probabilité par impact")}
+        ${uncertain.length ? `<div class="uncertain-box"><b>Évaluation incertaine</b> (hors matrice) : ${uncertain.map(r => `<button type="button" class="chip" data-risk="${esc(r.id)}">◌ ${lbl(r.id + " " + r.title)}</button>`).join(" ")}</div>` : ""}</div>
+      <div><ul class="risk-list">${risks.map(r => `<li><button type="button" data-risk="${esc(r.id)}" aria-current="${selectedRisk === r.id}"><span class="dot-lv lv-${esc(r.level)}" aria-hidden="true"></span>${lbl(r.id + " " + r.title)}</button><span class="badge lv-${esc(r.level)}">${esc(r.level)}</span><span class="crit">${fmt("risks." + r.id + ".criticality", { format: "crit" })}</span></li>`).join("")}</ul>
+        ${sel ? fold("risk-detail", "Détail du risque : " + lbl(sel.id + " " + sel.title), `criticité ${fmt("risks." + sel.id + ".criticality", { format: "crit" })}`, `<div id="risk-detail-body"></div>`) : ""}
+        <p class="small muted">Cliquer un risque dans la matrice ou la liste pour afficher son détail. Les risques qu'aucune donnée ne caractérise ne sont pas affichés (règle de l'agent).</p></div></div>`;
+  document.querySelectorAll("#risques-body [data-cat]").forEach(c => c.addEventListener("click", () => { riskFilter = c.dataset.cat; renderRisks(); }));
+  document.querySelectorAll("#risques-body [data-risk]").forEach(el => { const go = () => selectRisk(el.dataset.risk, true); el.addEventListener("click", go); el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }); });
+  if (sel) { selectedRisk = sel.id; renderRiskDetail(); }
+}
+function selectRisk(id, open) { selectedRisk = id; riskFilter = "toutes"; renderRisks(); if (open && $("risk-detail")) $("risk-detail").open = true; }
+function renderRiskDetail() {
+  const r = D.risks.find(x => x.id === selectedRisk), box = $("risk-detail-body"); if (!box || !r) return;
+  const k = "risks." + r.id, fe = r.financial_effect;
+  const ev = r.evidence.map((e, i) => `<li>${lbl((e && e.label) || "élément")} : ${fmt(`${k}.evidence.${i}`)}</li>`).join("");
+  box.innerHTML = `<p class="small muted">${esc((CAT[r.category] || [r.category])[0])} · niveau <b>${esc(r.level)}</b>${r.uncertain ? " · évaluation incertaine" : ""}</p>
+    <p class="prose">${esc(r.description)}</p>
+    <table class="small"><tr><th scope="row">Probabilité</th><td>${fmt(k + ".probability", { format: "prob" })} — ${fmt(k + ".probability_rationale")}</td></tr>
+      <tr><th scope="row">Impact</th><td>${fmt(k + ".impact", { format: "prob" })} — ${fmt(k + ".impact_rationale")}</td></tr>
+      <tr><th scope="row">Criticité</th><td>${fmt(k + ".criticality", { format: "crit" })}</td></tr>
+      ${fe ? `<tr><th scope="row">Effet chiffré</th><td>si le risque survient (${fmt(k + ".shock")}) : marge ${fmt(k + ".delta_margin_pts", { format: "pts" })}, TRI fonds propres ${fmt(k + ".delta_irr_pts", { format: "pts" })}</td></tr>` : ""}</table>
+    ${ev ? `<h3>Éléments justificatifs</h3><ul class="small">${ev}</ul>` : ""}
+    <h3>Mesures de réduction</h3><ul class="small">${r.mitigations.map(m => `<li>${lbl(m)}</li>`).join("")}</ul>
+    ${r.financial_link.length ? `<p class="small">Indicateurs affectés : ${lbl(r.financial_link.join(", "))}</p>` : ""}
+    ${(r.missing_information || []).length ? `<div class="box warn small">Information manquante : ${lbl(r.missing_information.join(" ; "))}</div>` : ""}`;
+}
+
+// ================================================================== annexes : sources (repliées)
+function renderAnnexes() {
+  $("annexes-body").innerHTML = `<div id="src-wrap"></div>`;
+  safe(renderSources, "src-wrap");
+}
+function renderSources() {
+  const CATS = [["Transactions", /^market\.dvf/], ["Marché locatif", /^market\.(average_rent|prime_rent|take_up|immediate_supply|vacancy|incentives|future_supply)/],
+                ["Rendements et valeurs", /^market\.(investment_price|prime_yield)/], ["Taux et indices", /^(rates|index)\./],
+                ["Réglementation et environnement", /^(urbanism|energy|risk)\./], ["Localisation", /^location\./], ["Dossier de l'opération", /^deal\./]];
+  const catOf = s => (CATS.find(([, re]) => s.used_for.some(k => re.test(k))) || ["Autres"])[0];
+  const groups = {}; D.sources.forEach(s => (groups[catOf(s)] = groups[catOf(s)] || []).push(s));
+  const order = [...CATS.map(c => c[0]), "Autres"].filter(c => groups[c]);
+  const names = D.sources.map(s => s.name.split(" - ")[0].split(" (")[0]).filter((v, i, a) => a.indexOf(v) === i);
+  $("src-wrap").innerHTML = fold("sources", "Sources", `${lbl(names.slice(0, 4).join(", ") + (names.length > 4 ? "…" : ""))}`,
+    order.map(c => `<h3>${esc(c)}</h3><table><thead><tr><th>Source</th><th>Date de la donnée</th><th>Utilisée pour</th></tr></thead><tbody>
+      ${groups[c].map(s => `<tr><td><b>${lbl(s.name)}</b>${s.url ? `<br><a class="small lbl" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url.length > 90 ? s.url.slice(0, 90) + "…" : s.url)}</a>` : ""}</td><td>${wrapDate(s.data_date || "non précisée")}</td><td class="small">${s.used_for.map(k => lbl(labelOf(k))).join(", ")}</td></tr>`).join("")}</tbody></table>`).join(""));
+}
+
+// ================================================================== montage, navigation, déplier / replier
+function safe(fn, target) {
+  try { fn(); } catch (e) {
+    console.error(e);
+    const el = $(target);
+    if (el) el.insertAdjacentHTML("beforeend", `<div class="section-error" role="alert">Cette section n'a pas pu être affichée : ${esc(e.message)}</div>`);
+  }
+}
+$("brand").textContent = D.meta.asset_name;
+$("brand-date").innerHTML = `analyse du ${wrapDate(FORMATS.date(D.meta.analysis_date))}`;
+[[renderVerdict, "verdict-body"], [renderNote, "note-body"], [renderOperation, "operation-body"], [renderPrice, "prix-body"], [renderRent, "loyer-body"],
+ [renderMarket, "marche-body"], [renderCost, "cout-body"], [renderReturns, "rentabilite-body"], [renderSensitivity, "sensibilites-body"],
+ [renderScenarios, "scenarios-body"], [renderRisks, "risques-body"], [renderAnnexes, "annexes-body"]].forEach(([f, t]) => safe(f, t));
+$("footer").innerHTML = `Généré le ${wrapDate(FORMATS.date(D.meta.generated_at))} à partir des sorties de l'agent. Contour pointillé autour d'une valeur : confiance faible. Valeur en italique : hypothèse.`;
+$("modified-banner").hidden = true;                             // A2 : état initial masqué, quel que soit le rendu du simulateur
+// A3 : tout déplier / tout replier
+$("toggle-all").addEventListener("click", () => {
+  const open = $("toggle-all").getAttribute("aria-pressed") !== "true";
+  document.querySelectorAll("details.fold").forEach(d => { d.open = open; });
+  $("toggle-all").setAttribute("aria-pressed", String(open)); $("toggle-all").textContent = open ? "Tout replier" : "Tout déplier";
+});
+// A1 : section active en surbrillance
+const navLinks = [...document.querySelectorAll("nav.anchors a")];
+const setActive = g => navLinks.forEach(a => a.setAttribute("aria-current", a.dataset.group === g ? "true" : "false"));
+function updateActive() {
+  const line = 48 + 80; let g = "verdict";
+  document.querySelectorAll("section.block[data-group]").forEach(s => { if (s.getBoundingClientRect().top <= line) g = s.dataset.group; });
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) g = "annexes";
+  setActive(g);
+}
+window.addEventListener("scroll", () => { window.requestAnimationFrame(updateActive); }, { passive: true });
+updateActive();
+// impression : tous les blocs repliés sont imprimés dépliés, puis l'état d'écran est rétabli
+let printState = null;
+window.addEventListener("beforeprint", () => { printState = [...document.querySelectorAll("details.fold")].map(d => [d, d.open]); printState.forEach(([d]) => { d.open = true; }); });
+window.addEventListener("afterprint", () => { (printState || []).forEach(([d, o]) => { d.open = o; }); printState = null; });
+{% endraw %}
+</script>
+</body>
+</html>

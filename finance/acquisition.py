@@ -12,7 +12,7 @@ REFERENCES = {
 
 
 def compare_price(price: float, surface_before: float, surface_after: float, registry: DataRegistry,
-                  defaults: DefaultsConfig) -> dict:
+                  defaults: DefaultsConfig, condition: str | None = None, dpe_current: str | None = None) -> dict:
     per_sqm = {"surface_before": price / surface_before, "surface_after": price / surface_after}
     out = {"asking_price_per_sqm_before": per_sqm["surface_before"],
            "asking_price_per_sqm_after": per_sqm["surface_after"], "references": []}
@@ -27,6 +27,7 @@ def compare_price(price: float, surface_before: float, surface_after: float, reg
             if isinstance(dp.value, dict) and {"q1", "q3"} <= dp.value.keys():
                 ref["value_range"] = [dp.value["q1"] * surface_before, dp.value["q3"] * surface_before]
             out["references"].append(ref)
-    out["note"] = ("bâtiment obsolète (DPE F) : une décote est attendue face à des références d'immeubles "
-                   "en état d'usage ou restructurés")
+    # l'état du bâtiment vient de asset_config.json (aucune donnée du deal écrite ici)
+    state = ", ".join(x for x in (condition, f"DPE {dpe_current}" if dpe_current else None) if x)
+    out["note"] = (f"état du bâtiment : {state}" if state else None)
     return out

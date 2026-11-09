@@ -11,6 +11,8 @@ Aucun chiffre du deal n'est écrit ici : tout vient de asset_config.json, du reg
 """
 from __future__ import annotations
 
+from decision import fmt
+
 import calendar
 from dataclasses import dataclass, field
 from datetime import date
@@ -77,6 +79,7 @@ class Param:
     origin: str              # config | registry | computed | override | assumption
     reference: str | None    # clé du registre, chemin de la config ou de defaults.yaml
     note: str | None = None
+    fallback: bool = False   # valeur de repli faute de la donnée de marché visée : signalée dans les réserves
 
 
 @dataclass
@@ -139,7 +142,9 @@ def resolve_inputs(config: AssetConfig, registry: DataRegistry, defaults: Defaul
             return None
         dp = registry.get(key)
         origin = "assumption" if dp.status == "assumption" else "registry"
-        params.append(Param(name, v, unit, origin, key, note or f"{dp.source_name} ({dp.data_date})"))
+        params.append(Param(name, v, unit, origin, key, note or (f"{dp.source_name} ({dp.data_date})" if dp.data_date
+                                                                else (dp.notes or dp.source_name)),
+                            fallback=dp.status == "assumption"))
         return v
 
     # ---------------------------------------------------------------- données du case
@@ -175,12 +180,14 @@ def resolve_inputs(config: AssetConfig, registry: DataRegistry, defaults: Defaul
         elif prime is not None:
             pos = assumption("relet_rent_position")
             relet = avg + pos * (prime - avg)
-            params.append(Param("relet_rent", relet, "€/m²/an", "computed", "market.average_rent + position x (prime - moyen)",
-                                f"loyer moyen {avg:.0f} + {pos} x (prime {prime:.0f} - moyen {avg:.0f})"))
+            params.append(Param("relet_rent", relet, "€/m²/an", "computed",
+                                "market.average_rent + position x (market.prime_rent - market.average_rent)",
+                                f"loyer moyen {fmt.eur_sqm(avg)}/an + {fmt.pct(pos, 0)} de l'écart avec le loyer prime "
+                                f"{fmt.eur_sqm(prime)}/an"))
         else:
             relet = avg
             params.append(Param("relet_rent", relet, "€/m²/an", "registry", "market.average_rent",
-                                fa["relet_rent_fallback"].rationale.strip()))
+                                fa["relet_rent_fallback"].rationale.strip(), fallback=True))
 
     if "exit_yield_pct" in ov:
         exit_yield = ov["exit_yield_pct"]
@@ -193,7 +200,7 @@ def resolve_inputs(config: AssetConfig, registry: DataRegistry, defaults: Defaul
             prem = assumption("exit_yield_premium_bps")
             exit_yield = prime_y + prem / 10_000
             params.append(Param("exit_yield", exit_yield, "fraction", "computed", "market.prime_yield + prime de risque",
-                                f"taux prime {prime_y:.4f} + {prem} bps"))
+                                f"taux de rendement prime {fmt.pct(prime_y, 2)} + prime de risque de {fmt.bps(prem)}"))
         else:
             avg_r = registry_number(registry, defaults, "market.average_rent")
             inv = registry_number(registry, defaults, "market.investment_price_per_sqm")
@@ -204,7 +211,7 @@ def resolve_inputs(config: AssetConfig, registry: DataRegistry, defaults: Defaul
                 params.append(Param("exit_yield", exit_yield, "fraction", "computed",
                                     "market.average_rent / market.investment_price_per_sqm",
                                     f"rendement implicite {avg_r:.0f} / {inv:.0f} = {exit_yield:.4f} ; "
-                                    + fa["exit_yield_fallback"].rationale.strip()))
+                                    + fa["exit_yield_fallback"].rationale.strip(), fallback=True))
 
     # ---------------------------------------------------------------- franchise : donnée P2, hypothèse admise
     firm = int(assumption("firm_lease_term_months"))
@@ -213,13 +220,14 @@ def resolve_inputs(config: AssetConfig, registry: DataRegistry, defaults: Defaul
         params.append(Param("rent_free_months", rent_free, "mois", "override", "overrides.rent_free_months"))
     else:
         inc = registry_number(registry, defaults, "market.incentives")
-        if inc is not None:
+        assumed = inc is None
+        if not assumed:
             params.append(Param("incentives", inc, "fraction", "registry", "market.incentives"))
         else:
             inc = assumption("incentives_if_missing")
         rent_free = inc * firm
         params.append(Param("rent_free_months", rent_free, "mois", "computed", "incentives x bail ferme",
-                            f"{inc:.0%} x {firm} mois"))
+                            f"{inc:.0%} x {firm} mois", fallback=assumed))
 
     # ---------------------------------------------------------------- hypothèses de modélisation
     void = int(assumption("letting_void_months"))

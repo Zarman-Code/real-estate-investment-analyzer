@@ -18,7 +18,7 @@ from config.schema import (ConfigError, PROJECT_ROOT, check_needs_against_catalo
 import tools.sources  # noqa: F401  (enregistre les connecteurs dans CONNECTORS)
 from tools.connectors import CONNECTORS
 from decision.llm import make_client
-from report.note_go_nogo import render_markdown
+from report.dashboard import write_dashboard
 from tools.http import HttpClient
 
 
@@ -58,15 +58,21 @@ def main(argv: list[str] | None = None) -> int:
                 "recommendation": final["recommendation"]}
     (out / "analysis_results.json").write_text(json.dumps(analysis, ensure_ascii=False, indent=2, default=str),
                                                encoding="utf-8")
-    rec = final["recommendation"]
-    (out / "note_go_nogo.md").write_text(render_markdown(rec, rec["note_lines"]), encoding="utf-8")
+    rec = final["recommendation"]          # la note go/no-go est intégrée au dashboard (section « Note go/no-go »)
+    try:
+        dashboard = write_dashboard(out, cfg, defaults)        # nouvelle version (specification_dashboard_helios.md)
+    except Exception as exc:  # noqa: BLE001 - un livrable en échec ne doit pas masquer les résultats de l'agent
+        dashboard = f"NON GÉNÉRÉ ({type(exc).__name__} : {exc})"
 
     print("\n".join(final["logs"]))
     print(f"\nverdict : {report.verdict} | passes de recherche : {final['research_iteration']} | "
           f"manquants : {len(final['registry'].missing())} | hypothèses : {len(final['registry'].assumptions())} | "
           f"rejetées : {len(final['registry'].rejected())}")
     print(f"recommandation : {rec['decision']} | rédaction : {rec['drafting']['mode']} ({rec['drafting']['status']})")
+    if rec.get("explanation_text"):                     # texte explicatif final : décision, risques, hypothèses à valider
+        print("\n" + "=" * 100 + "\nEXPLICATION DE LA DÉCISION\n" + "=" * 100 + "\n" + rec["explanation_text"] + "\n" + "=" * 100)
     print(f"sorties : {out}")
+    print(f"dashboard : {dashboard}")
     return 0
 
 

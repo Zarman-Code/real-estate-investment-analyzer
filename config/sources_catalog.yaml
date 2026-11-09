@@ -167,11 +167,35 @@ sources:
   - id: market_reports
     name: "Rapports de marché (conseils en immobilier)"
     type: report
-    url: null
+    # Global Icons, « Marché prime Paris QCA 2026 : état des lieux » (page HTML inspectée le 2026-11-08) :
+    # tableau annuel 2020-2026 (volume, rendement prime, loyer prime), synthèse, FAQ (vacance en fourchette).
+    # Source secondaire : l'éditeur consolide BNP Paribas RE, CBRE, JLL et C&W en « fourchettes indicatives ».
+    url: "https://www.globalicons.io/analyses/marche-prime-paris-qca-2026.html"
+    params:
+      local_file: "data/reports/globalicons-marche-prime-paris-qca-2026.html"   # copie lue si le site refuse
+    # publiés sur la page : prime_yield, prime_rent, vacancy (fourchette), investment_volume ; les autres sont
+    # renvoyés « missing » avec la raison (absents de la page)
     indicators: [prime_rent, average_rent, incentives, vacancy, future_supply, take_up, prime_yield, investment_volume]
     priority: very_high
-    verified: false
-    limits: "Au moins 2 sources par indicateur clé ; ne stocker que valeurs et références"
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Au moins 2 sources par indicateur clé ; ne stocker que valeurs et références ; valeurs annuelles et fourchettes indicatives (source secondaire)"
+
+  - id: cushman_marketbeat
+    name: "Cushman & Wakefield - MarketBeat Bureaux Île-de-France"
+    type: report
+    # PDF T3 2026 inspecté le 2026-11-08 : tableau « Données de marché » page 5, une ligne par sous-marché.
+    # URL datée : à remplacer à chaque édition trimestrielle.
+    url: "https://content.cushmanwakefield.com/api/public/content/marketbeat-bureaux-idf-t3-2026-fr?v=488b3808"
+    params:
+      local_file: "data/reports/marketbeat-bureaux-idf-t3-2026-fr.pdf"   # copie lue si le site refuse (anti-robots)
+    # pas de rendement prime, de mesures d'accompagnement ni de volume investi (MarketBeat Investissement) ;
+    # demande placée en cumul depuis janvier seulement
+    indicators: [prime_rent, average_rent, vacancy, future_supply, immediate_supply]
+    priority: very_high
+    verified: true
+    verified_on: "2026-11-08"
+    limits: "Ne stocker que valeurs et références ; sous-marchés Cushman & Wakefield (Paris QCA...) ; loyers faciaux € HT HC/m²/an"
 
   # ---------------------------------------------------------------- Taux et indices
   - id: ecb_euribor

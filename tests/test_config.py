@@ -238,7 +238,10 @@ def test_sources_catalog():
     assert cat.for_indicator("price_per_sqm")[0].priority == "very_high"
     # une source n'est « vérifiée » que si une vraie réponse datée a servi à écrire son parsing
     assert all(s.verified_on for s in cat.sources if s.verified)
-    assert not cat.by_id("market_reports").verified
+    # analyses de marché vérifiées sur de vrais documents (2026-11-08) : page HTML et PDF, avec copie locale de secours
+    mr, cw = cat.by_id("market_reports"), cat.by_id("cushman_marketbeat")
+    assert mr.verified and mr.type == "report" and mr.url.endswith(".html") and mr.params["local_file"].endswith(".html")
+    assert cw.verified and cw.type == "report" and cw.params["local_file"].endswith(".pdf")
 
 
 def test_sources_catalog_duplicate_ids(tmp_path):
@@ -320,3 +323,25 @@ def test_deal_markers_no_false_positives():
     # vraies fuites, dans plusieurs formats
     assert find_deal_data(cfg, "prix: 28 000 000") == ["28 000 000"]
     assert find_deal_data(cfg, "surface: 3200") == ["3200"]
+
+
+CODE_DIRS = ("agent", "decision", "finance", "risk", "tools", "report", "config", "prompts", "scripts")
+FUND_FILE = "investor_targets.yaml"     # configuration du fonds : son nom y a sa place (règle 4)
+
+
+def test_no_deal_data_anywhere_in_code():
+    """Règle 4 étendue : aucune donnée du deal (valeurs ET mots distinctifs du document source, ex. nom du case)
+    dans le code de l'agent, du dashboard ou des prompts."""
+    import re
+    cfg = load_config()
+    words = [w for w in re.findall(r"[A-ZÉ][\wéè]{4,}", cfg.meta.source_document) if w.lower() not in ("immeuble", "paris", "study")]
+    leaks = []
+    for d in CODE_DIRS:
+        for p in (PROJECT_ROOT / d).rglob("*"):
+            if p.suffix not in (".py", ".js", ".j2", ".html", ".md", ".yaml") or "__pycache__" in p.parts or p.name == FUND_FILE:
+                continue
+            text = p.read_text(encoding="utf-8")
+            hits = find_deal_data(cfg, text) + [w for w in words if w in text]
+            if hits:
+                leaks.append(f"{p.relative_to(PROJECT_ROOT)} : {hits[:5]}")
+    assert leaks == [], "\n".join(leaks)

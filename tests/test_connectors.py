@@ -311,9 +311,14 @@ def test_end_to_end_with_real_fixtures(tmp_path):
     srcs = [p.source_name for p in reg.found("market.dvf_price_per_sqm")]
     assert srcs[0].startswith("DVF+") and srcs[1].startswith("Firmio")
     assert reg.value("rates.euribor_3m")["last"] == pytest.approx(0.026346818)
-    # complémentaires sans connecteur : manquants, raison explicite, jamais inventés
-    for key in ("market.prime_rent", "market.prime_yield", "market.vacancy"):
-        assert reg.get(key).status == "missing" and reg.get(key).value is None
+    # analyses de marché : les sites répondent 404 ici, les copies locales sont lues (params.local_file)
+    prime = reg.found("market.prime_rent")                      # MarketBeat T3 2026 d'abord, page Global Icons en recoupement
+    assert [p.value for p in prime] == [1250.0, 1150.0] and all("copie locale" in p.notes for p in prime)
+    assert reg.value("market.vacancy") == pytest.approx(0.069)
+    assert reg.value("market.prime_yield") == 0.04 and reg.get("market.prime_yield").method == "report_extraction"
+    # absents des deux documents : manquant, raison explicite, jamais inventé
+    inc = reg.get_all("market.incentives")
+    assert all(p.status == "missing" and p.value is None for p in inc) and any("la page ne" in p.notes for p in inc)
     report = final["validation_report"]
     assert report.verdict == "proceed_with_assumptions"
     assert report.gaps == ["deal.acquisition_fees_pct"]                 # seule lacune P1 : hypothèse de repli
@@ -323,7 +328,7 @@ def test_end_to_end_with_real_fixtures(tmp_path):
     # données exigées présentes : le modèle est complet et une décision est prise
     assert final["financials"]["status"] == "complete"
     assert all(final["financials"]["required_data"].values())
-    assert final["recommendation"]["decision"] in ("GO", "GO SOUS CONDITIONS", "NO-GO")
+    assert final["recommendation"]["decision"] in ("GO", "GO AVEC CONTRAINTES", "GO SOUS CONDITIONS", "NO-GO")
 
 
 # ------------------------------------------------------------------ BCE (Euribor)

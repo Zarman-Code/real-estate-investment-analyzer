@@ -4,36 +4,38 @@
 Prix maximum : 13,4 M€ (TRI fonds propres ≥ 15 % et marge ≥ 15 %), contre 28,0 M€ demandés (-52,3 %).  
 Scénario central : yield on cost 4,47 %, spread -117 pb, marge -25,3 %, TRI fonds propres -38,0 %, multiple 0,33x.  
 Risques principaux : 1) Dépassement du budget travaux (criticité 25/25) ; 2) Loyer de relocation inférieur à l'hypothèse (criticité 20/25) ; 3) Baisse de la valeur de sortie (criticité 20/25).  
-Conditions : ramener le prix d'acquisition à 13,4 M€ au plus (contre 28,0 M€ demandés) ; sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation.  
-À demander au vendeur : DPE actuel et factures d'énergie, audit technique complet, audit énergétique s'il existe, autorisations d'urbanisme existantes, calendrier de libération du locataire en place, diagnostic amiante avant travaux, diagnostics environnementaux.  
+Robustesse : en scénario défavorable, marge -32,7 % et TRI fonds propres -60,3 % (prix maximum 9,4 M€).  
+Pour un réexamen : le dossier ne pourrait être réexaminé qu'à un prix de 13,4 M€ au plus (contre 28,0 M€ demandés) ; sécuriser le scénario défavorable : marché de travaux forfaitaire et pré-commercialisation ; Dépassement du budget travaux : contrat de travaux à prix global et forfaitaire ; Loyer de relocation inférieur à l'hypothèse : références locatives récentes d'immeubles restructurés comparables.  
+À demander au vendeur : DPE actuel et factures d'énergie, audit technique complet, audit énergétique s'il existe, autorisations d'urbanisme existantes, calendrier de libération du locataire en place, diagnostic amiante avant travaux, diagnostics environnementaux, historique des autorisations d'urbanisme, plans de l'immeuble, plans et relevés de géomètre, état des risques et pollutions (ERP), état locatif et calendrier de départ du locataire en place.  
+Réserves : frais d'acquisition supposés à 7,5 % ; loyer de relocation de 779 €/m²/an égal au loyer moyen de seconde main, faute de loyer prime sourcé ; taux de sortie de 5,64 % implicite (loyer moyen / prix moyen d'investissement), faute de taux prime sourcé ; franchise de 14,4 mois déduite de mesures d'accompagnement supposées ; 13 autres hypothèses de modélisation ; données complémentaires non trouvées : offre future, mesures d'accompagnement, loyer prime du sous-marché, taux de rendement prime, taux de vacance, arrêtés de catastrophe naturelle, risques naturels ; objectifs du fonds à confirmer (détail dans le dashboard).  
 
 ## Réponses aux questions du comité
 
 **Le prix demandé est-il cohérent avec les transactions du quartier ?**  
-Le prix demandé ressort à 9 333 €/m² sur la surface actuelle, soit 6,7 % au-dessus de la médiane des transactions de locaux d'activité du secteur (8 744 €/m², 434 transactions, DVF+ open data (Cerema, API données foncières), 2025-12-31). Sur les grandes surfaces, la médiane est de 8 416 €/m² (40 transactions). Le recoupement Firmio, de faible confiance, donne 9 059 €/m². L'immeuble étant obsolète, une décote par rapport à ces références est attendue.
+prix demandé au m² (surface actuelle) : 9 333 €/m², médiane DVF des locaux d'activité du secteur : 8 744 €/m², écart du prix demandé à la médiane DVF : 6,7 %
 
 **Quel loyer peut-on espérer après restructuration, au regard du marché ?**  
-Le loyer de relocation retenu est de 779 €/m²/an (loyer moyen ImmoStat, retenu faute de loyer prime sourcé). ImmoStat publie un loyer moyen de seconde main de 779 €/m²/an (2026-T3), -4,2 % sur un an. Information non disponible : loyer prime du sous-marché (rapports de marché).
+loyer de relocation retenu : 779 €/m²/an, loyer moyen de seconde main du sous-marché : 779 €/m²/an
 
 **Quel est le coût total au m² après travaux, et comment se compare-t-il à la valeur d'un immeuble restructuré dans ce secteur ?**  
-Le coût total atteint 50,1 M€, soit 15 660 €/m² après travaux. Le prix moyen d'investissement des bureaux du secteur est de 13 812 €/m² (ImmoStat - indicateurs du marché tertiaire Île-de-France, 2026-T3) : le coût ressort 13,4 % au-dessus de cette référence. La valeur de sortie modélisée est de 12 403 €/m².
+prix moyen d'investissement bureaux du sous-marché : 13 812 €/m², coût total au m² après travaux : 15 660 €/m²
 
 **Le rendement sur coût total (yield on cost) dégage-t-il une marge suffisante par rapport au taux de rendement de sortie et au niveau actuel des taux ?**  
-Le yield on cost est de 4,47 % pour un taux de sortie de 5,64 % (calculé), soit un spread de -117 pb, en dessous du minimum de 150 pb visé. Face à un coût de la dette de 5,63 %, l'écart est de -117 pb. La marge sur coût est de -25,3 % et le TRI fonds propres de -38,0 %. 
+yield on cost : 4,47 %, taux de sortie : 5,64 %, spread yield on cost / taux de sortie : -117 pb, coût de la dette (Euribor + marge) : 5,63 %
 
 **Quelles hypothèses font basculer la décision (loyer, taux de sortie, coût des travaux, délai) ?**  
-Les variables les plus déterminantes sont : Occupation stabilisée (39,9 pt), Loyer de relocation (39,1 pt), Taux de sortie (27,3 pt). Seuils de bascule : loyer de relocation : marge nulle à 1 045 €/m² ; taux de sortie : marge nulle à 4,26 % ; coût des travaux : la marge reste négative sur toute la plage testée ; euribor : la marge reste négative sur toute la plage testée ; délai de relocation : la marge reste négative sur toute la plage testée ; durée des travaux : la marge reste négative sur toute la plage testée.
+Loyer de relocation (x loyer central) : marge nulle à : 1 045 €/m², Taux de sortie (+ points) : marge nulle à : 4,26 %
 
 **Quels sont les principaux risques : marché locatif, travaux, taux, réglementation, environnement ?**  
-Travaux : Dépassement du budget travaux (critique, criticité 25/25, marge -3,3 pt) ; Retard du chantier (élevé, criticité 10/25, marge -1,3 pt). Marché locatif : Loyer de relocation inférieur à l'hypothèse (critique, criticité 20/25, marge -7,5 pt) ; Relocation retardée (modéré, criticité 6/25, marge -1,5 pt). Taux et financement : Baisse de la valeur de sortie (critique, criticité 20/25, marge -6,3 pt) ; Hausse des taux d'intérêt (élevé, criticité 12/25, marge -1,2 pt). Réglementation : Extension ou rooftop non autorisés (critique, criticité 20/25, marge -3,2 pt). Environnement : Objectif DPE non atteint (élevé, criticité 15/25, marge -4,8 pt).
+Dépassement du budget travaux, Loyer de relocation inférieur à l'hypothèse, Baisse de la valeur de sortie, Extension ou rooftop non autorisés, Objectif DPE non atteint, Hausse des taux d'intérêt, Retard du chantier
 
 **L'opération reste-t-elle rentable quand plusieurs hypothèses se dégradent ensemble ?**  
-Non, l'opération ne reste pas rentable lorsque plusieurs hypothèses se dégradent ensemble. Les TRI fonds propres et les marges sont négatifs dans tous les scénarios, et les objectifs du fonds ne sont atteints dans aucun scénario.
+marge, scénario Favorable : -2,8 %, marge, scénario Central : -25,3 %, marge, scénario Défavorable : -32,7 %, marge, scénario Stress : -51,0 %
 
 ## Synthèse
 
-La recommandation est un NO-GO en raison d'un prix maximum de 13,4 M€, bien inférieur au prix demandé de 28,0 M€. Le scénario central présente une rentabilité négative avec un yield on cost de 4,47 % et un TRI fonds propres de -38,0 %. Les principaux risques identifiés incluent le dépassement du budget travaux, un loyer de relocation inférieur aux attentes, et des problèmes de réglementation concernant les extensions. Il est crucial de ramener le prix d'acquisition à 13,4 M€ et de sécuriser le scénario défavorable.
+La décision de NO-GO est justifiée par un prix demandé de 28,0 M€, bien supérieur au prix maximum de 13,4 M€. La rentabilité est compromise avec un yield on cost de 4,47 % et une marge de -25,3 %. Les principaux risques identifiés incluent le dépassement du budget travaux, un loyer de relocation inférieur aux attentes, et une baisse de la valeur de sortie.
 
-_Rédaction des analyses : financials : automatique ; risks : LLM gpt-4o-mini ; sensitivity : LLM gpt-4o-mini ; scenarios : LLM gpt-4o-mini._
+_Rédaction des analyses : financials : LLM gpt-4o-mini ; risks : LLM gpt-4o-mini ; sensitivity : LLM gpt-4o-mini ; scenarios : automatique._
 
 _Rédaction : LLM gpt-4o-mini. Décision calculée par règles codées ; chaque chiffre provient du moteur de calcul._

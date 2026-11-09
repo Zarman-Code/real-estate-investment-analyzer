@@ -41,11 +41,11 @@ def as_float(v: Any, what: str) -> float:
 
 def make_point(source: Source, key: str, value: Any, unit: str | None, data_date: str | None,
                fetched: FetchResult | None, notes: str, confidence: Confidence = "high",
-               status: Status = "ok") -> DataPoint:
+               status: Status = "ok", method: str = "api") -> DataPoint:
     return DataPoint(key=key, value=value, unit=unit, source_name=source.name,
                      source_url=fetched.url if fetched else source.url, data_date=data_date,
                      retrieved_at=fetched.retrieved_at if fetched else _now(),
-                     method="api", status=status, confidence=confidence, notes=notes)
+                     method=method, status=status, confidence=confidence, notes=notes)
 
 
 def _now() -> str:

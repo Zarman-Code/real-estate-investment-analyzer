@@ -1,0 +1,1499 @@
+{
+ "tolerance_rel": 1e-06,
+ "cases": [
+  {
+   "name": "central",
+   "description": "scénario central de la fixture",
+   "inputs": {
+    "price": 21500000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 3600.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 15,
+    "exit_date": "2029-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 779.42,
+    "letting_void_months": 6,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 0.95,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.056430640023168256,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "total_cost",
+    "euribor": 0.026346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2028-07-01",
+     "lease_start": "2029-01-01",
+     "rent_free_months": 14.4,
+     "exit": "2029-12-31",
+     "months": 36,
+     "quarters": 12,
+     "let_at_exit": true
+    },
+    "acquisition": {
+     "price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "acquisition_cost": 23112500.0,
+     "price_per_sqm_before": 8269.23076923077,
+     "price_per_sqm_after": 7818.181818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 779.42,
+     "let_rent_annual_headline": 2036234.75,
+     "let_rent_annual_effective": 1628987.8,
+     "noi_stabilised": 1924798.0125,
+     "noi_effective": 1537913.41,
+     "new_lease_income_before_exit": 0.0
+    },
+    "cost": {
+     "acquisition_price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "capex": 9900000.0,
+     "fees_contingency": 1188000.0,
+     "holding_costs": 363125.0,
+     "marketing_fees": 305435.21249999997,
+     "interest": 2783054.3969442626,
+     "arrangement_fee": 192176.17072500003,
+     "total_cost": 37844290.78016926,
+     "total_cost_per_sqm_after": 13761.560283697914,
+     "income_during_operation": 6188.262499999997
+    },
+    "exit": {
+     "gross_value": 34109094.132367656,
+     "deductions": {
+      "remaining_rent_free": 407246.9499999997,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 0.0
+     },
+     "deductions_total": 407246.9499999997,
+     "sale_costs": 511636.4119855148,
+     "net_value": 33190210.770382136,
+     "gross_value_per_sqm": 12403.306957224602,
+     "exit_yield": 0.056430640023168256
+    },
+    "profitability": {
+     "yield_on_cost": 0.05086098782193616,
+     "yield_on_cost_effective": 0.04063792393239616,
+     "exit_yield": 0.056430640023168256,
+     "spread_bps": -55.69652201232095,
+     "margin": -4654080.009787127,
+     "margin_on_cost": -0.12297971276095114
+    },
+    "returns": {
+     "unlevered_irr": -0.0184532400461892,
+     "levered_irr": -0.12394184880903103,
+     "equity_multiple": 0.7077375627156917,
+     "equity_profit": -4647891.747287128,
+     "peak_equity": 15824894.415256247,
+     "max_debt": 22000671.469444267,
+     "debt_repaid_at_exit": 22000671.469444267,
+     "ltv_at_exit": 0.6450089640043193,
+     "interest_rate": 0.051346818
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -23112500.0,
+      "debt_draw": 12711875.000000002,
+      "interest": 0.0,
+      "debt_balance": 12711875.000000002,
+      "equity": -10592801.170724997
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 163178.58301593753,
+      "debt_balance": 12875053.58301594,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 165273.25826684185,
+      "debt_balance": 14285031.841282781,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 183372.73251963797,
+      "debt_balance": 15713109.573802419,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 201704.5443750226,
+      "debt_balance": 17159519.11817744,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 220271.67628214438,
+      "debt_balance": 18624495.794459585,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 239077.14897497045,
+      "debt_balance": 20108277.943434555,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 258124.02196373712,
+      "debt_balance": 20392870.715398293,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 261777.2552802715,
+      "debt_balance": 20681116.720678564,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -333294.3968749999,
+      "debt_draw": 183311.91828124996,
+      "interest": 265477.3840733598,
+      "debt_balance": 21129906.023033176,
+      "equity": -149982.47859374995
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 271238.35973044706,
+      "debt_balance": 21416466.934169874,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 274916.85746795963,
+      "debt_balance": 21706706.343044084,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": 33162351.586007137,
+      "debt_draw": 15322.551406250004,
+      "interest": 278642.57499393256,
+      "debt_balance": 22000671.469444267,
+      "equity": 11177002.667969119
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": false
+    }
+   }
+  },
+  {
+   "name": "favorable",
+   "description": "scénario favorable (defaults.yaml)",
+   "inputs": {
+    "price": 21500000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 3420.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 13,
+    "exit_date": "2029-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 857.3620000000001,
+    "letting_void_months": 0,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 1.0,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.053930640023168254,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "total_cost",
+    "euribor": 0.021346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2028-05-01",
+     "lease_start": "2028-05-01",
+     "rent_free_months": 14.4,
+     "exit": "2029-12-31",
+     "months": 36,
+     "quarters": 12,
+     "let_at_exit": true
+    },
+    "acquisition": {
+     "price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "acquisition_cost": 23112500.0,
+     "price_per_sqm_before": 8269.23076923077,
+     "price_per_sqm_after": 7818.181818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 857.3620000000001,
+     "let_rent_annual_headline": 2357745.5,
+     "let_rent_annual_effective": 1886196.4000000001,
+     "noi_stabilised": 2239858.225,
+     "noi_effective": 1791886.58,
+     "new_lease_income_before_exit": 1100281.2333333336
+    },
+    "cost": {
+     "acquisition_price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "capex": 9405000.0,
+     "fees_contingency": 1128600.0,
+     "holding_costs": 226916.66666666666,
+     "marketing_fees": 353661.825,
+     "interest": 2495379.276760166,
+     "arrangement_fee": 188839.55005208336,
+     "total_cost": 36910897.31847892,
+     "total_cost_per_sqm_after": 13422.14447944688,
+     "income_during_operation": 1011802.4416666669
+    },
+    "exit": {
+     "gross_value": 41532201.80657548,
+     "deductions": {
+      "remaining_rent_free": 0.0,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 0.0
+     },
+     "deductions_total": 0.0,
+     "sale_costs": 622983.0270986322,
+     "net_value": 40909218.779476844,
+     "gross_value_per_sqm": 15102.618838754719,
+     "exit_yield": 0.053930640023168254
+    },
+    "profitability": {
+     "yield_on_cost": 0.06068284403041718,
+     "yield_on_cost_effective": 0.048546275224333746,
+     "exit_yield": 0.053930640023168254,
+     "spread_bps": 67.52204007248929,
+     "margin": 3998321.460997924,
+     "margin_on_cost": 0.10832360499120733
+    },
+    "returns": {
+     "unlevered_irr": 0.07812032327689322,
+     "levered_irr": 0.1090123603630675,
+     "equity_multiple": 1.3203537539787766,
+     "equity_profit": 5010123.902664593,
+     "peak_equity": 15561098.190677082,
+     "max_debt": 21379334.2819685,
+     "debt_repaid_at_exit": 21379334.2819685,
+     "ltv_at_exit": 0.5147652508657432,
+     "interest_rate": 0.046346818
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -23112500.0,
+      "debt_draw": 12711875.000000002,
+      "interest": 0.0,
+      "debt_balance": 12711875.000000002,
+      "equity": -10589464.550052082
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 147288.7392659375,
+      "debt_balance": 12859163.73926594,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -2476330.769230769,
+      "debt_draw": 1361981.923076923,
+      "interest": 148995.3303639895,
+      "debt_balance": 14370140.992706852,
+      "equity": -1114348.846153846
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -2476330.769230769,
+      "debt_draw": 1361981.923076923,
+      "interest": 166502.57730583093,
+      "debt_balance": 15898625.493089605,
+      "equity": -1114348.846153846
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -2476330.769230769,
+      "debt_draw": 1361981.923076923,
+      "interest": 184212.67554459604,
+      "debt_balance": 17444820.091711123,
+      "equity": -1114348.846153846
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -2476330.769230769,
+      "debt_draw": 1361981.923076923,
+      "interest": 202127.97545831968,
+      "debt_balance": 19008929.990246367,
+      "equity": -1114348.846153846
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -1198753.2939102566,
+      "debt_draw": 659314.3116506411,
+      "interest": 220250.85465817252,
+      "debt_balance": 19888495.15655518,
+      "equity": -539438.9822596154
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -29471.818750000006,
+      "debt_draw": 16209.500312500004,
+      "interest": 230442.1163286861,
+      "debt_balance": 20135146.773196366,
+      "equity": -13262.318437500002
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -29471.818750000006,
+      "debt_draw": 16209.500312500004,
+      "interest": 233299.9957251548,
+      "debt_balance": 20384656.26923402,
+      "equity": -13262.318437500002
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -29471.818750000006,
+      "debt_draw": 16209.500312500004,
+      "interest": 236190.98852568702,
+      "debt_balance": 20637056.75807221,
+      "equity": -13262.318437500002
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -29471.818750000006,
+      "debt_draw": 16209.500312500004,
+      "interest": 239115.47840551066,
+      "debt_balance": 20892381.736790217,
+      "equity": -13262.318437500002
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": 481373.03958333354,
+      "debt_draw": 0.0,
+      "interest": 242073.853485385,
+      "debt_balance": 21134455.590275604,
+      "equity": 481373.03958333354
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": 41469183.33572684,
+      "debt_draw": 0.0,
+      "interest": 244878.69169289648,
+      "debt_balance": 21379334.2819685,
+      "equity": 20089849.05375834
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": false
+    }
+   }
+  },
+  {
+   "name": "defavorable",
+   "description": "scénario defavorable (defaults.yaml)",
+   "inputs": {
+    "price": 21500000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 4140.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 21,
+    "exit_date": "2030-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 779.42,
+    "letting_void_months": 12,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 0.95,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.056430640023168256,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "total_cost",
+    "euribor": 0.036346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2029-01-01",
+     "lease_start": "2030-01-01",
+     "rent_free_months": 14.4,
+     "exit": "2030-12-31",
+     "months": 48,
+     "quarters": 16,
+     "let_at_exit": true
+    },
+    "acquisition": {
+     "price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "acquisition_cost": 23112500.0,
+     "price_per_sqm_before": 8269.23076923077,
+     "price_per_sqm_after": 7818.181818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 779.42,
+     "let_rent_annual_headline": 2036234.75,
+     "let_rent_annual_effective": 1628987.8,
+     "noi_stabilised": 1924798.0125,
+     "noi_effective": 1537913.41,
+     "new_lease_income_before_exit": 0.0
+    },
+    "cost": {
+     "acquisition_price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "capex": 11385000.0,
+     "fees_contingency": 1366200.0,
+     "holding_costs": 550375.0,
+     "marketing_fees": 305435.21249999997,
+     "interest": 4837720.642871969,
+     "arrangement_fee": 202353.645725,
+     "total_cost": 41759584.501096964,
+     "total_cost_per_sqm_after": 15185.303454944351,
+     "income_during_operation": 6188.262499999997
+    },
+    "exit": {
+     "gross_value": 34109094.132367656,
+     "deductions": {
+      "remaining_rent_free": 407246.9499999997,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 0.0
+     },
+     "deductions_total": 407246.9499999997,
+     "sale_costs": 511636.4119855148,
+     "net_value": 33190210.770382136,
+     "gross_value_per_sqm": 12403.306957224602,
+     "exit_yield": 0.056430640023168256
+    },
+    "profitability": {
+     "yield_on_cost": 0.04609236503417409,
+     "yield_on_cost_effective": 0.03682779482539155,
+     "exit_yield": 0.056430640023168256,
+     "spread_bps": -103.38274988994166,
+     "margin": -8569373.730714828,
+     "margin_on_cost": -0.20520735139234259
+    },
+    "returns": {
+     "unlevered_irr": -0.028448617331278347,
+     "levered_irr": -0.18861529668487587,
+     "equity_multiple": 0.48864367633446393,
+     "equity_profit": -8563185.468214836,
+     "peak_equity": 16667774.390256248,
+     "max_debt": 25073085.215371974,
+     "debt_repaid_at_exit": 25073085.215371974,
+     "ltv_at_exit": 0.7350850514549138,
+     "interest_rate": 0.061346818000000004
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -23112500.0,
+      "debt_draw": 12711875.000000002,
+      "interest": 0.0,
+      "debt_balance": 12711875.000000002,
+      "equity": -10602978.645724999
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 194958.27051593753,
+      "debt_balance": 12906833.27051594,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 197948.28790067154,
+      "debt_balance": 14131686.55841661,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 216733.50083305757,
+      "debt_balance": 15375325.05924967,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 235806.8170251572,
+      "debt_balance": 16638036.876274826,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 255172.6550315301,
+      "debt_balance": 17920114.531306356,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 274835.5011728016,
+      "debt_balance": 19221855.03247916,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 294799.91057497077,
+      "debt_balance": 20543559.943054132,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -1867100.0,
+      "debt_draw": 1026905.0000000001,
+      "interest": 315070.5082246581,
+      "debt_balance": 21885535.45127879,
+      "equity": -840194.9999999999
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 335651.99004053697,
+      "debt_balance": 22247656.191319328,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 341205.72882386,
+      "debt_balance": 22615330.670143187,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 346844.64365777303,
+      "debt_balance": 22988644.06380096,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 352570.0408621945,
+      "debt_balance": 23367682.854663156,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2030-T1",
+      "date": "2030-04-01",
+      "unlevered": -333294.3968749999,
+      "debt_draw": 183311.91828124996,
+      "interest": 358383.2467916853,
+      "debt_balance": 23909378.019736093,
+      "equity": -149982.47859374995
+     },
+     {
+      "period": "2030-T2",
+      "date": "2030-07-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 366691.0654674877,
+      "debt_balance": 24291391.63660983,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2030-T3",
+      "date": "2030-10-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 372549.8954244564,
+      "debt_balance": 24679264.083440535,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2030-T4",
+      "date": "2031-01-01",
+      "unlevered": 33162351.586007137,
+      "debt_draw": 15322.551406250004,
+      "interest": 378498.58052519086,
+      "debt_balance": 25073085.215371974,
+      "equity": 8104588.922041412
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": false
+    }
+   }
+  },
+  {
+   "name": "limite_cession_avant_bail",
+   "description": "relocation retardée de 12 mois sans décaler la cession : immeuble vide à la sortie",
+   "inputs": {
+    "price": 21500000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 3600.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 15,
+    "exit_date": "2029-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 779.42,
+    "letting_void_months": 18,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 0.95,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.056430640023168256,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "total_cost",
+    "euribor": 0.026346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2028-07-01",
+     "lease_start": "2030-01-01",
+     "rent_free_months": 14.4,
+     "exit": "2029-12-31",
+     "months": 36,
+     "quarters": 12,
+     "let_at_exit": false
+    },
+    "acquisition": {
+     "price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "acquisition_cost": 23112500.0,
+     "price_per_sqm_before": 8269.23076923077,
+     "price_per_sqm_after": 7818.181818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 779.42,
+     "let_rent_annual_headline": 2036234.75,
+     "let_rent_annual_effective": 1628987.8,
+     "noi_stabilised": 1924798.0125,
+     "noi_effective": 1537913.41,
+     "new_lease_income_before_exit": 0.0
+    },
+    "cost": {
+     "acquisition_price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "capex": 9900000.0,
+     "fees_contingency": 1188000.0,
+     "holding_costs": 546000.0,
+     "marketing_fees": 0.0,
+     "interest": 2777367.5607107864,
+     "arrangement_fee": 190942.12500000003,
+     "total_cost": 37714809.68571079,
+     "total_cost_per_sqm_after": 13714.476249349378,
+     "income_during_operation": 108000.0
+    },
+    "exit": {
+     "gross_value": 34109094.132367656,
+     "deductions": {
+      "remaining_rent_free": 2443481.6999999997,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 305435.21249999997
+     },
+     "deductions_total": 2748916.9124999996,
+     "sale_costs": 511636.4119855148,
+     "net_value": 30848540.807882138,
+     "gross_value_per_sqm": 12403.306957224602,
+     "exit_yield": 0.056430640023168256
+    },
+    "profitability": {
+     "yield_on_cost": 0.05103560189060847,
+     "yield_on_cost_effective": 0.0407774405549414,
+     "exit_yield": 0.056430640023168256,
+     "spread_bps": -53.950381325597874,
+     "margin": -6866268.87782865,
+     "margin_on_cost": -0.18205763027965405
+    },
+    "returns": {
+     "unlevered_irr": -0.042823604847907815,
+     "levered_irr": -0.19251102652918595,
+     "equity_multiple": 0.5720399907380138,
+     "equity_profit": -6758268.877828648,
+     "peak_equity": 15713573.374999998,
+     "max_debt": 21871580.060710788,
+     "debt_repaid_at_exit": 21871580.060710788,
+     "ltv_at_exit": 0.6412243015259634,
+     "interest_rate": 0.051346818
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -23112500.0,
+      "debt_draw": 12711875.000000002,
+      "interest": 0.0,
+      "debt_balance": 12711875.000000002,
+      "equity": -10591567.124999998
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 163178.58301593753,
+      "debt_balance": 12875053.58301594,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 165273.25826684185,
+      "debt_balance": 14285031.841282781,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 183372.73251963797,
+      "debt_balance": 15713109.573802419,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 201704.5443750226,
+      "debt_balance": 17159519.11817744,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 220271.67628214438,
+      "debt_balance": 18624495.794459585,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 239077.14897497045,
+      "debt_balance": 20108277.943434555,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 258124.02196373712,
+      "debt_balance": 20392870.715398293,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 261777.2552802715,
+      "debt_balance": 20681116.720678564,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 265477.3840733598,
+      "debt_balance": 20973062.854751922,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 269225.0103263769,
+      "debt_balance": 21268756.6150783,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 273020.7437501804,
+      "debt_balance": 21568246.10882848,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": 30800415.807882138,
+      "debt_draw": 26468.750000000004,
+      "interest": 276865.2018823061,
+      "debt_balance": 21871580.060710788,
+      "equity": 8955304.49717135
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": false
+    }
+   }
+  },
+  {
+   "name": "limite_ltv_sur_prix",
+   "description": "dette calculée sur le seul prix d'acquisition",
+   "inputs": {
+    "price": 21500000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 3600.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 15,
+    "exit_date": "2029-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 779.42,
+    "letting_void_months": 6,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 0.95,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.056430640023168256,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "price",
+    "euribor": 0.026346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2028-07-01",
+     "lease_start": "2029-01-01",
+     "rent_free_months": 14.4,
+     "exit": "2029-12-31",
+     "months": 36,
+     "quarters": 12,
+     "let_at_exit": true
+    },
+    "acquisition": {
+     "price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "acquisition_cost": 23112500.0,
+     "price_per_sqm_before": 8269.23076923077,
+     "price_per_sqm_after": 7818.181818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 779.42,
+     "let_rent_annual_headline": 2036234.75,
+     "let_rent_annual_effective": 1628987.8,
+     "noi_stabilised": 1924798.0125,
+     "noi_effective": 1537913.41,
+     "new_lease_income_before_exit": 0.0
+    },
+    "cost": {
+     "acquisition_price": 21500000.0,
+     "acquisition_fees": 1612500.0,
+     "capex": 9900000.0,
+     "fees_contingency": 1188000.0,
+     "holding_costs": 363125.0,
+     "marketing_fees": 305435.21249999997,
+     "interest": 1955796.7446884287,
+     "arrangement_fee": 118250.00000000001,
+     "total_cost": 36943106.95718843,
+     "total_cost_per_sqm_after": 13433.857075341246,
+     "income_during_operation": 6188.262499999997
+    },
+    "exit": {
+     "gross_value": 34109094.132367656,
+     "deductions": {
+      "remaining_rent_free": 407246.9499999997,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 0.0
+     },
+     "deductions_total": 407246.9499999997,
+     "sale_costs": 511636.4119855148,
+     "net_value": 33190210.770382136,
+     "gross_value_per_sqm": 12403.306957224602,
+     "exit_yield": 0.056430640023168256
+    },
+    "profitability": {
+     "yield_on_cost": 0.05210168204668208,
+     "yield_on_cost_effective": 0.04162923848777021,
+     "exit_yield": 0.056430640023168256,
+     "spread_bps": -43.28957976486178,
+     "margin": -3752896.1868062913,
+     "margin_on_cost": -0.10158583010236093
+    },
+    "returns": {
+     "unlevered_irr": -0.0184532400461892,
+     "levered_irr": -0.06955119070230598,
+     "equity_multiple": 0.8385492916516023,
+     "equity_profit": -3746707.92430629,
+     "peak_equity": 23128262.765625,
+     "max_debt": 13780796.74468843,
+     "debt_repaid_at_exit": 13780796.74468843,
+     "ltv_at_exit": 0.4040211883437623,
+     "interest_rate": 0.051346818
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -23112500.0,
+      "debt_draw": 11825000.000000002,
+      "interest": 0.0,
+      "debt_balance": 11825000.000000002,
+      "equity": -11405749.999999998
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 151794.03071250004,
+      "debt_balance": 11976794.030712502,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 0.0,
+      "interest": 153742.56582962032,
+      "debt_balance": 12130536.596542122,
+      "equity": -2263100.0
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 0.0,
+      "interest": 155716.11371624694,
+      "debt_balance": 12286252.710258368,
+      "equity": -2263100.0
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 0.0,
+      "interest": 157714.99545391081,
+      "debt_balance": 12443967.70571228,
+      "equity": -2263100.0
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 0.0,
+      "interest": 159739.5362457715,
+      "debt_balance": 12603707.24195805,
+      "equity": -2263100.0
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 0.0,
+      "interest": 161790.0654695255,
+      "debt_balance": 12765497.307427576,
+      "equity": -2263100.0
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 0.0,
+      "interest": 163866.91673099346,
+      "debt_balance": 12929364.22415857,
+      "equity": -48125.0
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -48125.0,
+      "debt_draw": 0.0,
+      "interest": 165970.42791839535,
+      "debt_balance": 13095334.652076965,
+      "equity": -48125.0
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -333294.3968749999,
+      "debt_draw": 0.0,
+      "interest": 168100.94125732232,
+      "debt_balance": 13263435.593334287,
+      "equity": -333294.3968749999
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 0.0,
+      "interest": 170258.80336641442,
+      "debt_balance": 13433694.396700703,
+      "equity": -27859.184375000004
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 0.0,
+      "interest": 172444.3653137527,
+      "debt_balance": 13606138.762014456,
+      "equity": -27859.184375000004
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": 33162351.586007137,
+      "debt_draw": 0.0,
+      "interest": 174657.9826739754,
+      "debt_balance": 13780796.74468843,
+      "equity": 19381554.841318708
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": false
+    }
+   }
+  },
+  {
+   "name": "limite_sans_tri",
+   "description": "prix décuplé : les flux des fonds propres ne changent pas de signe, TRI non défini",
+   "inputs": {
+    "price": 215000000.0,
+    "acq_fees_pct": 0.075,
+    "surface_before": 2600.0,
+    "surface_after": 2750.0,
+    "capex_per_sqm": 3600.0,
+    "fees_contingency_pct": 0.12,
+    "acquisition_date": "2027-01-01",
+    "works_start": "2027-04-01",
+    "works_months": 15,
+    "exit_date": "2029-12-31",
+    "current_leases": [
+     {
+      "surface_sqm": 900.0,
+      "rent_eur_sqm_year": 480.0,
+      "end_date": "2027-03-31"
+     }
+    ],
+    "relet_rent": 779.42,
+    "letting_void_months": 6,
+    "rent_free_months": 14.4,
+    "stabilised_occupancy": 0.95,
+    "non_recoverable_pct": 0.05,
+    "vacant_holding_cost": 70.0,
+    "marketing_fees_pct": 0.15,
+    "exit_yield": 0.056430640023168256,
+    "sale_costs_pct": 0.015,
+    "ltv": 0.55,
+    "ltv_basis": "total_cost",
+    "euribor": 0.026346818,
+    "margin_bps": 250.0,
+    "euribor_floor": 0.0,
+    "arrangement_fee_pct": 0.01,
+    "firm_lease_term_months": 72,
+    "_int_fields": [
+     "works_months",
+     "letting_void_months",
+     "firm_lease_term_months"
+    ]
+   },
+   "expected": {
+    "timeline": {
+     "acquisition": "2027-01-01",
+     "works_start": "2027-04-01",
+     "delivery": "2028-07-01",
+     "lease_start": "2029-01-01",
+     "rent_free_months": 14.4,
+     "exit": "2029-12-31",
+     "months": 36,
+     "quarters": 12,
+     "let_at_exit": true
+    },
+    "acquisition": {
+     "price": 215000000.0,
+     "acquisition_fees": 16125000.0,
+     "acquisition_cost": 231125000.0,
+     "price_per_sqm_before": 82692.30769230769,
+     "price_per_sqm_after": 78181.81818181818
+    },
+    "revenue": {
+     "current_leases_income": 108000.0,
+     "relet_rent_eur_sqm_year": 779.42,
+     "let_rent_annual_headline": 2036234.75,
+     "let_rent_annual_effective": 1628987.8,
+     "noi_stabilised": 1924798.0125,
+     "noi_effective": 1537913.41,
+     "new_lease_income_before_exit": 0.0
+    },
+    "cost": {
+     "acquisition_price": 215000000.0,
+     "acquisition_fees": 16125000.0,
+     "capex": 9900000.0,
+     "fees_contingency": 1188000.0,
+     "holding_costs": 363125.0,
+     "marketing_fees": 305435.21249999997,
+     "interest": 21705387.90180481,
+     "arrangement_fee": 1336244.9207250003,
+     "total_cost": 265923193.0350298,
+     "total_cost_per_sqm_after": 96699.34292182901,
+     "income_during_operation": 6188.262499999997
+    },
+    "exit": {
+     "gross_value": 34109094.132367656,
+     "deductions": {
+      "remaining_rent_free": 407246.9499999997,
+      "remaining_void_rent": 0.0,
+      "remaining_void_holding": 0.0,
+      "unspent_marketing": 0.0
+     },
+     "deductions_total": 407246.9499999997,
+     "sale_costs": 511636.4119855148,
+     "net_value": 33190210.770382136,
+     "gross_value_per_sqm": 12403.306957224602,
+     "exit_yield": 0.056430640023168256
+    },
+    "profitability": {
+     "yield_on_cost": 0.007238172761585516,
+     "yield_on_cost_effective": 0.005783299276935999,
+     "exit_yield": 0.056430640023168256,
+     "spread_bps": -491.9246726158274,
+     "margin": -232732982.26464766,
+     "margin_on_cost": -0.8751887325374812
+    },
+    "returns": {
+     "unlevered_irr": -0.49420573676424284,
+     "levered_irr": null,
+     "equity_multiple": 0.00033611814699031233,
+     "equity_profit": -232726794.00214767,
+     "peak_equity": 232726794.00214767,
+     "max_debt": 155329879.97430483,
+     "debt_repaid_at_exit": 155329879.97430483,
+     "ltv_at_exit": 4.5539139612302195,
+     "interest_rate": 0.051346818
+    },
+    "cashflows": [
+     {
+      "period": "T0",
+      "date": "2027-01-01",
+      "unlevered": -231125000.0,
+      "debt_draw": 127118750.00000001,
+      "interest": 0.0,
+      "debt_balance": 127118750.00000001,
+      "equity": -105342494.92072499
+     },
+     {
+      "period": "2027-T1",
+      "date": "2027-04-01",
+      "unlevered": 78250.0,
+      "debt_draw": 0.0,
+      "interest": 1631785.8301593752,
+      "debt_balance": 128750535.8301594,
+      "equity": 78250.0
+     },
+     {
+      "period": "2027-T2",
+      "date": "2027-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 1652732.5826684185,
+      "debt_balance": 131647973.41282782,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T3",
+      "date": "2027-10-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 1689926.1327243273,
+      "debt_balance": 134582604.54555213,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2027-T4",
+      "date": "2028-01-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 1727597.1253916097,
+      "debt_balance": 137554906.67094374,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T1",
+      "date": "2028-04-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 1765751.6894599835,
+      "debt_balance": 140565363.36040372,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T2",
+      "date": "2028-07-01",
+      "unlevered": -2263100.0,
+      "debt_draw": 1244705.0,
+      "interest": 1804396.0323926297,
+      "debt_balance": 143614464.39279634,
+      "equity": -1018395.0
+     },
+     {
+      "period": "2028-T3",
+      "date": "2028-10-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 1843536.4413360986,
+      "debt_balance": 145484469.58413243,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2028-T4",
+      "date": "2029-01-01",
+      "unlevered": -48125.0,
+      "debt_draw": 26468.750000000004,
+      "interest": 1867541.145390746,
+      "debt_balance": 147378479.47952318,
+      "equity": -21656.249999999996
+     },
+     {
+      "period": "2029-T1",
+      "date": "2029-04-01",
+      "unlevered": -333294.3968749999,
+      "debt_draw": 183311.91828124996,
+      "interest": 1891853.990737953,
+      "debt_balance": 149453645.38854238,
+      "equity": -149982.47859374995
+     },
+     {
+      "period": "2029-T2",
+      "date": "2029-07-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 1918492.2823005063,
+      "debt_balance": 151387460.22224915,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2029-T3",
+      "date": "2029-10-01",
+      "unlevered": -27859.184375000004,
+      "debt_draw": 15322.551406250004,
+      "interest": 1943316.0918785168,
+      "debt_balance": 153346098.86553392,
+      "equity": -12536.63296875
+     },
+     {
+      "period": "2029-T4",
+      "date": "2030-01-01",
+      "unlevered": 33162351.586007137,
+      "debt_draw": 15322.551406250004,
+      "interest": 1968458.5573646442,
+      "debt_balance": 155329879.97430483,
+      "equity": -122152205.83689144
+     }
+    ],
+    "checks": {
+     "profit_identity": true,
+     "debt_balance_identity": true,
+     "equity_shortfall_at_exit": true
+    }
+   }
+  }
+ ]
+}

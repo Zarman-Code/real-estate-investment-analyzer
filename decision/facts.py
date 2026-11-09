@@ -55,7 +55,14 @@ def collect_facts(outputs: dict[str, Any]) -> dict[str, Any]:
                           "gap_pct": mp["gap_to_asking_pct"]}
     facts["assumptions"] = [p["name"] for p in fin["inputs"] if p["origin"] == "assumption"]
     facts["overrides"] = [p["name"] for p in fin["inputs"] if p["origin"] == "override"]
+    # valeurs de repli faute de la donnée de marché visée : signalées une à une dans les réserves de la note
+    facts["fallbacks"] = [{"name": p["name"], "value": p["value"], "reference": p["reference"]}
+                          for p in fin["inputs"] if p.get("fallback")]
     facts["price_references"] = fin["price_comparison"]["references"]
+    # détail des entrées du modèle et provenance des données de marché : base du chapitre « hypothèses à valider »
+    facts["inputs"] = [{k: p.get(k) for k in ("name", "value", "unit", "origin", "reference", "note", "fallback")}
+                       for p in fin["inputs"]]
+    facts["provenance"] = fin.get("input_provenance", {})
 
     sc = outputs["scenarios"]
     if sc.get("status") == "complete":
@@ -66,6 +73,9 @@ def collect_facts(outputs: dict[str, Any]) -> dict[str, Any]:
     if se.get("status") == "complete":
         facts["tornado_top"] = [{"label": r["label"], "irr_range_pts": r["irr_range_pts"],
                                  "pessimistic_pts": r["delta_irr_pts"]["pessimistic"]} for r in se["tornado"]["rows"][:3]]
-        facts["breakeven"] = {k: {kk: v.get(kk) for kk in ("label", "central_value", "margin_zero_value", "irr_target_value")}
+        facts["tornado"] = [{k: r[k] for k in ("variable", "label", "delta_irr_pts", "delta_margin_pts", "irr_range_pts")}
+                            for r in se["tornado"]["rows"]]
+        facts["breakeven"] = {k: {kk: v.get(kk) for kk in ("label", "field", "integer", "central_value", "margin_zero_value",
+                                                           "irr_target_value")}
                               for k, v in se["breakeven"].items()}
     return facts

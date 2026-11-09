@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --ink: #1d2126; --muted: #5d6670; --line: #dcdad4; --soft: #eeece7;
+  --accent: #2f5d8a; --accent-soft: #e3ebf3;
+  --go: #2e7d4f; --go-soft: #e2f1e8; --cond: #b7791f; --cond-soft: #f8eedb; --nogo: #b23b3b; --nogo-soft: #f6e1e0;
+  --undet: #6b7280; --undet-soft: #eceef1;
+  --lvl-faible: #8fbf9f; --lvl-modere: #e6c35c; --lvl-eleve: #e08a4f; --lvl-critique: #c94c4c;
+  --neg: #c0504d; --pos: #3a8a5c; --neutral: #8a96a3;
+  --radius: 10px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.45; }
+a { color: var(--accent); }
+header.top { position: sticky; top: 0; z-index: 5; background: rgba(246,245,242,.96); backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--line); }
+.top-inner { max-width: 1240px; margin: 0 auto; padding: 10px 20px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.top-inner .brand { font-weight: 700; }
+nav a { color: var(--muted); text-decoration: none; font-size: 13px; margin-right: 12px; white-space: nowrap; }
+nav a:hover { color: var(--ink); }
+main { max-width: 1240px; margin: 0 auto; padding: 18px 20px 60px; }
+section { scroll-margin-top: 64px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin: 18px 0; }
+section > h2 { margin: 0 0 4px; font-size: 20px; }
+section > .lead { color: var(--muted); margin: 0 0 16px; max-width: 900px; }
+h3 { font-size: 15px; margin: 18px 0 8px; }
+.grid { display: grid; gap: 16px; }
+.g2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+.g3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.g4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.card { border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; background: var(--panel); }
+.card h3 { margin-top: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 12.5px; }
+.num { font-variant-numeric: tabular-nums; }
+/* bandeau décision */
+.banner { display: grid; grid-template-columns: minmax(260px, 1.1fr) 2fr; gap: 22px; align-items: stretch; }
+.verdict { border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+.verdict .label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; opacity: .85; }
+.verdict .decision { font-size: 38px; font-weight: 800; letter-spacing: .01em; line-height: 1.05; }
+.verdict ul { margin: 4px 0 0; padding-left: 18px; }
+.v-GO { background: var(--go-soft); color: var(--go); }
+.v-COND { background: var(--cond-soft); color: var(--cond); }
+.v-NOGO { background: var(--nogo-soft); color: var(--nogo); }
+.v-UNDET { background: var(--undet-soft); color: var(--undet); }
+.verdict li { color: var(--ink); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.kpi { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; }
+.kpi .k { font-size: 12.5px; color: var(--muted); }
+.kpi .v { font-size: 26px; font-weight: 700; margin: 2px 0; }
+.kpi .t { font-size: 12.5px; }
+.ok { color: var(--pos); } .ko { color: var(--neg); }
+/* pastilles de source */
+.pill { display: inline-block; font-size: 11px; line-height: 1.5; padding: 0 7px; border-radius: 999px; margin-left: 6px;
+  vertical-align: middle; white-space: nowrap; border: 1px solid transparent; cursor: help; font-weight: 500; }
+.pill.src { background: var(--accent-soft); color: var(--accent); }
+.pill.calc { background: var(--soft); color: var(--muted); }
+.pill.hyp { background: var(--cond-soft); color: var(--cond); border-color: #ecd6a8; }
+.pill.miss { background: var(--nogo-soft); color: var(--nogo); }
+.pill.case { background: #ece7f6; color: #5b4a8b; }
+/* note */
+.note p { margin: 6px 0; }
+details { border-top: 1px solid var(--line); padding: 10px 0; }
+details summary { cursor: pointer; font-weight: 600; }
+.qa { margin: 10px 0 14px; }
+.qa .q { font-weight: 600; }
+.badge { display: inline-block; font-size: 11.5px; padding: 1px 8px; border-radius: 6px; background: var(--soft); color: var(--muted); }
+/* tableaux */
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--soft); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 12.5px; }
+td.r, th.r { text-align: right; }
+td.nw { white-space: nowrap; }
+/* graphiques */
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: inherit; fill: var(--ink); }
+svg .axis { stroke: var(--line); }
+svg .grid-line { stroke: var(--soft); }
+svg .lab { font-size: 12px; fill: var(--muted); }
+svg .val { font-size: 12px; font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12.5px; color: var(--muted); margin: 6px 0; }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; font-size: 12.5px; }
+.seg button { border: 0; background: var(--panel); padding: 5px 11px; cursor: pointer; color: var(--muted); font: inherit; }
+.seg button.on { background: var(--accent); color: #fff; }
+/* simulateur */
+.sim { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(320px, 1fr); gap: 22px; }
+.slider { margin: 10px 0 14px; }
+.slider label { display: flex; justify-content: space-between; font-size: 13.5px; }
+.slider input { width: 100%; accent-color: var(--accent); }
+.slider .range { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+button.reset { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; }
+.delta-up { color: var(--pos); } .delta-down { color: var(--neg); }
+/* risques */
+.risk-layout { display: grid; grid-template-columns: minmax(340px, 1fr) minmax(320px, 1.2fr); gap: 22px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; cursor: pointer; background: var(--panel); }
+.chip.on { border-color: var(--ink); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+.lv-critique { background: var(--lvl-critique); } .lv-élevé { background: var(--lvl-eleve); }
+.lv-modéré { background: var(--lvl-modere); } .lv-faible { background: var(--lvl-faible); } .lv-incertain { background: var(--neutral); }
+.warn { background: var(--cond-soft); border-left: 3px solid var(--cond); padding: 8px 12px; border-radius: 6px; font-size: 13.5px; }
+footer { color: var(--muted); font-size: 12.5px; max-width: 1240px; margin: 0 auto; padding: 0 20px 40px; }
+@media (max-width: 760px) {
+  .banner, .sim, .risk-layout { grid-template-columns: 1fr; }
+  .g2 { grid-template-columns: 1fr; }
+  .verdict .decision { font-size: 30px; }
+  nav { display: none; }
+}
+@media print { header.top { position: static; } section { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <span class="brand" id="brand"></span>
+  <nav>
+    <a href="#verdict">Verdict</a><a href="#operation">Opération</a><a href="#prix">Prix</a><a href="#loyer">Loyer</a>
+    <a href="#cout">Coût et valeur</a><a href="#rentabilite">Rentabilité</a><a href="#macro">Macro</a>
+    <a href="#sensibilites">Sensibilités</a><a href="#scenarios">Scénarios</a><a href="#risques">Risques</a>
+    <a href="#hypotheses">Hypothèses</a><a href="#sources">Sources</a>
+  </nav>
+</div></header>
+
+<main>
+<section id="verdict"><div class="banner"><div id="verdict-box"></div><div><div class="kpis" id="kpis"></div><div id="price-gauge"></div></div></div>
+  <div class="note" id="note"></div>
+</section>
+
+<section id="operation"><h2>L'opération en un coup d'œil</h2>
+  <p class="lead">Fiche de l'actif, calendrier modélisé et zone d'étude des comparables.</p>
+  <div class="grid g2"><div class="card"><h3>Fiche de l'actif</h3><div id="asset-card"></div></div>
+  <div class="card"><h3>Zone d'étude <span class="muted small">(schéma sans fond de carte : fichier hors ligne)</span></h3><div id="location"></div></div></div>
+  <h3>Calendrier modélisé</h3><div id="timeline"></div>
+</section>
+
+<section id="prix"><h2>Prix : le prix demandé face aux transactions</h2>
+  <p class="lead" id="prix-lead"></p>
+  <div class="grid g2"><div><h3>Prix au m² : prix demandé et références</h3><div id="price-ranges"></div></div>
+  <div><h3>Transactions DVF retenues par année</h3><div id="dvf-years"></div></div></div>
+</section>
+
+<section id="loyer"><h2>Loyer : ce que l'immeuble peut louer</h2>
+  <p class="lead" id="loyer-lead"></p>
+  <div class="grid g2"><div><h3>Loyers comparés (€/m²/an)</h3><div id="rent-bars"></div></div>
+  <div><h3>Loyer moyen de seconde main du sous-marché</h3><div id="rent-series"></div></div></div>
+</section>
+
+<section id="cout"><h2>Coût total et valeur de sortie</h2>
+  <p class="lead" id="cout-lead"></p>
+  <div id="waterfall"></div>
+  <h3>Au m² après travaux</h3><div id="cost-sqm"></div>
+</section>
+
+<section id="rentabilite"><h2>Rentabilité face aux objectifs du fonds</h2>
+  <p class="lead" id="rent-lead"></p>
+  <div class="grid g4" id="target-cards"></div>
+  <div class="grid g2"><div><h3>Rendement sur coût, taux de sortie et coût de la dette</h3><div id="yield-bars"></div></div>
+  <div><h3>Flux des fonds propres et encours de dette, par trimestre</h3><div id="cashflows"></div></div></div>
+</section>
+
+<section id="macro"><h2>Environnement : taux, indices et marché local</h2>
+  <p class="lead">Séries publiques collectées par l'agent ; la dernière valeur est celle utilisée par le modèle quand elle intervient.</p>
+  <div class="grid g3" id="macro-grid"></div>
+</section>
+
+<section id="sensibilites"><h2>Sensibilités : ce qui fait basculer la décision</h2>
+  <p class="lead">Une hypothèse à la fois. Les variables sont classées selon l'indicateur choisi.</p>
+  <div class="grid g2">
+    <div><h3>Tornado <span class="seg" id="tornado-metric"><button data-m="margin" class="on">marge sur coût</button><button data-m="irr">TRI fonds propres</button></span></h3><div id="tornado"></div></div>
+    <div><h3>Seuils de bascule</h3><div id="breakevens"></div></div>
+  </div>
+  <h3>Grilles croisées <span class="seg" id="heat-metric"><button data-m="margin_on_cost" class="on">marge sur coût</button><button data-m="levered_irr">TRI fonds propres</button></span></h3>
+  <div class="grid g2" id="heatmaps"></div>
+  <h3>Simulateur</h3>
+  <p class="muted small">Le moteur de calcul est embarqué dans ce fichier (port JavaScript du moteur Python, vérifié par un test automatique). Simulation indicative : la recommandation reste celle calculée par les règles du fonds.</p>
+  <div class="sim"><div id="sliders"></div><div><div id="sim-out"></div><button class="reset" id="sim-reset">Revenir au scénario central</button></div></div>
+</section>
+
+<section id="scenarios"><h2>Scénarios : plusieurs hypothèses qui se dégradent ensemble</h2>
+  <p class="lead" id="scen-lead"></p>
+  <div class="grid g2"><div><h3>Marge sur coût et TRI fonds propres</h3><div id="scen-bars"></div></div>
+  <div><h3>Prix maximum par scénario, face au prix demandé</h3><div id="scen-price"></div></div></div>
+  <div class="grid g4" id="scen-cards" style="margin-top:14px"></div>
+</section>
+
+<section id="risques"><h2>Risques</h2>
+  <p class="lead">Probabilité notée par règles explicites sur les données ; impact mesuré en rejouant le modèle avec le choc du risque. Criticité = probabilité × impact. Cliquer sur un risque pour le détail.</p>
+  <div class="risk-layout"><div><div id="matrix"></div><div class="chips" id="risk-chips"></div><div id="excluded"></div></div><div id="risk-detail" class="card"></div></div>
+</section>
+
+<section id="hypotheses"><h2>Données manquantes et hypothèses</h2>
+  <p class="lead">Tout ce qui n'est pas une donnée sourcée est visible ici : hypothèses de modélisation, valeurs de repli, données non trouvées.</p>
+  <div id="fallbacks"></div>
+  <h3>Paramètres du modèle et leur origine</h3><div id="params"></div>
+  <div class="grid g2"><div><h3>Données non trouvées</h3><div id="missing"></div></div><div><h3>Données rejetées</h3><div id="rejected"></div></div></div>
+</section>
+
+<section id="sources"><h2>Sources</h2>
+  <p class="lead">Chaque donnée collectée, avec sa source, la date de la donnée et le niveau de confiance attribué.</p>
+  <div id="sources-list"></div>
+</section>
+</main>
+<footer id="footer"></footer>
+
+<script>/*__DATA__*/</script>
+<script>/*__ENGINE__*/</script>
+<script>
+"use strict";
+const D = window.DATA, E = window.HeliosEngine;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const isNum = v => typeof v === "number" && isFinite(v);
+
+// ------------------------------------------------------------------ formats (français)
+const nf = (v, d = 0) => isNum(v) ? v.toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d }) : "n.d.";
+const F = {
+  pct: (v, d = 1) => isNum(v) ? nf(v * 100, d) + " %" : "n.d.",
+  pts: (v, d = 1) => isNum(v) ? (v > 0 ? "+" : "") + nf(v, d) + " pt" : "n.d.",
+  bps: v => isNum(v) ? nf(v, 0) + " pb" : "n.d.",
+  meur: (v, d = 1) => isNum(v) ? nf(v / 1e6, d) + " M€" : "n.d.",
+  eur: v => isNum(v) ? nf(v, 0) + " €" : "n.d.",
+  sqm: v => isNum(v) ? nf(v, 0) + " €/m²" : "n.d.",
+  rent: v => isNum(v) ? nf(v, 0) + " €/m²/an" : "n.d.",
+  mult: v => isNum(v) ? nf(v, 2) + "x" : "n.d.",
+  m2: v => isNum(v) ? nf(v, 0) + " m²" : "n.d.",
+  months: v => isNum(v) ? nf(v, v % 1 ? 1 : 0) + " mois" : "n.d.",
+};
+function byUnit(v, unit) {
+  if (v === null || v === undefined) return "n.d.";
+  if (typeof v !== "number") return Array.isArray(v) ? `${v.length} élément(s)` : String(v);
+  return ({ "€": F.meur, "fraction": x => F.pct(x, 2), "bps": F.bps, "m²": F.m2, "€/m²": F.sqm, "€/m²/an": F.rent,
+            "mois": F.months, "€/m²/an ": F.rent })[unit]?.(v) ?? nf(v, v % 1 ? 2 : 0) + (unit ? " " + unit : "");
+}
+const dateFr = s => { if (!s) return "n.d."; const [y, m, d] = String(s).slice(0, 10).split("-"); return d ? `${d}/${m}/${y}` : s; };
+
+// ------------------------------------------------------------------ registre et pastilles de source
+const REG = D.registry || {};
+const LBL = k => (D.labels.keys[k] || k);
+const PLB = k => (D.labels.params[k] || k.replace(/_/g, " "));
+function found(key) { return (REG[key] || []).filter(p => ["ok", "partial", "assumption"].includes(p.status)); }
+function primary(key) { return found(key)[0] || null; }
+function field(dp, f) { if (!dp) return null; return (dp.value && typeof dp.value === "object" && !Array.isArray(dp.value)) ? dp.value[f] : dp.value; }
+function short(name) { return String(name || "").split(" - ")[0].split(" (")[0]; }
+function pill(kind, text, title) { return `<span class="pill ${kind}" title="${esc(title || text)}">${esc(text)}</span>`; }
+function pillDp(dp) {
+  if (!dp) return pill("miss", "manquant", "donnée non trouvée");
+  if (dp.status === "assumption") return pill("hyp", "hypothèse", dp.notes || dp.source_name);
+  return pill("src", `${short(dp.source_name)}${dp.data_date ? ", " + dp.data_date : ""}`,
+              `${dp.source_name}${dp.data_date ? " — donnée du " + dp.data_date : ""} — confiance ${dp.confidence}${dp.source_url ? " — " + dp.source_url : ""}`);
+}
+const pillCalc = (t = "moteur") => pill("calc", t, "calculé par le moteur financier à partir des données sourcées et des hypothèses");
+const pillCase = () => pill("case", "case", "donnée du dossier de l'opération (asset_config.json)");
+function pillParam(name) {
+  const p = (D.financials.inputs || []).find(x => x.name === name);
+  if (!p) return "";
+  if (p.fallback) return pill("hyp", "repli", p.note || "valeur de repli faute de la donnée de marché visée");
+  return ({ config: pillCase(), override: pill("hyp", "imposé", "valeur imposée par l'utilisateur"),
+            assumption: pill("hyp", "hypothèse", p.note || p.reference), computed: pillCalc("calcul"),
+            registry: pillDp(primary(p.reference)) })[p.origin] || "";
+}
+
+// ------------------------------------------------------------------ SVG
+function svg(w, h, body, aria) { return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(aria || "")}">${body}</svg>`; }
+const T = (x, y, s, cls = "lab", anchor = "start", extra = "") => `<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}" ${extra}>${esc(s)}</text>`;
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const LV = { "critique": "--lvl-critique", "élevé": "--lvl-eleve", "modéré": "--lvl-modere", "faible": "--lvl-faible", "incertain": "--neutral" };
+function niceTicks(min, max, n = 5) {
+  const span = max - min || Math.abs(max) || 1, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= n) || 10 * mag;
+  const out = []; for (let v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) out.push(+v.toFixed(10)); return out;
+}
+
+// barres horizontales (valeurs pouvant être négatives) ; items : {label, value, fmt, color, note}
+function hbars(items, { w = 620, row = 30, labelW = 210, refs = [] } = {}) {
+  const vals = items.filter(i => isNum(i.value)).map(i => i.value).concat(refs.map(r => r.value));
+  let lo = Math.min(0, ...vals), hi = Math.max(0, ...vals); const pad = (hi - lo) * 0.18 || 1; hi += pad; if (lo < 0) lo -= pad;
+  const top = refs.length ? 14 * refs.length + 6 : 0;
+  const x0 = labelW, x1 = w - 10, X = v => x0 + (v - lo) / (hi - lo) * (x1 - x0), h = items.length * row + 16 + top;
+  let b = `<line class="axis" x1="${X(0)}" x2="${X(0)}" y1="${top}" y2="${h - 8}"/>`;
+  items.forEach((it, i) => {
+    const y = top + 4 + i * row;
+    b += T(labelW - 8, y + row / 2 + 1, it.label, "lab", "end");
+    if (!isNum(it.value)) { b += T(X(0) + 6, y + row / 2 + 1, it.missing || "donnée manquante", "lab", "start", `style="fill:${css("--nogo")}"`); return; }
+    const a = X(Math.min(0, it.value)), bw = Math.max(1, Math.abs(X(it.value) - X(0)));
+    b += `<rect x="${a}" y="${y + 4}" width="${bw}" height="${row - 10}" rx="3" fill="${it.color || css("--accent")}"><title>${esc(it.label)} : ${esc(it.fmt(it.value))}</title></rect>`;
+    const right = it.value >= 0; const tx = right ? X(it.value) + 6 : X(it.value) - 6;
+    b += T(tx, y + row / 2 + 1, it.fmt(it.value), "val", right ? "start" : "end");
+  });
+  refs.forEach((r, k) => {
+    const ly = 11 + k * 14, xr = X(r.value), anchor = xr > w - 120 ? "end" : "start";
+    b += `<line x1="${xr}" x2="${xr}" y1="${ly + 2}" y2="${h - 8}" stroke="${r.color || css("--ink")}" stroke-dasharray="4 3"/>`;
+    b += T(anchor === "end" ? xr - 4 : xr + 4, ly, r.label, "lab", anchor, `style="fill:${r.color || css("--ink")}"`);
+  });
+  return svg(w, h, b);
+}
+
+// série temporelle : points [{period, value}]
+function lineChart(points, { w = 420, h = 200, fmt = v => nf(v), refs = [], color } = {}) {
+  if (!points || points.length < 2) return `<p class="muted small">Série indisponible.</p>`;
+  const vals = points.map(p => p.value).concat(refs.map(r => r.value));
+  let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.12 || Math.abs(hi) * 0.05 || 1; lo -= pad; hi += pad;
+  const L = 52, R = w - 12, Tp = 12, B = h - 26, X = i => L + i / (points.length - 1) * (R - L), Y = v => B - (v - lo) / (hi - lo) * (B - Tp);
+  let b = "";
+  niceTicks(lo, hi, 4).forEach(t => { b += `<line class="grid-line" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 6, Y(t) + 4, fmt(t), "lab", "end"); });
+  const step = Math.max(1, Math.ceil(points.length / 6));
+  points.forEach((p, i) => { const last = i === points.length - 1; if ((i % step === 0 && points.length - 1 - i >= step * 0.6) || last) b += T(X(i), h - 8, p.period, "lab", last ? "end" : "middle"); });
+  refs.forEach(r => { b += `<line x1="${L}" x2="${R}" y1="${Y(r.value)}" y2="${Y(r.value)}" stroke="${r.color || css("--muted")}" stroke-dasharray="4 3"/>` + T(R, Y(r.value) - 4, r.label, "lab", "end"); });
+  b += `<polyline fill="none" stroke="${color || css("--accent")}" stroke-width="2" points="${points.map((p, i) => `${X(i)},${Y(p.value)}`).join(" ")}"/>`;
+  const last = points[points.length - 1];
+  b += `<circle cx="${X(points.length - 1)}" cy="${Y(last.value)}" r="3.5" fill="${color || css("--accent")}"/>` + T(X(points.length - 1) - 6, Y(last.value) - 8, fmt(last.value), "val", "end");
+  points.forEach((p, i) => { b += `<circle cx="${X(i)}" cy="${Y(p.value)}" r="6" fill="transparent"><title>${esc(p.period)} : ${esc(fmt(p.value))}</title></circle>`; });
+  return svg(w, h, b);
+}
+
+// ------------------------------------------------------------------ données principales
+const FIN = D.financials, RES = FIN.results || null, REC = D.recommendation || {}, CFG = D.config;
+const complete = FIN.status === "complete" && RES;
+const TG = FIN.targets_full || {};
+function figVal(node, id) {
+  const rep = node === "financials" ? FIN.report : (D[node] || {}).report;
+  const f = rep && (rep.figures || []).find(x => x.id === id); return f ? f.raw : null;
+}
+
+// ------------------------------------------------------------------ 1. verdict
+function renderVerdict() {
+  $("brand").textContent = `${D.meta.asset || ""} · aide à la décision · ${dateFr(D.meta.analysis_date)}`;
+  const d = REC.decision || "NON DÉTERMINÉ";
+  const cls = { "GO": "v-GO", "GO SOUS CONDITIONS": "v-COND", "NO-GO": "v-NOGO" }[d] || "v-UNDET";
+  $("verdict-box").innerHTML = `<div class="verdict ${cls}"><div class="label">Recommandation calculée par les règles du fonds</div>
+    <div class="decision">${esc(d)}</div><ul>${(REC.triggers || []).map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>`;
+  if (!complete) { $("kpis").innerHTML = `<div class="warn">Modèle financier incomplet : ${esc((FIN.missing_inputs || []).map(LBL).join(", "))}. Aucun chiffre de rentabilité n'est produit.</div>`; return; }
+  const p = RES.profitability, r = RES.returns;
+  const k = (label, v, target, fmt, src) => {
+    const ok = isNum(v) && isNum(target) ? v >= target : null;
+    return `<div class="kpi"><div class="k">${esc(label)}${src}</div><div class="v num ${ok === null ? "" : ok ? "ok" : "ko"}">${esc(fmt(v))}</div>
+      <div class="t muted">${isNum(target) ? "objectif " + esc(fmt(target)) + (ok ? " · atteint" : " · non atteint") : ""}</div></div>`;
+  };
+  $("kpis").innerHTML = k("Marge sur coût", p.margin_on_cost, TG.margin_on_cost, F.pct, pillCalc())
+    + k("TRI fonds propres", r.levered_irr, TG.levered_irr, F.pct, pillCalc())
+    + k("Spread yield on cost − taux de sortie", p.spread_bps, TG.spread_bps, F.bps, pillCalc())
+    + k("Multiple des fonds propres", r.equity_multiple, TG.equity_multiple, F.mult, pillCalc());
+  // jauge prix demandé / prix maximum
+  const mp = FIN.max_price || {}, asking = mp.asking_price, max = mp.max_price;
+  const sc = (D.scenarios && D.scenarios.scenarios) || {};
+  const items = [{ label: "Prix demandé", value: asking, fmt: F.meur, color: css("--muted") },
+                 { label: "Prix maximum (central)", value: max, fmt: F.meur, color: css("--accent") }];
+  Object.entries(sc).forEach(([k2, s]) => { if (k2 !== "central") items.push({ label: `Prix maximum (${s.label.toLowerCase()})`, value: s.max_price, fmt: F.meur, color: "#9fb4c9" }); });
+  $("price-gauge").innerHTML = `<h3>Prix demandé et prix maximum compatible avec les objectifs ${pillCalc()}</h3>` + hbars(items, { labelW: 230 })
+    + `<p class="small muted">Prix maximum : prix d'acquisition le plus élevé qui respecte à la fois TRI fonds propres ≥ ${F.pct((D.price_targets || {}).levered_irr, 0)} et marge ≥ ${F.pct((D.price_targets || {}).margin_on_cost, 0)} (objectif contraignant : ${esc(mp.binding_target === "margin_on_cost" ? "marge" : "TRI")}). Écart au prix demandé : <b>${F.pct(mp.gap_to_asking_pct)}</b>.</p>`;
+}
+
+function renderNote() {
+  const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  const lines = (REC.note_lines || []).map(l => `<p>${md(l)}</p>`).join("");
+  const dr = REC.drafting || {};
+  const qs = D.committee_questions || {};
+  const qa = Object.entries(REC.questions || {}).map(([q, t]) => `<div class="qa"><div class="q">${esc(t)}</div><div>${md((REC.answers || {})[q] || "Information non disponible.")}</div></div>`).join("");
+  const nd = Object.entries(REC.node_drafting || {}).map(([n, d]) => `${esc(n)} : ${d.mode === "llm" ? "LLM " + esc(d.model || "") : "automatique"} <span class="muted">(${esc(d.status)})</span>`).join(" ; ");
+  $("note").innerHTML = `<details open><summary>Note go/no-go</summary>${lines}</details>
+    <details><summary>Réponses aux questions du comité</summary>${qa}${REC.synthesis ? `<h3>Synthèse</h3><p>${md(REC.synthesis)}</p>` : ""}</details>
+    <details><summary>Rédaction des textes</summary><p class="small">Note finale : ${dr.mode === "llm" ? "LLM " + esc(dr.model || "") : "automatique, sans LLM"} <span class="muted">(${esc(dr.status || "")})</span>.
+    Analyses : ${nd}. La décision est calculée par des règles codées ; un texte de LLM n'est publié que si chacun de ses chiffres provient des calculs.</p></details>`;
+}
+
+// ------------------------------------------------------------------ 2. opération
+function renderOperation() {
+  const a = CFG.asset, op = CFG.operation;
+  const rows = [["Actif", `${a.name} — ${a.type}`], ["Localisation", `${a.district}, ${a.sector} (${a.submarket})`],
+    ["Point de référence", `${a.reference_point?.label || ""}, ${a.reference_point?.address || ""}`],
+    ["Surfaces", `${F.m2(a.surface_before_sqm)} actuels → ${F.m2(a.surface_after_sqm)} après travaux`],
+    ["État", a.condition || "n.d."], ["DPE", `${a.dpe_current || "?"} → objectif ${a.dpe_target || "?"}`],
+    ["Construction", a.year_built_decade ? `années ${a.year_built_decade}` : "n.d."], ["Niveaux", a.floors || "n.d."],
+    ["Prix demandé", `${F.meur(op.asking_price_eur)}${op.price_basis ? " " + op.price_basis : ""} (${F.sqm(op.asking_price_eur / a.surface_before_sqm)})`],
+    ["Travaux", `${F.sqm(op.capex_eur_per_sqm_after)} après travaux + ${F.pct(op.fees_and_contingency_pct_of_capex, 0)} d'honoraires et aléas`],
+    ["Financement", `LTV ${F.pct(op.financing.ltv, 0)}, Euribor 3 mois + ${nf(op.financing.margin_bps)} pb`],
+    ["Baux en place", (op.current_leases || []).map(l => `${F.m2(l.surface_sqm)} à ${F.rent(l.rent_eur_sqm_year)} jusqu'au ${dateFr(l.end_date)}`).join(" ; ") || "aucun"]];
+  $("asset-card").innerHTML = `<table>${rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}${pillCase()}</td></tr>`).join("")}</table>`;
+  renderLocation(); renderTimeline();
+}
+
+function renderLocation() {
+  const ref = primary("location.reference_point"), dvf = primary("market.dvf_price_per_sqm"), ademe = primary("energy.dpe_comparables");
+  if (!ref) { $("location").innerHTML = `<p class="muted">Point de référence non géocodé.</p>`; return; }
+  const lat0 = field(ref, "lat"), lon0 = field(ref, "lon"), kx = 111320 * Math.cos(lat0 * Math.PI / 180), ky = 110540;
+  const toM = (lon, lat) => [(lon - lon0) * kx, (lat - lat0) * ky];
+  const shapes = []; let extent = 300;
+  const bbox = field(dvf, "bbox");
+  if (bbox) { const [x1, y1, x2, y2] = String(bbox).split(",").map(Number); const a = toM(x1, y1), b = toM(x2, y2); shapes.push({ kind: "rect", a, b }); extent = Math.max(extent, ...[a, b].flat().map(Math.abs)); }
+  const radius = field(dvf, "radius_m"), rAdeme = field(ademe, "radius_m");
+  if (rAdeme) { shapes.push({ kind: "circle", r: rAdeme, cls: "ademe" }); extent = Math.max(extent, rAdeme); }
+  extent *= 1.15;
+  const W = 420, H = 300, s = Math.min(W, H) / 2 / extent, cx = W / 2, cy = H / 2, P = ([x, y]) => [cx + x * s, cy - y * s];
+  let b = `<rect x="0" y="0" width="${W}" height="${H}" fill="${css("--soft")}" rx="8"/>`;
+  shapes.forEach(sh => {
+    if (sh.kind === "rect") { const [ax, ay] = P(sh.a), [bx, by] = P(sh.b); b += `<rect x="${Math.min(ax, bx)}" y="${Math.min(ay, by)}" width="${Math.abs(bx - ax)}" height="${Math.abs(by - ay)}" fill="${css("--accent-soft")}" stroke="${css("--accent")}" stroke-dasharray="5 3"><title>Zone de recherche des transactions DVF</title></rect>`; }
+    else b += `<circle cx="${cx}" cy="${cy}" r="${sh.r * s}" fill="none" stroke="${css("--cond")}" stroke-width="2"><title>Rayon de recherche des DPE voisins : ${sh.r} m</title></circle>`;
+  });
+  b += `<circle cx="${cx}" cy="${cy}" r="6" fill="${css("--nogo")}"/>` + T(cx + 10, cy - 8, field(ref, "label") || "point de référence", "val");
+  const bar = 200 * s; b += `<line x1="16" x2="${16 + bar}" y1="${H - 16}" y2="${H - 16}" stroke="${css("--ink")}" stroke-width="2"/>` + T(16 + bar / 2, H - 22, "200 m", "lab", "middle");
+  b += T(W - 14, 20, "N ↑", "lab", "end");
+  $("location").innerHTML = svg(W, H, b, "schéma de localisation") + `<div class="legend"><span><i style="background:${css("--nogo")}"></i>point de référence ${pillDp(ref)}</span>
+    ${bbox ? `<span><i style="background:${css("--accent-soft")};border:1px dashed ${css("--accent")}"></i>zone de recherche des transactions DVF${radius ? ` (rayon de ${radius} m)` : ""} ${pillDp(dvf)}</span>` : ""}
+    ${rAdeme ? `<span><i style="border:1.5px solid ${css("--cond")};background:none"></i>rayon des DPE voisins (${rAdeme} m) ${pillDp(ademe)}</span>` : ""}</div>`;
+}
+
+function renderTimeline() {
+  if (!complete) { $("timeline").innerHTML = `<p class="muted">Calendrier non modélisé (modèle incomplet).</p>`; return; }
+  const t = RES.timeline, leases = CFG.operation.current_leases || [];
+  const toD = s => new Date(String(s).slice(0, 10) + "T00:00:00Z");
+  const addMonths = (s, m) => { const d = toD(s); const whole = Math.floor(m); d.setUTCMonth(d.getUTCMonth() + whole); d.setUTCDate(d.getUTCDate() + Math.round((m - whole) * 30.4)); return d.toISOString().slice(0, 10); };
+  const rentStart = addMonths(t.lease_start, t.rent_free_months || 0);
+  const exitD = t.exit, start = t.acquisition;
+  const bars = [];
+  leases.forEach(l => bars.push({ label: `Bail en place (${F.m2(l.surface_sqm)})`, a: start, b: l.end_date, color: "#9fb4c9" }));
+  bars.push({ label: "Travaux", a: t.works_start, b: t.delivery, color: css("--cond") });
+  bars.push({ label: "Recherche de locataire", a: t.delivery, b: t.lease_start, color: css("--neutral") });
+  bars.push({ label: `Franchise (${F.months(t.rent_free_months)})`, a: t.lease_start, b: rentStart < exitD ? rentStart : exitD, color: "#e8b4a6", cut: rentStart > exitD });
+  if (rentStart < exitD) bars.push({ label: "Loyer encaissé", a: rentStart, b: exitD, color: css("--go") });
+  const t0 = toD(start).getTime(), t1 = Math.max(toD(exitD).getTime(), ...bars.map(x => toD(x.b).getTime()));
+  const W = 1100, L = 200, R = W - 170, row = 26, H = bars.length * row + 52, X = s => L + (toD(s).getTime() - t0) / (t1 - t0) * (R - L);
+  let b = "";
+  for (let y = toD(start).getUTCFullYear(); y <= toD(exitD).getUTCFullYear() + 1; y++) {
+    const s = `${y}-01-01`; if (toD(s).getTime() < t0 || toD(s).getTime() > t1) continue;
+    b += `<line class="grid-line" x1="${X(s)}" x2="${X(s)}" y1="0" y2="${H - 30}"/>` + T(X(s), H - 14, String(y), "lab", "middle");
+  }
+  bars.forEach((x, i) => {
+    const y = 6 + i * row, a = X(x.a), w = Math.max(2, X(x.b) - a);
+    b += T(L - 8, y + 15, x.label, "lab", "end") + `<rect x="${a}" y="${y + 3}" width="${w}" height="${row - 9}" rx="3" fill="${x.color}"><title>${esc(x.label)} : ${dateFr(x.a)} → ${dateFr(x.b)}</title></rect>`;
+    if (x.cut) b += T(a + w + 6, y + 15, "se poursuit après la cession", "lab");
+  });
+  const marks = [["Acquisition", start], ["Cession", exitD]];
+  marks.forEach(([lab, s]) => { b += `<line x1="${X(s)}" x2="${X(s)}" y1="0" y2="${H - 30}" stroke="${css("--ink")}" stroke-width="1.5"/>` + T(X(s) + 4, H - 32, `${lab} ${dateFr(s)}`, "val"); });
+  $("timeline").innerHTML = svg(W, H, b, "calendrier") + `<p class="small muted">Calendrier du case ${pillCase()} ; délai de relocation et franchise : ${pillParam("letting_void_months")} ${pillParam("rent_free_months")}. ${t.let_at_exit ? "" : "L'immeuble n'est pas loué à la date de cession."}</p>`;
+}
+
+// ------------------------------------------------------------------ 3. prix
+function renderPrice() {
+  const op = CFG.operation, a = CFG.asset, askSqm = op.asking_price_eur / a.surface_before_sqm;
+  const dvfs = found("market.dvf_price_per_sqm"), dvf = dvfs.find(p => field(p, "q1") !== undefined && field(p, "q1") !== null) || dvfs[0];
+  const firmio = dvfs.find(p => p !== dvf), inv = primary("market.investment_price_per_sqm");
+  $("prix-lead").innerHTML = esc((FIN.report?.answers || {}).q1 || "");
+  const rows = [];
+  if (dvf) { rows.push({ label: "DVF — toutes surfaces", q1: field(dvf, "q1"), med: field(dvf, "median"), q3: field(dvf, "q3"), n: field(dvf, "n"), dp: dvf });
+    const lg = field(dvf, "large_lots"); if (lg) rows.push({ label: `DVF — grandes surfaces (≥ ${nf(lg.min_sqm)} m²)`, q1: lg.q1, med: lg.median, q3: lg.q3, n: lg.n, dp: dvf }); }
+  if (firmio) rows.push({ label: "Firmio — médiane communale", med: field(firmio, "median"), n: field(firmio, "n"), dp: firmio });
+  if (inv) rows.push({ label: "ImmoStat — prix d'investissement (bureaux)", med: field(inv, "last"), dp: inv, note: "valeur d'immeubles en état d'usage ou restructurés" });
+  if (!rows.length) { $("price-ranges").innerHTML = `<p class="muted">Aucune référence de transaction collectée.</p>`; }
+  else {
+    const vals = rows.flatMap(r => [r.q1, r.med, r.q3]).filter(isNum).concat([askSqm]);
+    const lo = 0, hi = Math.max(...vals) * 1.1, W = 640, L = 250, R = W - 16, row = 44, top = 22, H = rows.length * row + 44 + top, X = v => L + (v - lo) / (hi - lo) * (R - L);
+    let b = "";
+    niceTicks(lo, hi, 5).forEach(t => { b += `<line class="grid-line" x1="${X(t)}" x2="${X(t)}" y1="0" y2="${H - 30}"/>` + T(X(t), H - 14, nf(t), "lab", "middle"); });
+    rows.forEach((r, i) => {
+      const y = top + 8 + i * row + row / 2;
+      b += T(L - 8, y - 2, r.label, "lab", "end") + T(L - 8, y + 12, r.n ? `${nf(r.n)} transactions` : (r.note || ""), "lab", "end", 'style="font-size:10.5px"');
+      if (isNum(r.q1) && isNum(r.q3)) b += `<rect x="${X(r.q1)}" y="${y - 9}" width="${X(r.q3) - X(r.q1)}" height="18" rx="3" fill="${css("--accent-soft")}" stroke="${css("--accent")}"><title>quartiles : ${nf(r.q1)} – ${nf(r.q3)} €/m²</title></rect>`;
+      if (isNum(r.med)) b += `<line x1="${X(r.med)}" x2="${X(r.med)}" y1="${y - 11}" y2="${y + 11}" stroke="${css("--accent")}" stroke-width="3"/>` + T(X(r.med), y - 14, F.sqm(r.med), "val", "middle");
+    });
+    b += `<line x1="${X(askSqm)}" x2="${X(askSqm)}" y1="0" y2="${H - 30}" stroke="${css("--nogo")}" stroke-width="2" stroke-dasharray="5 3"/>` + T(X(askSqm) + 4, 10, `prix demandé ${F.sqm(askSqm)}`, "val", "start", `style="fill:${css("--nogo")}"`);
+    $("price-ranges").innerHTML = svg(W, H, b, "prix au m²") + `<div class="legend"><span><i style="background:${css("--accent-soft")};border:1px solid ${css("--accent")}"></i>1er au 3e quartile</span><span><i style="background:${css("--accent")}"></i>médiane</span></div>`
+      + `<p class="small">${rows.map(r => `${esc(r.label)} ${pillDp(r.dp)}`).join("<br>")}<br>Prix demandé ramené à la surface actuelle ${pillCase()}.</p>`;
+  }
+  const byYear = dvf ? field(dvf, "by_year") : null;
+  if (byYear && Object.keys(byYear).length) {
+    const items = Object.entries(byYear).sort().map(([y, v]) => ({ label: `${y} (${v.n} ventes)`, value: v.median, fmt: F.sqm, color: css("--accent") }));
+    const dropped = field(dvf, "dropped") || {};
+    $("dvf-years").innerHTML = hbars(items, { labelW: 150, refs: [{ value: askSqm, label: "prix demandé", color: css("--nogo") }] })
+      + `<p class="small muted">Médiane par année de mutation. Exclusions : ${Object.entries(dropped).map(([k, v]) => `${esc(k.replace(/_/g, " "))} ${v}`).join(", ")}. Filtres : ventes de locaux d'activité, bornes p5–p95. ${pillDp(dvf)}</p>`;
+  } else $("dvf-years").innerHTML = `<p class="muted">Ventilation par année indisponible.</p>`;
+}
+
+// ------------------------------------------------------------------ 4. loyer
+function renderRent() {
+  $("loyer-lead").innerHTML = esc((FIN.report?.answers || {}).q2 || "");
+  const avg = primary("market.average_rent"), prime = primary("market.prime_rent");
+  const be = (D.sensitivity.breakeven || {}).rent || {};
+  const lease = (CFG.operation.current_leases || [])[0];
+  const items = [];
+  if (lease) items.push({ label: "Bail en place", value: lease.rent_eur_sqm_year, fmt: F.rent, color: "#9fb4c9" });
+  items.push({ label: "Loyer moyen de seconde main", value: field(avg, "last"), fmt: F.rent, color: css("--accent") });
+  items.push({ label: "Loyer prime du sous-marché", value: field(prime, "last") ?? (prime ? prime.value : null), fmt: F.rent, color: css("--accent"), missing: "donnée manquante (rapports de marché non collectés)" });
+  if (complete) {
+    items.push({ label: "Loyer de relocation retenu", value: RES.revenue.relet_rent_eur_sqm_year, fmt: F.rent, color: css("--ink") });
+    const mi = D.model_inputs; if (mi) items.push({ label: "Loyer économique (après franchise)", value: mi.relet_rent * (1 - mi.rent_free_months / mi.firm_lease_term_months), fmt: F.rent, color: css("--neutral") });
+  }
+  const refs = [];
+  if (isNum(be.margin_zero_value)) refs.push({ value: be.margin_zero_value, label: `marge nulle ${F.rent(be.margin_zero_value)}`, color: css("--nogo") });
+  if (isNum(be.irr_target_value)) refs.push({ value: be.irr_target_value, label: `objectif TRI`, color: css("--go") });
+  $("rent-bars").innerHTML = hbars(items, { labelW: 240, refs, row: 32 })
+    + `<p class="small">Bail en place ${pillCase()} · loyer moyen ${pillDp(avg)} · loyer prime ${pillDp(prime)} · loyer retenu ${pillParam("relet_rent")} · franchise ${pillParam("rent_free_months")} · seuils ${pillCalc()}</p>`;
+  const series = field(avg, "series");
+  $("rent-series").innerHTML = lineChart(series, { w: 600, h: 260, fmt: v => nf(v) })
+    + `<p class="small muted">€/m²/an, par trimestre ; variation sur un an : ${F.pct(field(avg, "yoy"))}. ${pillDp(avg)}</p>`;
+}
+
+// ------------------------------------------------------------------ 5. coût et valeur
+function renderCost() {
+  if (!complete) { $("waterfall").innerHTML = `<p class="muted">Modèle incomplet.</p>`; return; }
+  const c = RES.cost, x = RES.exit, p = RES.profitability;
+  $("cout-lead").innerHTML = esc((FIN.report?.answers || {}).q3 || "");
+  const steps = [["Prix d'acquisition", c.acquisition_price, pillCase()], ["Frais d'acquisition", c.acquisition_fees, pillParam("acq_fees_pct")],
+    ["Travaux", c.capex, pillCase()], ["Honoraires et aléas", c.fees_contingency, pillCase()], ["Portage des surfaces vides", c.holding_costs, pillParam("vacant_holding_cost_eur_sqm_year")],
+    ["Commercialisation", c.marketing_fees, pillParam("marketing_fees_pct_annual_rent")], ["Intérêts capitalisés", c.interest, pill("src", "BCE + case", "Euribor 3 mois (BCE) + marge du case")],
+    ["Commission bancaire", c.arrangement_fee, pillParam("debt_arrangement_fee_pct")]];
+  const W = 1100, H = 340, L = 40, R = W - 10, Tp = 26, B = H - 70, n = steps.length + 3, bw = (R - L) / n * 0.7, gap = (R - L) / n;
+  const hi = Math.max(c.total_cost, x.gross_value) * 1.08, Y = v => B - v / hi * (B - Tp);
+  let b = "", cum = 0;
+  niceTicks(0, hi, 5).forEach(t => { b += `<line class="grid-line" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 4, Y(t) + 4, nf(t / 1e6), "lab", "end"); });
+  const bar = (i, y0, y1, color, label, value, sub) => {
+    const xx = L + i * gap + (gap - bw) / 2;
+    b += `<rect x="${xx}" y="${Y(Math.max(y0, y1))}" width="${bw}" height="${Math.max(1, Math.abs(Y(y0) - Y(y1)))}" fill="${color}" rx="2"><title>${esc(label)} : ${esc(F.meur(value))}</title></rect>`;
+    b += T(xx + bw / 2, Y(Math.max(y0, y1)) - 6, F.meur(value), "val", "middle");
+    const words = label.split(" "); let line = "", ly = B + 16;
+    const lab = (txt, y) => T(xx + bw / 2, y, txt, "lab", "middle", txt.length > 13 ? 'style="font-size:10.5px"' : "");
+    words.forEach(w => { if (line && (line + " " + w).length > 13) { b += lab(line.trim(), ly); ly += 13; line = w; } else line += " " + w; });
+    b += lab(line.trim(), ly);
+  };
+  steps.forEach(([lab, v], i) => { bar(i, cum, cum + v, i === 0 ? css("--muted") : css("--cond"), lab, v); cum += v; });
+  bar(steps.length, 0, c.total_cost, css("--ink"), "Coût total", c.total_cost);
+  bar(steps.length + 1, 0, x.net_value, css("--accent"), "Valeur nette de sortie", x.net_value);
+  bar(steps.length + 2, Math.min(x.net_value, c.total_cost), Math.max(x.net_value, c.total_cost), p.margin < 0 ? css("--neg") : css("--pos"), p.margin < 0 ? "Perte" : "Marge", p.margin);
+  b += T(L, 14, "M€", "lab");
+  const ded = x.deductions || {};
+  $("waterfall").innerHTML = svg(W, H, b, "cascade des coûts")
+    + `<p class="small">Valeur nette de sortie = valeur brute ${F.meur(x.gross_value)} (revenu net stabilisé ${F.meur(RES.revenue.noi_stabilised, 2)} ÷ taux de sortie ${F.pct(x.exit_yield, 2)} ${pillParam("exit_yield")})
+       − déductions à la cession ${F.meur(x.deductions_total)} (franchise restant à courir ${F.meur(ded.remaining_rent_free)}, vide restant ${F.meur((ded.remaining_void_rent || 0) + (ded.remaining_void_holding || 0))}, commercialisation non engagée ${F.meur(ded.unspent_marketing)})
+       − frais de cession ${F.meur(x.sale_costs)} ${pillParam("sale_costs_pct")}. Marge = ${F.meur(p.margin)}, soit <b>${F.pct(p.margin_on_cost)}</b> du coût total ${pillCalc()}.</p>`;
+  const inv = primary("market.investment_price_per_sqm");
+  $("cost-sqm").innerHTML = hbars([
+    { label: "Coût total au m²", value: c.total_cost_per_sqm_after, fmt: F.sqm, color: css("--ink") },
+    { label: "Valeur de sortie brute au m²", value: x.gross_value_per_sqm, fmt: F.sqm, color: css("--accent") },
+    { label: "Prix d'investissement bureaux du sous-marché", value: field(inv, "last"), fmt: F.sqm, color: "#9fb4c9" }], { labelW: 320, w: 1100 })
+    + `<p class="small">Coût et valeur ${pillCalc()} · prix d'investissement ${pillDp(inv)}</p>`;
+}
+
+// ------------------------------------------------------------------ 6. rentabilité
+function renderReturns() {
+  if (!complete) return;
+  const p = RES.profitability, r = RES.returns;
+  $("rent-lead").innerHTML = esc((FIN.report?.answers || {}).q4 || "");
+  const st = TG.status || {};
+  const card = (label, v, t, fmt, key) => {
+    const ok = isNum(v) && v >= t;
+    const fill = isNum(v) && isNum(t) ? Math.max(0, Math.min(1, v / (t * 1.5 || 1))) : 0;
+    return `<div class="card"><div class="small muted">${esc(label)}</div><div class="num" style="font-size:24px;font-weight:700" class="${ok ? "ok" : "ko"}"><span class="${ok ? "ok" : "ko"}">${esc(fmt(v))}</span></div>
+      <svg viewBox="0 0 200 14"><rect x="0" y="3" width="200" height="8" rx="4" fill="${css("--soft")}"/><rect x="0" y="3" width="${200 * fill}" height="8" rx="4" fill="${ok ? css("--pos") : css("--neg")}"/><line x1="${200 / 1.5}" x2="${200 / 1.5}" y1="0" y2="14" stroke="${css("--ink")}"/></svg>
+      <div class="small">objectif ${esc(fmt(t))} ${st[key] === "assumption" ? pill("hyp", "objectif à confirmer", "objectif du fonds non confirmé (config/investor_targets.yaml)") : pill("src", "fonds", "config/investor_targets.yaml")}</div></div>`;
+  };
+  $("target-cards").innerHTML = card("TRI fonds propres", r.levered_irr, TG.levered_irr, F.pct, "levered_irr_min")
+    + card("Marge sur coût", p.margin_on_cost, TG.margin_on_cost, F.pct, "margin_on_cost_min")
+    + card("Spread yield on cost − taux de sortie", p.spread_bps, TG.spread_bps, F.bps, "yoc_spread_min_bps")
+    + card("Multiple des fonds propres", r.equity_multiple, TG.equity_multiple, F.mult, "equity_multiple_min");
+  $("yield-bars").innerHTML = hbars([
+    { label: "Yield on cost", value: p.yield_on_cost, fmt: v => F.pct(v, 2), color: css("--ink") },
+    { label: "Taux de sortie", value: p.exit_yield, fmt: v => F.pct(v, 2), color: css("--accent") },
+    { label: "Coût de la dette", value: r.interest_rate, fmt: v => F.pct(v, 2), color: css("--cond") },
+    { label: "TRI projet (sans dette)", value: r.unlevered_irr, fmt: F.pct, color: css("--neutral") },
+    { label: "TRI fonds propres", value: r.levered_irr, fmt: F.pct, color: r.levered_irr < 0 ? css("--neg") : css("--pos") }], { labelW: 200 })
+    + `<p class="small">${r.interest_rate > p.yield_on_cost ? "<b>Effet de levier négatif</b> : la dette coûte plus que le rendement de l'opération, ce qui creuse l'écart entre TRI projet et TRI fonds propres." : "Effet de levier positif : le rendement de l'opération dépasse le coût de la dette."}
+       Taux de sortie ${pillParam("exit_yield")} · Euribor ${pillParam("euribor")} · résultats ${pillCalc()}</p>`;
+  // flux trimestriels
+  const cf = RES.cashflows || [];
+  const W = 620, H = 260, L = 50, R = W - 10, Tp = 14, B = H - 34;
+  const eqs = cf.map(c => c.equity), bal = cf.map(c => c.debt_balance);
+  const lo = Math.min(0, ...eqs, ...bal.map(v => -0)) * 1.1, hi = Math.max(...eqs, ...bal) * 1.1, Y = v => B - (v - lo) / (hi - lo) * (B - Tp);
+  const gw = (R - L) / cf.length; let b = "";
+  niceTicks(lo, hi, 5).forEach(t => { b += `<line class="grid-line" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 4, Y(t) + 4, nf(t / 1e6), "lab", "end"); });
+  b += `<line class="axis" x1="${L}" x2="${R}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+  cf.forEach((c, i) => {
+    const x = L + i * gw + gw * 0.18, w = gw * 0.64;
+    b += `<rect x="${x}" y="${Y(Math.max(0, c.equity))}" width="${w}" height="${Math.abs(Y(c.equity) - Y(0))}" fill="${c.equity < 0 ? css("--neg") : css("--pos")}"><title>${esc(c.period)} : fonds propres ${esc(F.meur(c.equity, 2))}, dette ${esc(F.meur(c.debt_balance, 1))}</title></rect>`;
+    if (i % 2 === 0 || i === cf.length - 1) b += T(x + w / 2, H - 14, c.period.replace("-", " "), "lab", "middle", 'style="font-size:10px"');
+  });
+  b += `<polyline fill="none" stroke="${css("--cond")}" stroke-width="2" points="${cf.map((c, i) => `${L + i * gw + gw / 2},${Y(c.debt_balance)}`).join(" ")}"/>` + T(L, 10, "M€", "lab");
+  $("cashflows").innerHTML = svg(W, H, b, "flux de trésorerie") + `<div class="legend"><span><i style="background:${css("--neg")}"></i>apports des fonds propres</span><span><i style="background:${css("--pos")}"></i>distributions</span><span><i style="background:${css("--cond")}"></i>encours de dette (intérêts capitalisés)</span></div>
+    <p class="small muted">Apport maximal des fonds propres ${F.meur(r.peak_equity)} ; dette remboursée à la cession ${F.meur(r.debt_repaid_at_exit)} (LTV à la sortie ${F.pct(r.ltv_at_exit)}). ${pillCalc()}</p>`;
+}
+
+// ------------------------------------------------------------------ 7. macro
+function renderMacro() {
+  const blocks = [
+    ["rates.euribor_3m", "Euribor 3 mois", v => F.pct(v, 2), dp => [{ value: field(dp, "avg_12m"), label: "moyenne 12 mois" }]],
+    ["index.ilat", "Indice des loyers des activités tertiaires (ILAT)", v => nf(v, 1)],
+    ["index.icc", "Indice du coût de la construction (ICC)", v => nf(v, 0)],
+    ["index.bt01", "Index bâtiment tous corps d'état (BT01)", v => nf(v, 1)],
+    ["market.immediate_supply", "Offre immédiate de bureaux (m²)", v => nf(v / 1000, 0) + " k"],
+    ["market.take_up", "Demande placée (m², par trimestre)", v => nf(v / 1000, 0) + " k"],
+    ["market.investment_price_per_sqm", "Prix d'investissement bureaux (€/m²)", v => nf(v, 0)],
+  ];
+  $("macro-grid").innerHTML = blocks.map(([key, title, fmt, refsFn]) => {
+    const dp = primary(key); if (!dp) return `<div class="card"><h3>${esc(title)}</h3><p class="muted">${pill("miss", "manquant")} non collecté.</p></div>`;
+    const series = field(dp, "series");
+    return `<div class="card"><h3>${esc(title)}</h3>${lineChart(series, { w: 380, h: 180, fmt, refs: refsFn ? refsFn(dp).filter(r => isNum(r.value)) : [] })}
+      <p class="small">Dernière valeur ${esc(fmt(field(dp, "last")))} (${esc(field(dp, "period") || dp.data_date || "")})${isNum(field(dp, "yoy")) ? `, ${F.pct(field(dp, "yoy"))} sur un an` : ""} ${pillDp(dp)}</p></div>`;
+  }).join("");
+  if (complete) {
+    $("macro-grid").insertAdjacentHTML("beforeend", `<div class="card"><h3>Coût de la dette du projet</h3><p class="num" style="font-size:24px;font-weight:700">${F.pct(RES.returns.interest_rate, 2)}</p>
+      <p class="small">Euribor 3 mois ${F.pct(D.model_inputs?.euribor, 2)} ${pillParam("euribor")} + marge ${nf(D.model_inputs?.margin_bps)} pb ${pillCase()}. Taux variable, supposé constant sur la durée (pas de courbe à terme).</p></div>`);
+  }
+}
+
+// ------------------------------------------------------------------ 8. sensibilités
+let tornadoMetric = "margin", heatMetric = "margin_on_cost";
+function renderTornado() {
+  const S = D.sensitivity;
+  if (S.status !== "complete") { $("tornado").innerHTML = `<p class="muted">Sensibilités indisponibles (modèle incomplet).</p>`; return; }
+  const key = tornadoMetric === "margin" ? "delta_margin_pts" : "delta_irr_pts";
+  const rows = S.tornado.slice().sort((a, b) => Math.abs(b[key].optimistic - b[key].pessimistic) - Math.abs(a[key].optimistic - a[key].pessimistic));
+  const vals = rows.flatMap(r => [r[key].optimistic, r[key].pessimistic]);
+  const m = Math.max(...vals.map(Math.abs)) * 1.15 || 1, W = 620, L = 220, R = W - 16, row = 30, H = rows.length * row + 40, X = v => L + (v + m) / (2 * m) * (R - L);
+  let b = `<line class="axis" x1="${X(0)}" x2="${X(0)}" y1="0" y2="${H - 26}"/>`;
+  niceTicks(-m, m, 6).forEach(t => { b += T(X(t), H - 10, (t > 0 ? "+" : "") + nf(t, 0), "lab", "middle"); });
+  rows.forEach((r, i) => {
+    const y = 6 + i * row, o = r[key].optimistic, p = r[key].pessimistic;
+    b += T(L - 8, y + row / 2 + 2, r.label, "lab", "end");
+    [[o, css("--pos"), "optimiste"], [p, css("--neg"), "pessimiste"]].forEach(([v, col, lab]) => {
+      const a = Math.min(X(0), X(v)), w = Math.abs(X(v) - X(0));
+      b += `<rect x="${a}" y="${y + 5}" width="${Math.max(1, w)}" height="${row - 12}" fill="${col}" rx="2"><title>${esc(r.label)}, ${lab} : ${esc(F.pts(v))}</title></rect>`;
+    });
+  });
+  $("tornado").innerHTML = svg(W, H, b, "tornado") + `<div class="legend"><span><i style="background:${css("--pos")}"></i>hypothèse optimiste</span><span><i style="background:${css("--neg")}"></i>hypothèse pessimiste</span><span>écart en points de ${tornadoMetric === "margin" ? "marge sur coût" : "TRI fonds propres"} par rapport au central</span></div>
+    ${tornadoMetric === "irr" ? `<p class="small muted">Sur une opération déficitaire, le TRI réagit de façon très non linéaire (il tend vers −100 %) : le classement par la marge est plus lisible.</p>` : ""}`;
+}
+function renderBreakevens() {
+  const S = D.sensitivity; if (S.status !== "complete") return;
+  const fmtFor = { relet_rent: F.rent, exit_yield: v => F.pct(v, 2), capex_per_sqm: F.sqm, euribor: v => F.pct(v, 2) };
+  const rows = Object.values(S.breakeven).map(b => {
+    const f = fmtFor[b.field];
+    const show = (val, at) => isNum(val) && f ? f(val) : isNum(at) && b.integer ? `+${nf(at)} mois` : "non atteint sur la plage testée";
+    return `<tr><td>${esc(b.label.split(" (")[0])}</td><td class="r">${f && isNum(b.central_value) ? esc(f(b.central_value)) : b.integer ? "central" : "n.d."}</td>
+      <td class="r"><b>${esc(show(b.margin_zero_value, b.margin_zero_at))}</b></td><td class="r">${esc(show(b.irr_target_value, b.irr_target_at))}</td></tr>`;
+  }).join("");
+  $("breakevens").innerHTML = `<table><tr><th>Hypothèse</th><th class="r">Valeur centrale</th><th class="r">Marge nulle à</th><th class="r">TRI à l'objectif à</th></tr>${rows}</table>
+    <p class="small muted">Valeur du paramètre (les autres restant au central) pour laquelle la marge s'annule, ou le TRI fonds propres atteint l'objectif du fonds. Plage testée fixée dans config/defaults.yaml. ${pillCalc()}</p>`;
+}
+function renderHeatmaps() {
+  const S = D.sensitivity; if (S.status !== "complete") return;
+  const tgt = heatMetric === "margin_on_cost" ? TG.margin_on_cost : TG.levered_irr;
+  $("heatmaps").innerHTML = Object.values(S.heatmaps).map(h => {
+    const grid = h[heatMetric], xs = h.x.values, ys = h.y.values;
+    const W = 560, L = 90, Tp = 10, cw = (W - L - 10) / xs.length, ch = 30, H = ys.length * ch + 64;
+    const col = v => v === null || !isNum(v) ? css("--neutral") : v >= tgt ? "#4f9a6c" : v >= 0 ? "#e8c56a" : v > -0.15 ? "#eaa08a" : v > -0.35 ? "#d9705f" : "#b84a40";
+    const fx = v => h.x.label.includes("x") ? `×${nf(v, 2)}` : nf(v, 2), fy = v => h.y.label.includes("points") ? (v > 0 ? "+" : "") + nf(v * 100, 2) : (v > 0 ? "+" : "") + nf(v, 0);
+    let b = "";
+    ys.forEach((yv, j) => {
+      b += T(L - 6, Tp + j * ch + ch / 2 + 4, fy(yv), "lab", "end");
+      xs.forEach((xv, i) => {
+        const v = grid[j][i], central = Math.abs(xv - (h.x.label.includes("x") ? 1 : 0)) < 1e-9 && Math.abs(yv) < 1e-9;
+        b += `<rect x="${L + i * cw}" y="${Tp + j * ch}" width="${cw - 2}" height="${ch - 2}" fill="${col(v)}" ${central ? `stroke="${css("--ink")}" stroke-width="2.5"` : ""}><title>${esc(h.x.label)} ${fx(xv)}, ${esc(h.y.label)} ${fy(yv)} : ${isNum(v) ? F.pct(v) : "non calculable"}</title></rect>`;
+        b += T(L + i * cw + (cw - 2) / 2, Tp + j * ch + ch / 2 + 4, isNum(v) ? nf(v * 100, 0) : "–", "lab", "middle", 'style="fill:#1d2126;font-size:11px"');
+      });
+    });
+    xs.forEach((xv, i) => { b += T(L + i * cw + cw / 2, Tp + ys.length * ch + 16, fx(xv), "lab", "middle"); });
+    b += T(L + (W - L) / 2, H - 6, h.x.label, "lab", "middle") + T(8, Tp + ys.length * ch / 2, "", "lab");
+    return `<div class="card"><h3 class="small">${esc(h.y.label)} (lignes) × ${esc(h.x.label)} (colonnes)</h3>${svg(W, H, b, "grille")}</div>`;
+  }).join("") + `<div class="legend" style="grid-column:1/-1"><span><i style="background:#4f9a6c"></i>objectif du fonds atteint (≥ ${F.pct(tgt, 0)})</span><span><i style="background:#e8c56a"></i>positif sous l'objectif</span><span><i style="background:#eaa08a"></i>0 à −15 %</span><span><i style="background:#d9705f"></i>−15 à −35 %</span><span><i style="background:#b84a40"></i>sous −35 %</span><span>valeurs en % ; case encadrée = scénario central</span></div>`;
+}
+
+// simulateur (moteur JS embarqué)
+const SIM = [];
+function setupSimulator() {
+  const mi = D.model_inputs;
+  if (!mi || !E) { $("sliders").innerHTML = `<p class="muted">Simulateur indisponible (modèle incomplet).</p>`; return; }
+  const base = E.prepare(mi);
+  // chaque curseur exprime un ÉCART au central : position 0 = valeur centrale exacte (aucun arrondi au pas)
+  const pctOf = (b0, k) => b0 * (1 + k / 100);
+  const defs = [
+    { id: "price", label: "Prix d'acquisition", min: -70, max: 20, step: 1, show: k => F.meur(pctOf(base.price, k)), change: k => [{ field: "price", op: "mult", value: 1 + k / 100 }] },
+    { id: "rent", label: "Loyer de relocation", min: -40, max: 100, step: 1, show: k => F.rent(pctOf(base.relet_rent, k)), change: k => [{ field: "relet_rent", op: "mult", value: 1 + k / 100 }] },
+    { id: "ey", label: "Taux de sortie", min: -250, max: 200, step: 5, show: k => F.pct(base.exit_yield + k / 10000, 2), change: k => [{ field: "exit_yield", op: "add", value: k / 10000 }] },
+    { id: "capex", label: "Coût des travaux au m²", min: -30, max: 50, step: 1, show: k => F.sqm(pctOf(base.capex_per_sqm, k)), change: k => [{ field: "capex_per_sqm", op: "mult", value: 1 + k / 100 }] },
+    { id: "eur", label: "Euribor 3 mois", min: -Math.round(base.euribor * 10000 / 5) * 5, max: 400, step: 5, show: k => F.pct(base.euribor + k / 10000, 2), change: k => [{ field: "euribor", op: "add", value: k / 10000 }] },
+    { id: "occ", label: "Occupation stabilisée", min: -Math.round((base.stabilised_occupancy - 0.75) * 100), max: Math.round((1 - base.stabilised_occupancy) * 100), step: 1, show: k => F.pct(base.stabilised_occupancy + k / 100, 0), change: k => [{ field: "stabilised_occupancy", op: "add", value: k / 100 }] },
+    { id: "works", label: "Retard des travaux (cession décalée d'autant)", min: 0, max: 12, step: 1, show: k => `+${k} mois`, change: k => [{ field: "works_months", op: "add", value: k }, { field: "exit_date", op: "add_months", value: k }] },
+    { id: "void", label: "Relocation plus lente (cession décalée d'autant)", min: 0, max: 12, step: 1, show: k => `+${k} mois`, change: k => [{ field: "letting_void_months", op: "add", value: k }, { field: "exit_date", op: "add_months", value: k }] },
+  ];
+  $("sliders").innerHTML = defs.map(d => `<div class="slider"><label for="s-${d.id}"><span>${esc(d.label)}</span><b class="num" id="v-${d.id}"></b></label>
+    <input type="range" id="s-${d.id}" min="${d.min}" max="${d.max}" step="${d.step}" value="0" aria-label="${esc(d.label)}">
+    <div class="range"><span>${esc(d.show(d.min))}</span><span>central ${esc(d.show(0))}</span><span>${esc(d.show(d.max))}</span></div></div>`).join("");
+  defs.forEach(d => { SIM.push(d); $("s-" + d.id).addEventListener("input", scheduleSim); });
+  $("sim-reset").addEventListener("click", () => { defs.forEach(d => { $("s-" + d.id).value = 0; }); runSim(); });
+  runSim();
+}
+let simTimer = null;
+function scheduleSim() { SIM.forEach(d => { $("v-" + d.id).textContent = d.show(+$("s-" + d.id).value); }); clearTimeout(simTimer); simTimer = setTimeout(runSim, 60); }
+function runSim() {
+  const base = E.prepare(D.model_inputs);
+  const changes = SIM.flatMap(d => { const k = +$("s-" + d.id).value; $("v-" + d.id).textContent = d.show(k); return k === 0 ? [] : d.change(k); });
+  let out;
+  try {
+    const inp = changes.length ? E.applyChanges(base, changes) : base;
+    const r = E.runModel(inp), mp = E.maxPrice(inp, D.price_targets || {});
+    const c = RES;
+    const line = (label, a, b, fmt, target, higherBetter = true) => {
+      const d = isNum(a) && isNum(b) ? b - a : null, cls = d === null || Math.abs(d) < 1e-12 ? "" : (d > 0) === higherBetter ? "delta-up" : "delta-down";
+      const ok = isNum(target) && isNum(b) ? (b >= target ? `<span class="ok">✓</span>` : `<span class="ko">✗</span>`) : "";
+      return `<tr><td>${esc(label)}</td><td class="r num">${esc(fmt(a))}</td><td class="r num ${cls}"><b>${esc(fmt(b))}</b></td><td class="r">${ok}</td></tr>`;
+    };
+    out = `<table><tr><th></th><th class="r">Central</th><th class="r">Simulé</th><th class="r">Objectif</th></tr>
+      ${line("Coût total", c.cost.total_cost, r.cost.total_cost, F.meur, null, false)}
+      ${line("Valeur nette de sortie", c.exit.net_value, r.exit.net_value, F.meur)}
+      ${line("Yield on cost", c.profitability.yield_on_cost, r.profitability.yield_on_cost, v => F.pct(v, 2))}
+      ${line("Spread", c.profitability.spread_bps, r.profitability.spread_bps, F.bps, TG.spread_bps)}
+      ${line("Marge sur coût", c.profitability.margin_on_cost, r.profitability.margin_on_cost, F.pct, TG.margin_on_cost)}
+      ${line("TRI fonds propres", c.returns.levered_irr, r.returns.levered_irr, F.pct, TG.levered_irr)}
+      ${line("Multiple", c.returns.equity_multiple, r.returns.equity_multiple, F.mult, TG.equity_multiple)}
+      ${line("Prix maximum", FIN.max_price.max_price, mp.max_price, F.meur)}</table>
+      <p class="small muted">Date de cession simulée : ${dateFr(r.timeline.exit)}${r.timeline.let_at_exit ? "" : " — immeuble non loué à la cession"}.</p>`;
+  } catch (e) { out = `<div class="warn">Combinaison non modélisable : ${esc(e.message)}</div>`; }
+  $("sim-out").innerHTML = out;
+}
+
+// ------------------------------------------------------------------ 9. scénarios
+function renderScenarios() {
+  const S = D.scenarios;
+  if (!S || S.status !== "complete") { $("scen-bars").innerHTML = `<p class="muted">Scénarios indisponibles.</p>`; return; }
+  $("scen-lead").innerHTML = esc((S.report?.answers || {}).q7 || "");
+  const sc = Object.entries(S.scenarios);
+  const W = 620, H = 270, L = 50, R = W - 10, Tp = 20, B = H - 44;
+  const vals = sc.flatMap(([, s]) => [s.metrics.margin_on_cost, s.metrics.levered_irr]).filter(isNum).concat([0, TG.margin_on_cost || 0]);
+  const lo = Math.min(...vals) * 1.15, hi = Math.max(...vals) * 1.25 + 0.02, Y = v => B - (v - lo) / (hi - lo) * (B - Tp), gw = (R - L) / sc.length;
+  let b = "";
+  niceTicks(lo, hi, 5).forEach(t => { b += `<line class="grid-line" x1="${L}" x2="${R}" y1="${Y(t)}" y2="${Y(t)}"/>` + T(L - 4, Y(t) + 4, nf(t * 100, 0) + " %", "lab", "end"); });
+  b += `<line class="axis" x1="${L}" x2="${R}" y1="${Y(0)}" y2="${Y(0)}"/>`;
+  if (isNum(TG.margin_on_cost)) b += `<line x1="${L}" x2="${R}" y1="${Y(TG.margin_on_cost)}" y2="${Y(TG.margin_on_cost)}" stroke="${css("--go")}" stroke-dasharray="4 3"/>` + T(R, Y(TG.margin_on_cost) - 4, "objectif de marge " + F.pct(TG.margin_on_cost, 0), "lab", "end");
+  sc.forEach(([k, s], i) => {
+    const x = L + i * gw, w = gw * 0.32;
+    [[s.metrics.margin_on_cost, "#5d7fa3", "marge"], [s.metrics.levered_irr, "#c9a227", "TRI FP"]].forEach(([v, c, lab], j) => {
+      const xx = x + gw * 0.16 + j * (w + 4);
+      if (!isNum(v)) { b += T(xx + w / 2, Y(0) - 6, "n.c.", "lab", "middle"); return; }
+      b += `<rect x="${xx}" y="${Y(Math.max(0, v))}" width="${w}" height="${Math.abs(Y(v) - Y(0))}" fill="${c}"><title>${esc(s.label)}, ${lab} : ${esc(F.pct(v))}</title></rect>` + T(xx + w / 2, v < 0 ? Y(v) + 13 : Y(v) - 4, nf(v * 100, 1), "lab", "middle", 'style="font-size:10.5px"');
+    });
+    b += T(x + gw / 2, H - 22, s.label, "val", "middle");
+  });
+  $("scen-bars").innerHTML = svg(W, H, b, "scénarios") + `<div class="legend"><span><i style="background:#5d7fa3"></i>marge sur coût</span><span><i style="background:#c9a227"></i>TRI fonds propres (n.c. : non calculable, perte en capital)</span></div>`;
+  const asking = FIN.max_price?.asking_price;
+  $("scen-price").innerHTML = hbars(sc.map(([, s]) => ({ label: s.label, value: s.max_price, fmt: F.meur, color: s.meets_targets ? css("--pos") : css("--accent") })),
+    { labelW: 120, refs: isNum(asking) ? [{ value: asking, label: `prix demandé ${F.meur(asking)}`, color: css("--nogo") }] : [] });
+  const vlabels = D.sensitivity_config.variables || {};
+  $("scen-cards").innerHTML = sc.map(([, s]) => `<div class="card"><h3>${esc(s.label)} ${s.meets_targets ? `<span class="badge ok">objectifs atteints</span>` : `<span class="badge">objectifs non atteints</span>`}</h3>
+    <p class="small">${esc(s.rationale)}</p><p class="small muted">${Object.entries(s.variables || {}).map(([v, side]) => `${esc((vlabels[v] || {}).label || v)} : ${side === "optimistic" ? "optimiste" : "pessimiste"}`).join(" · ") || "toutes les hypothèses au central"}</p></div>`).join("");
+}
+
+// ------------------------------------------------------------------ 10. risques
+let selectedRisk = null;
+function renderRisks() {
+  const risks = (D.risks.risks || []);
+  const W = 440, L = 60, Tp = 10, cs = 74, H = 5 * cs + 60;
+  const lvl = v => { for (const [name, [a, b]] of Object.entries(D.risk_levels || {})) if (v >= a && v <= b) return name; return "faible"; };
+  const bg = { "critique": "#f3d3d0", "élevé": "#f7dcc6", "modéré": "#f6ecc6", "faible": "#e1efe5" };
+  let b = "";
+  for (let i = 1; i <= 5; i++) for (let p = 1; p <= 5; p++) {
+    const x = L + (p - 1) * cs, y = Tp + (5 - i) * cs;
+    b += `<rect x="${x}" y="${y}" width="${cs - 2}" height="${cs - 2}" fill="${bg[lvl(p * i)]}" rx="4"><title>P ${p} × I ${i} = ${p * i} (${lvl(p * i)})</title></rect>`;
+    const here = risks.filter(r => r.probability === p && r.impact === i);
+    here.forEach((r, k) => {
+      const cx = x + 14 + (k % 3) * 23, cy = y + 16 + Math.floor(k / 3) * 23;
+      b += `<g class="rk" data-id="${esc(r.id)}" style="cursor:pointer"><circle cx="${cx}" cy="${cy}" r="10" fill="${css(LV[r.level])}" stroke="${selectedRisk === r.id ? css("--ink") : "#fff"}" stroke-width="2"/>`
+        + `<text x="${cx}" y="${cy + 4}" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:#fff">${esc(r.id)}</text><title>${esc(r.id)} ${esc(r.title)}</title></g>`;
+    });
+  }
+  for (let k = 1; k <= 5; k++) { b += T(L + (k - 1) * cs + cs / 2, Tp + 5 * cs + 16, String(k), "lab", "middle") + T(L - 8, Tp + (5 - k) * cs + cs / 2 + 4, String(k), "lab", "end"); }
+  b += T(L + 2.5 * cs, H - 10, "Probabilité", "val", "middle") + `<text x="16" y="${Tp + 2.5 * cs}" transform="rotate(-90 16 ${Tp + 2.5 * cs})" text-anchor="middle" class="val">Impact</text>`;
+  $("matrix").innerHTML = svg(W, H, b, "matrice des risques");
+  document.querySelectorAll("#matrix .rk").forEach(g => g.addEventListener("click", () => selectRisk(g.dataset.id)));
+  $("risk-chips").innerHTML = risks.map(r => `<span class="chip ${selectedRisk === r.id ? "on" : ""}" data-id="${esc(r.id)}"><span class="dot lv-${esc(r.level)}"></span>${esc(r.id)} ${esc(r.title)}</span>`).join("");
+  document.querySelectorAll("#risk-chips .chip").forEach(c => c.addEventListener("click", () => selectRisk(c.dataset.id)));
+  const ex = D.risks.excluded || [];
+  $("excluded").innerHTML = ex.length ? `<p class="small muted"><b>Non communiqués faute de données :</b> ${ex.map(e => `${esc(e.id)} ${esc(e.title)} (${esc((e.reason || []).join(" ; "))})`).join(" · ")}</p>` : "";
+  if (!selectedRisk && risks.length) selectRisk(risks[0].id, true); else if (selectedRisk) renderRiskDetail();
+}
+function selectRisk(id, silent) { selectedRisk = id; if (!silent) renderRisks(); else { renderRisks(); } renderRiskDetail(); }
+function renderRiskDetail() {
+  const r = (D.risks.risks || []).find(x => x.id === selectedRisk);
+  if (!r) { $("risk-detail").innerHTML = `<p class="muted">Aucun risque caractérisé.</p>`; return; }
+  const fe = r.financial_effect || {};
+  const showEv = v => typeof v !== "number" ? (typeof v === "string" ? v : JSON.stringify(v)) : (Number.isInteger(v) && v >= 1800 && v <= 2100) ? String(v) : nf(v, Math.abs(v) < 10 ? 3 : 0);
+  const ev = (r.evidence || []).map(e => `<li>${esc(e.label || e.key)} : <b>${esc(showEv(e.value))}</b> ${e.source ? pill("src", short(e.source), e.source + (e.date ? " — " + e.date : "")) : ""}</li>`).join("");
+  $("risk-detail").innerHTML = `<h3><span class="dot lv-${esc(r.level)}"></span>${esc(r.id)} — ${esc(r.title)}</h3>
+    <p class="small muted">${esc(r.category.replace("_", " "))} · niveau <b>${esc(r.level)}</b>${r.criticality ? ` · criticité ${r.criticality}/25` : " · évaluation incertaine"}</p>
+    <p>${esc(r.description)}</p>
+    <table><tr><th>Probabilité</th><td><b>${r.probability ?? "?"}/5</b> — ${esc(r.probability_rationale)}</td></tr>
+    <tr><th>Impact</th><td><b>${r.impact ?? "?"}/5</b> — ${esc(r.impact_rationale || "non chiffré")}</td></tr>
+    ${fe.shock ? `<tr><th>Choc testé</th><td>${esc(fe.shock_rationale)} : marge ${F.pts(fe.delta_margin_pts)}, TRI fonds propres ${F.pts(fe.delta_irr_pts)} ${pillCalc()}</td></tr>` : ""}</table>
+    ${ev ? `<h3>Preuves</h3><ul class="small">${ev}</ul>` : ""}
+    <h3>Mesures de réduction</h3><ul class="small">${(r.mitigations || []).map(m => `<li>${esc(m)}</li>`).join("")}</ul>
+    ${(r.seller_requests || []).length ? `<h3>À demander au vendeur</h3><ul class="small">${r.seller_requests.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+    ${(r.missing_information || []).length ? `<div class="warn small">Information manquante : ${esc(r.missing_information.join(" ; "))}</div>` : ""}`;
+}
+
+// ------------------------------------------------------------------ 11. hypothèses et manques
+function renderAssumptions() {
+  const fb = REC.fallbacks || [];
+  $("fallbacks").innerHTML = fb.length ? `<div class="warn"><b>Valeurs de repli qui pèsent sur la décision :</b> ${fb.map(f => `${esc(PLB(f.name))} = ${esc(byUnit(f.value, (FIN.inputs.find(p => p.name === f.name) || {}).unit))}`).join(" · ")}. Elles remplacent des données de marché non trouvées ; la décision doit être confirmée quand ces données seront disponibles.</div>` : "";
+  const rows = (FIN.inputs || []).filter(p => p.name !== "current_leases").map(p => `<tr><td>${esc(PLB(p.name))}</td><td class="r num">${esc(byUnit(p.value, p.unit))}</td>
+    <td>${pillParam(p.name)}</td><td class="small muted">${esc(p.note || p.reference || "")}</td></tr>`).join("");
+  $("params").innerHTML = `<table><tr><th>Paramètre</th><th class="r">Valeur</th><th>Origine</th><th>Justification ou source</th></tr>${rows}</table>`;
+  const miss = Object.values(REG).flat().filter(p => p.status === "missing");
+  $("missing").innerHTML = miss.length ? `<table>${miss.map(p => `<tr><td>${esc(LBL(p.key))} ${pill("miss", "manquant")}</td><td class="small muted">${esc(p.notes || "")}</td></tr>`).join("")}</table>` : `<p class="muted">Aucune.</p>`;
+  const rej = Object.values(REG).flat().filter(p => p.status === "rejected");
+  $("rejected").innerHTML = rej.length ? `<table>${rej.map(p => `<tr><td>${esc(LBL(p.key))}</td><td class="small muted">${esc(p.source_name)} — ${esc(p.notes || "")}</td></tr>`).join("")}</table>` : `<p class="muted">Aucune donnée rejetée par les contrôles de plausibilité.</p>`;
+}
+
+// ------------------------------------------------------------------ 12. sources
+function renderSources() {
+  const pts = Object.values(REG).flat().filter(p => ["ok", "partial"].includes(p.status) && !String(p.key).startsWith("deal."));
+  const deal = Object.values(REG).flat().find(p => String(p.key).startsWith("deal.") && p.status === "ok");
+  const bySrc = {};
+  pts.forEach(p => { (bySrc[p.source_name] = bySrc[p.source_name] || []).push(p); });
+  const rows = Object.entries(bySrc).map(([src, ps]) => `<tr><td><b>${esc(src)}</b>${ps[0].source_url ? `<br><a class="small" href="${esc(ps[0].source_url)}" target="_blank" rel="noopener">${esc(ps[0].source_url.slice(0, 90))}${ps[0].source_url.length > 90 ? "…" : ""}</a>` : ""}</td>
+    <td>${ps.map(p => esc(LBL(p.key))).join("<br>")}</td><td>${ps.map(p => esc(p.data_date || "n.d.")).join("<br>")}</td><td>${ps.map(p => esc(p.confidence)).join("<br>")}</td>
+    <td class="small muted nw">${ps.map(p => esc((p.retrieved_at || "").slice(0, 10))).join("<br>")}</td></tr>`).join("");
+  $("sources-list").innerHTML = `<table><tr><th>Source</th><th>Données</th><th>Date de la donnée</th><th>Confiance</th><th>Collecte</th></tr>${rows}
+    ${deal ? `<tr><td><b>${esc(deal.source_name)}</b> <span class="small muted">(asset_config.json)</span></td><td>données de l'actif et de l'opération</td><td>${esc(deal.data_date || "n.d.")}</td><td>${esc(deal.confidence)}</td><td></td></tr>` : ""}</table>`;
+  $("footer").innerHTML = `Généré le ${dateFr(D.meta.generated_at)} à partir des sorties de l'agent (analysis_results.json, data_registry.json) et de asset_config.json. Aucun chiffre n'est écrit dans ce fichier : tout provient de l'objet de données embarqué. Le simulateur utilise un port JavaScript du moteur Python, comparé automatiquement au moteur Python par un test de non-régression.`;
+}
+
+// ------------------------------------------------------------------ montage
+function bindSeg(id, set) {
+  $(id).querySelectorAll("button").forEach(btn => btn.addEventListener("click", () => {
+    $(id).querySelectorAll("button").forEach(b => b.classList.toggle("on", b === btn)); set(btn.dataset.m);
+  }));
+}
+function safe(fn, target) { try { fn(); } catch (e) { console.error(e); if (target && $(target)) $(target).insertAdjacentHTML("beforeend", `<div class="warn">Section non affichée : ${esc(e.message)}</div>`); } }
+safe(renderVerdict, "verdict-box"); safe(renderNote, "note"); safe(renderOperation, "asset-card"); safe(renderPrice, "price-ranges");
+safe(renderRent, "rent-bars"); safe(renderCost, "waterfall"); safe(renderReturns, "target-cards"); safe(renderMacro, "macro-grid");
+safe(renderTornado, "tornado"); safe(renderBreakevens, "breakevens"); safe(renderHeatmaps, "heatmaps"); safe(setupSimulator, "sliders");
+safe(renderScenarios, "scen-bars"); safe(renderRisks, "matrix"); safe(renderAssumptions, "params"); safe(renderSources, "sources-list");
+bindSeg("tornado-metric", m => { tornadoMetric = m; safe(renderTornado, "tornado"); });
+bindSeg("heat-metric", m => { heatMetric = m; safe(renderHeatmaps, "heatmaps"); });
+</script>
+</body>
+</html>

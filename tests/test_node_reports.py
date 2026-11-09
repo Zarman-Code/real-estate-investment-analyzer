@@ -64,7 +64,14 @@ def test_decision_critical_data_are_sourced(final):
     assert all(final["financials"]["required_data"].values())
 
 
-def test_exit_yield_is_implied_market_yield_when_no_prime_yield(final):
+@pytest.fixture(scope="module")
+def final_no_report(tmp_path_factory):
+    """Même analyse sans les analyses de marché : ni loyer prime, ni taux prime, ni vacance."""
+    return run_on_fixtures(tmp_path_factory.mktemp("nr"), without=("market_reports", "cushman_marketbeat"))
+
+
+def test_exit_yield_is_implied_market_yield_when_no_prime_yield(final_no_report):
+    final = final_no_report
     ey = next(p for p in final["financials"]["inputs"] if p["name"] == "exit_yield")
     assert ey["reference"] == "market.average_rent / market.investment_price_per_sqm"
     rent = next(f for f in final["financials"]["report"]["figures"] if f["id"] == "immostat_rent")["raw"]
@@ -72,13 +79,25 @@ def test_exit_yield_is_implied_market_yield_when_no_prime_yield(final):
     assert ey["value"] == pytest.approx(rent / price)
 
 
-def test_relet_rent_is_immostat_rent_when_no_prime_rent(final):
-    r = next(p for p in final["financials"]["inputs"] if p["name"] == "relet_rent")
+def test_exit_yield_is_prime_yield_plus_premium_when_published(final):
+    ey = next(p for p in final["financials"]["inputs"] if p["name"] == "exit_yield")
+    assert ey["reference"] == "market.prime_yield + prime de risque" and "4,00 %" in ey["note"] and "25 pb" in ey["note"]
+    assert final["registry"].get("market.prime_yield").source_name.startswith("Rapports de marché")
+
+
+def test_relet_rent_is_immostat_rent_when_no_prime_rent(final_no_report):
+    r = next(p for p in final_no_report["financials"]["inputs"] if p["name"] == "relet_rent")
     assert r["origin"] == "registry" and r["reference"] == "market.average_rent"
 
 
-def test_missing_complementary_data_is_said_not_filled(final):
-    q2 = final["financials"]["report"]["answers"]["q2"]
+def test_relet_rent_sits_between_average_and_prime_rent_of_the_report(final):
+    r = next(p for p in final["financials"]["inputs"] if p["name"] == "relet_rent")
+    assert r["origin"] == "computed" and not r["fallback"] and "1 250 €/m²/an" in r["note"]
+    assert final["registry"].value("market.prime_rent") == 1250.0                 # MarketBeat, ligne Paris QCA
+
+
+def test_missing_complementary_data_is_said_not_filled(final_no_report):
+    q2 = final_no_report["financials"]["report"]["answers"]["q2"]
     assert f"{NOT_AVAILABLE} : loyer prime" in q2
 
 

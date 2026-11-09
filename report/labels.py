@@ -37,6 +37,15 @@ PARAM_LABELS = {
     "acq_fees_pct": "frais d'acquisition", "stabilised_occupancy": "occupation stabilisée",
     "rent_free_months": "franchise", "letting_void_months": "délai de relocation",
     "non_recoverable_pct": "charges non récupérables", "sale_costs_pct": "frais de cession",
+    # autres paramètres du modèle (affichage du dashboard)
+    "price": "prix d'acquisition", "surface_before": "surface actuelle", "surface_after": "surface après travaux",
+    "capex_per_sqm": "coût des travaux au m²", "fees_contingency_pct": "honoraires et aléas (% des travaux)",
+    "ltv": "LTV", "margin_bps": "marge bancaire", "current_leases": "baux en place", "exit_quarter": "trimestre de cession",
+    "exit_date": "date de cession", "firm_lease_term_months": "durée ferme du nouveau bail",
+    "incentives_if_missing": "mesures d'accompagnement (hypothèse)", "incentives": "mesures d'accompagnement",
+    "vacant_holding_cost_eur_sqm_year": "coût de portage des surfaces vides",
+    "marketing_fees_pct_annual_rent": "honoraires de commercialisation", "debt_arrangement_fee_pct": "commission d'arrangement",
+    "euribor_floor": "plancher d'Euribor", "ltv_basis": "base de la LTV", "interest_mode": "traitement des intérêts",
 }
 
 

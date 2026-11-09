@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "source_document": "Dossier fictif de démonstration du dashboard",
+    "source_date": "2026-11",
+    "notes": "Actif FICTIF servant à tester le dashboard sur un autre deal. Les ratios suffixés _pct sont des fractions."
+  },
+  "asset": {
+    "name": "Immeuble Démo",
+    "type": "bureaux",
+    "district": "Arrondissement fictif",
+    "sector": "Secteur de démonstration",
+    "submarket": "Paris QCA",
+    "reference_point": {
+      "label": "Point de référence de démonstration",
+      "address": "6 rue Drouot, 75009 Paris"
+    },
+    "surface_before_sqm": 2600,
+    "surface_after_sqm": 2750,
+    "condition": "à rénover : installations vieillissantes (exemple)",
+    "dpe_current": "E",
+    "dpe_target": "B",
+    "year_built_decade": 1980,
+    "floors": "R+5"
+  },
+  "operation": {
+    "asking_price_eur": 21500000,
+    "price_basis": "hors droits",
+    "strategy": "acquisition-restructuration-relocation-cession",
+    "capex_eur_per_sqm_after": 3600,
+    "fees_and_contingency_pct_of_capex": 0.12,
+    "project_scope": "rénovation lourde (exemple)",
+    "current_leases": [
+      {"tenant": "Locataire fictif", "surface_sqm": 900, "rent_eur_sqm_year": 480, "rent_basis": "HT HC", "end_date": "2027-03-31"}
+    ],
+    "occupancy_current_pct": 0.35,
+    "financing": {"ltv": 0.55, "reference_rate": "Euribor3M", "margin_bps": 250},
+    "timeline": {
+      "acquisition_date": "2027-01-01",
+      "works_start": "2027-04-01",
+      "works_duration_months": 15,
+      "letting_year": 2028,
+      "exit_year": 2029
+    }
+  },
+  "overrides": {}
+}

@@ -12,6 +12,11 @@ langgraph>=1.0
 numpy-financial
 # Phase 7 (optionnel : rédaction par LLM ; sans clé OPENAI_API_KEY, rédaction automatique)
 openai>=1.0
+# Rapports et analyses de marché (PDF, HTML)
+pdfplumber>=0.11
+beautifulsoup4>=4.12           # pages HTML d'analyses de marché
+# Dashboard (génération seulement ; le fichier HTML produit n'a aucune dépendance)
+jinja2>=3.1
 # Phases suivantes (installées au fil de l'eau)
 # pandas, numpy, scipy,
-# geopandas, shapely, pyproj, pdfplumber, jinja2
+# geopandas, shapely, pyproj

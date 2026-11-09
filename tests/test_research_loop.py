@@ -158,10 +158,10 @@ def test_unavailable_source_loops_once_then_uses_alternative(tmp_path, base):
     # le prix d'investissement (P1) n'a qu'ImmoStat pour source : il reste manquant, l'analyse continue
     assert final["validation_report"].verdict == "proceed_with_assumptions"
     assert final["validation_report"].gaps == ["market.investment_price_per_sqm"]
-    pass2 = [keys for s, keys in fakes.calls if s == "market_reports"]
+    pass2 = [keys for s, keys in fakes.calls if s == "cushman_marketbeat"]
     assert set(pass2[-1]) == {"market.average_rent"}                  # recherche limitée à la lacune P1
-    assert final["registry"].get("market.average_rent").source_name.startswith("Rapports de marché")
-    assert final["research_attempts"]["market.average_rent"] == ["immostat", "market_reports"]
+    assert final["registry"].get("market.average_rent").source_name.startswith("Cushman & Wakefield")
+    assert final["research_attempts"]["market.average_rent"] == ["immostat", "cushman_marketbeat"]
     assert final["registry"].get("market.investment_price_per_sqm").status == "missing"
     assert any("retour 1/2" in line for line in final["logs"])
 
@@ -185,7 +185,7 @@ def test_everything_down_continues_with_flagged_assumption(base):
 
 
 def test_loop_is_capped_by_max_research_loops(base):
-    """Avec 4 sources candidates toutes en panne et max 2 retours : exactement 3 passes, la 4e source jamais appelée."""
+    """Avec 5 sources candidates toutes en panne et max 2 retours : exactement 3 passes, les suivantes jamais appelées."""
     cfg, defaults, targets, _ = base
     raw = load_sources_catalog().model_dump()
     for i in (1, 2, 3):   # loyer moyen (P1) : 1 source demandée par passage (min_sources = 1)
@@ -197,8 +197,8 @@ def test_loop_is_capped_by_max_research_loops(base):
 
     assert final["research_iteration"] == 3
     tried = final["research_attempts"]["market.average_rent"]
-    assert tried == ["immostat", "market_reports", "extra_reports_1"]
-    assert "extra_reports_2" not in [s for s, _ in fakes.calls]
+    assert tried == ["immostat", "cushman_marketbeat", "market_reports"]
+    assert "extra_reports_1" not in [s for s, _ in fakes.calls]
     assert any("nombre maximal de retours atteint" in line for line in final["logs"])
 
 
@@ -260,7 +260,7 @@ def test_quality_warnings(tmp_path, base):
     rent = issues_for(final, "market.prime_rent")
     assert ("freshness", "warning") in rent
     assert ("coherence", "warning") in rent
-    assert ("convergence", "warning") in rent                              # 1 source pour 2 demandées
+    assert ("convergence", "info") in rent                                 # 2 sources (MarketBeat, page d'analyse) concordantes
     assert ("sample_size", "warning") in issues_for(final, "market.dvf_price_per_sqm")
     assert final["validation_report"].verdict == "sufficient"              # avertissements non bloquants
 
@@ -295,8 +295,9 @@ def test_identify_needs_order_scope_and_overrides(tmp_path, base):
     # override -> toujours recherché pour comparaison, mais plus bloquant
     assert needs["market.prime_yield"].priority == "P2" and "0.045" in needs["market.prime_yield"].reason
     assert [n.priority for n in out["data_needs"]] == sorted(n.priority for n in out["data_needs"])
-    assert needs["market.average_rent"].target_sources == ["immostat", "market_reports"]  # fichier avant rapport
-    assert needs["market.prime_rent"].target_sources == ["market_reports"]   # ImmoStat ne publie pas de loyer prime
+    assert needs["market.average_rent"].target_sources == ["immostat", "cushman_marketbeat", "market_reports"]  # fichier avant rapports
+    assert needs["market.prime_rent"].target_sources == ["cushman_marketbeat", "market_reports"]   # ImmoStat : pas de loyer prime
+    assert needs["market.prime_yield"].target_sources == ["market_reports"]   # absent du MarketBeat Bureaux
     # DVF officiel d'abord, Firmio en recoupement ; aucadastre (prix d'appartements) écarté
     assert needs["market.dvf_price_per_sqm"].target_sources == ["dvf", "firmio_dvf_entreprises"]
     assert cfg.asset.reference_point.label in needs["market.dvf_price_per_sqm"].scope

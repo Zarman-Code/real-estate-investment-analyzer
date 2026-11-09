@@ -418,8 +418,24 @@ class DecisionRules(_Strict):
     max_negotiable_discount: float = Field(ge=0, le=1)
     max_critical_risks_conditional: int = Field(ge=0)
     robustness_scenario: str
+    # base de la décision : le scénario central. Les risques et la robustesse sont publiés pour information,
+    # et n'entrent dans la décision que si ces interrupteurs sont activés
+    risks_in_decision: bool
+    robustness_in_decision: bool
     top_risks: int = Field(ge=1, le=10)
     max_arguments: int = Field(ge=3, le=10)
+    price_gap_band: float = Field(ge=0, le=1)
+    # critère M : prix demandé au m² comparé à la référence de marché (clé du registre, base « surface actuelle ») ;
+    # s'il la dépasse, ou s'il est seulement en ligne pour un immeuble à restructurer : GO AVEC CONTRAINTES (négocier)
+    price_reference: str = "market.dvf_price_per_sqm"
+    restructuring_requires_discount: bool = True
+
+
+class ExplanationConfig(_Strict):
+    """Texte explicatif final : décision, risques déclarés, hypothèses à valider."""
+    max_hypotheses: int = Field(ge=1, le=10)
+    # paramètre du modèle -> ce qu'il faut obtenir pour valider la valeur retenue (texte générique, non propre au deal)
+    validation_actions: dict[str, str] = Field(min_length=1)
 
 
 class LlmConfig(_Strict):
@@ -430,6 +446,31 @@ class LlmConfig(_Strict):
     prompt_file: str
     node_prompts: dict[str, str] = Field(default_factory=dict)
     number_tolerance_rel: float = Field(gt=0, le=0.05)
+    max_text_lines: int = Field(default=5, ge=1, le=20)     # texte rédigé par le LLM final : synthèse et lignes libres de la note
+
+
+class SliderSpec(_Strict):
+    id: str
+    label: str
+    field: str
+    kind: Literal["mult_pct", "add_bps", "abs_pts", "abs_int", "add_int"]
+    min: float
+    max: float
+    step: float = Field(gt=0)
+    shift_exit: bool = False
+
+    @model_validator(mode="after")
+    def _bounds(self) -> "SliderSpec":
+        if self.min >= self.max:
+            raise ValueError(f"curseur {self.id} : min >= max")
+        if self.kind in ("mult_pct", "add_bps", "add_int") and not (self.min <= 0 <= self.max):
+            raise ValueError(f"curseur {self.id} : la plage d'écart doit contenir 0 (le scénario central)")
+        return self
+
+
+class DashboardConfig(_Strict):
+    sliders: list[SliderSpec] = Field(min_length=1)
+    low_sample_threshold_from: str | None = None
 
 
 class DefaultsConfig(_Strict):
@@ -444,8 +485,10 @@ class DefaultsConfig(_Strict):
     scenarios: dict[str, ScenarioSpec] = Field(default_factory=dict)
     committee_questions: dict[str, CommitteeQuestion] = Field(default_factory=dict)
     decision_rules: DecisionRules | None = None
+    explanation: ExplanationConfig | None = None
     llm: LlmConfig | None = None
     risk_scoring: RiskScoring
+    dashboard: DashboardConfig | None = None
 
     @model_validator(mode="after")
     def _unique_keys(self) -> "DefaultsConfig":

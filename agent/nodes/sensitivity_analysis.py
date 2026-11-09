@@ -40,10 +40,20 @@ def sensitivity_analysis_core(state: AgentState) -> dict:
     top = ", ".join(f"{r['label']} ({r['irr_range_pts']:.1f} pt)" for r in tor["rows"][:3])
     logs = [f"sensitivity_analysis : {len(tor['rows'])} variables, plus déterminantes : {top}"]
     for name, b in be.items():
-        logs.append(f"  seuil {name} : marge nulle à {b.get('margin_zero_value', b['margin_zero_at'])}, "
-                    f"TRI = objectif à {b.get('irr_target_value', b['irr_target_at'])}")
+        logs.append(f"  seuil {b['label']} : marge nulle à {_fmt_be(b, 'margin_zero')}, "
+                    f"TRI = objectif à {_fmt_be(b, 'irr_target')}")
     return {"sensitivity": {"status": "complete", "tornado": tor, "breakeven": be, "heatmaps": maps},
             "logs": logs}
+
+
+def _fmt_be(b: dict, kind: str) -> str:
+    """Seuil lisible : valeur formatée, mois de retard, ou « non atteint sur la plage testée »."""
+    v = b.get(f"{kind}_value")
+    if v is None and b.get(f"{kind}_at") is not None:
+        return f"+{int(b[f'{kind}_at'])} mois"
+    if v is None:
+        return "non atteint sur la plage testée"
+    return f"{v:.2%}" if abs(v) < 1 else f"{v:,.0f}".replace(",", " ")
 
 
 sensitivity_analysis = make_sensitivity_node(None)

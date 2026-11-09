@@ -15,33 +15,21 @@
     },
     {
       "key": "market.prime_rent",
-      "check": "completeness",
-      "severity": "warning",
-      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+      "check": "convergence",
+      "severity": "info",
+      "message": "recoupement concordant : écart de 8.3% (seuil 10%) : Cushman & Wakefield - MarketBeat Bureaux Île-de-France = 1250.0, Rapports de marché (conseils en immobilier) = 1150.0"
     },
     {
       "key": "market.prime_yield",
-      "check": "completeness",
+      "check": "convergence",
       "severity": "warning",
-      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
-    },
-    {
-      "key": "market.vacancy",
-      "check": "completeness",
-      "severity": "warning",
-      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+      "message": "1 source(s) pour 2 demandées : pas de vérification croisée possible"
     },
     {
       "key": "market.incentives",
       "check": "completeness",
       "severity": "warning",
-      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
-    },
-    {
-      "key": "market.future_supply",
-      "check": "completeness",
-      "severity": "warning",
-      "message": "donnée P2 manquante : connecteur non implémenté pour ['market_reports']"
+      "message": "donnée P2 manquante : Global Icons, « Marché prime Paris QCA 2026 : état des lieux » : la page ne chiffre pas les mesures d'accompagnement"
     },
     {
       "key": "risk.natural_risks",

@@ -20,7 +20,8 @@ from report.note_go_nogo import render_markdown, template_lines
 from tools.connectors import ConnectorRegistry
 
 D = load_defaults()
-RULES = D.decision_rules
+RULES = D.decision_rules                     # règles du fonds : décision sur le scénario central
+GATED = RULES.model_copy(update={"risks_in_decision": True, "robustness_in_decision": True})   # variante activable
 ILLUSTRATIVE = {"relet_rent_eur_sqm_year": 940, "exit_yield_pct": 0.045, "euribor_3m_pct": 0.0263,
                 "acquisition_fees_pct": 0.075}   # valeurs de test, non sourcées
 
@@ -56,6 +57,32 @@ def test_go():
     assert decide(facts(), RULES)["decision"] == GO
 
 
+def test_fund_rules_decide_on_the_central_scenario():
+    assert RULES.risks_in_decision is False and RULES.robustness_in_decision is False
+
+
+@pytest.mark.parametrize("kw", [
+    {"risks": [risk("R1", "critique", 20), risk("R2", "critique", 20), risk("R3", "critique", 17)]},
+    {"def_margin": -0.03},
+    {"risks": [risk("R2", "critique", 20)], "def_margin": -0.10},
+])
+def test_risks_and_downside_are_declared_not_decisive(kw):
+    """Décision sur le scénario central : des risques critiques ou un défavorable négatif ne changent pas un GO."""
+    f = facts(**kw)
+    v = decide(f, RULES)
+    assert v["decision"] == GO and v["criteria"]["basis"] == "central"
+    assert v["criteria"]["B"]["critical"] == [r["id"] for r in f["risks"] if r["level"] == "critique"]   # toujours calculés
+    assert not any("risque" in str(t) or "défavorable" in str(t) for t in v["triggers"])
+    assert conditions(f, v) == []                                   # aucun risque transformé en condition
+
+
+def test_central_decision_ignores_risks_but_not_price():
+    f = facts(irr=0.13, max_price=27e6, risks=[risk("R1", "critique", 20)] * 3)
+    v = decide(f, RULES)
+    assert v["decision"] == GO_COND and any("scénario central" in str(t) for t in v["triggers"])
+    assert [str(c) for c in conditions(f, v)] == ["ramener le prix d'acquisition à 27,0 M€ au plus (contre 28,0 M€ demandés)"]
+
+
 def test_undetermined_when_incomplete():
     v = decide(facts(complete=False), RULES)
     assert v["decision"] == UNDETERMINED and v["criteria"] is None
@@ -67,7 +94,7 @@ def test_undetermined_when_incomplete():
     ({"risks": [risk("R1", "critique", 20), risk("R2", "critique", 20), risk("R3", "critique", 17)]}, "risques critiques"),
 ])
 def test_no_go(kw, reason):
-    v = decide(facts(**kw), RULES)
+    v = decide(facts(**kw), GATED)
     assert v["decision"] == NO_GO and any(reason in t for t in v["triggers"])
 
 
@@ -77,7 +104,7 @@ def test_no_go(kw, reason):
     {"def_margin": -0.03},                                # fragile en défavorable
 ])
 def test_go_under_conditions(kw):
-    assert decide(facts(**kw), RULES)["decision"] == GO_COND
+    assert decide(facts(**kw), GATED)["decision"] == GO_COND
 
 
 def test_negotiable_floor_is_exact():
@@ -88,7 +115,7 @@ def test_negotiable_floor_is_exact():
 
 def test_conditions_follow_failed_criteria():
     f = facts(irr=0.13, max_price=27e6, def_margin=-0.02, risks=[risk("R6", "critique", 20), risk("R9", "incertain")])
-    c = conditions(f, decide(f, RULES))
+    c = conditions(f, decide(f, GATED))                      # variante où risques et robustesse entrent dans la décision
     assert any("27,0 M€" in x for x in c) and any("défavorable" in x for x in c)
     assert any("mesure R6" in x for x in c) and any("Risque R9" in x for x in c)
     ok = facts()
@@ -211,7 +238,8 @@ class FakeLLM:
 
 def good_answer(rec, disagree=None):
     lines = list(rec["template_lines"])
-    lines[-1] = lines[-1] + " Reformulé par le LLM."          # reformulation sans nouveau chiffre
+    i = next(k for k, x in enumerate(lines) if x.startswith("Scénario central"))
+    lines[i] = lines[i] + " Reformulé par le LLM."            # reformulation (ligne libre) sans nouveau chiffre
     return {"note_lines": lines, "answers": dict(rec["answers"]), "synthesis": "Synthèse sans chiffre nouveau.",
             "disagreement": {"disagrees": bool(disagree), "reason": disagree or ""}}
 
@@ -244,7 +272,8 @@ def test_llm_invented_number_is_rejected(complete_rec):
 
 def test_llm_cannot_change_decision(complete_rec):
     ans = good_answer(complete_rec)
-    ans["note_lines"] = ["**Recommandation : GO.** Excellent dossier."] + ans["note_lines"][1:]
+    other = NO_GO if complete_rec["decision"] != NO_GO else GO
+    ans["note_lines"] = [f"**Recommandation : {other}.** Autre décision."] + ans["note_lines"][1:]
     d = draft(FakeLLM(ans), D.llm, complete_rec["decision"], final_payload(complete_rec), list(complete_rec["questions"]))
     assert d["mode"] == "template" and "décision" in d["status"]
 
@@ -252,7 +281,8 @@ def test_llm_cannot_change_decision(complete_rec):
 @pytest.mark.parametrize("llm,fragment", [
     (FakeLLM("pas du json"), "échoué"),
     (FakeLLM(error=TimeoutError("lent")), "échoué"),
-    (FakeLLM({"note_lines": ["**Recommandation : x**"]}), "5 à 10"),
+    (FakeLLM({"note_lines": []}), "1 à 10"),
+    (FakeLLM({"note_lines": ["l"] * 11}), "1 à 10"),
     (FakeLLM([1, 2]), "non structurée"),
 ])
 def test_llm_failures_fall_back_to_template(complete_rec, llm, fragment):
@@ -267,7 +297,7 @@ def test_llm_disagreement_is_shown_not_applied(tmp_path, complete_rec):
     rec = final["recommendation"]
     assert rec["decision"] == complete_rec["decision"]                       # décision inchangée
     assert rec["drafting"]["mode"] == "llm" and rec["drafting"]["disagreement"] == reason
-    assert rec["note_lines"][-1].endswith("Reformulé par le LLM.")           # c'est bien le texte du LLM qui est publié
+    assert any(x.endswith("Reformulé par le LLM.") for x in rec["note_lines"])  # c'est bien le texte du LLM qui est publié
     assert rec["template_lines"] != rec["note_lines"]                         # la version de référence reste conservée
     assert any("DÉSACCORD DU LLM" in line for line in final["logs"])
     assert reason in render_markdown(rec, rec["note_lines"])
@@ -313,3 +343,151 @@ def test_required_data_missing_means_undetermined():
     f["required_missing"] = ["market.dvf_price_per_sqm"]
     v = decide(f, RULES)
     assert v["decision"] == UNDETERMINED and "prix au m² des transactions" in v["triggers"][0]
+
+
+# ------------------------------------------------------------------ texte explicatif final
+
+@pytest.fixture(scope="module")
+def explained(tmp_path_factory):
+    from realdata import run_on_fixtures
+    return run_on_fixtures(tmp_path_factory.mktemp("ex"))["recommendation"]
+
+
+def test_explanation_has_decision_risks_hypotheses_and_thresholds(explained):
+    titles = [s["title"] for s in explained["explanation"]]
+    assert titles == ["Décision et raisons", "Risques déclarés", "Hypothèses à valider", "Ce qui ferait changer la décision"]
+    text = explained["explanation_text"]
+    assert text.startswith("DÉCISION ET RAISONS") and "scénario central" in text
+    assert "les risques et le scénario défavorable n'entrent pas dans la décision" in text
+
+
+def test_explanation_declares_every_risk_with_its_effect(explained):
+    risks = next(s for s in explained["explanation"] if s["title"] == "Risques déclarés")["paragraphs"]
+    facts_risks = explained["facts"]["risks"]
+    assert len(risks) == 1 + len(facts_risks)                                   # introduction + un paragraphe par risque
+    for r in facts_risks:
+        para = next(p["text"] for p in risks[1:] if p["text"].startswith(r["title"]))
+        assert r["level"] in para and "S'il survient" in para and r["mitigations"][0] in para
+        assert ("resteraient atteints" in para) != ("ne seraient plus atteints" in para)
+
+
+def test_explanation_hypotheses_follow_the_tornado_and_say_how_to_validate(explained):
+    hyp = next(s for s in explained["explanation"] if s["title"] == "Hypothèses à valider")["paragraphs"]
+    first = hyp[1]["text"]
+    assert first.startswith("Loyer de relocation") and "la marge s'annule à" in first and "Pour la valider" in first
+    assert any("Taux de sortie" in p["text"] and "source unique pour 2 demandées" in p["text"] for p in hyp)   # un seul rapport
+    assert "valeur de repli" in hyp[-1]["text"] and "objectifs du fonds" in hyp[-1]["text"]
+    assert len(hyp) - 2 <= D.explanation.max_hypotheses
+
+
+def test_explanation_figures_are_traceable(explained):
+    """Chaque chiffre est un emplacement de la phrase (jamais saisi en clair dans le gabarit)."""
+    import re
+    for s in explained["explanation"]:
+        for p in s["paragraphs"]:
+            bare = re.sub(r"\{\d+\}", "", p["template"])
+            assert not re.search(r"\d[.,]\d|\d\s*(%|€|pb|pt)", bare), p["template"]
+
+
+def test_explanation_under_gated_rules_names_risks_as_decisive():
+    from decision.explanation import build_explanation
+    f = facts(risks=[risk("R1", "critique", 20, 4, 5)] * 3)
+    v = decide(f, GATED)
+    sec = build_explanation(f, v, GATED, D.explanation, {})
+    assert v["decision"] == NO_GO and "risques critiques" in str(sec[0]["paragraphs"][0])
+    assert "entrent dans la décision" in str(sec[1]["paragraphs"][0])
+
+
+# ------------------------------------------------------------------ longueur du texte du LLM final
+
+def test_limit_lines_cuts_at_sentence_boundaries():
+    from decision.llm import limit_lines
+    text = "Première phrase. Deuxième avec 26,9 %. Troisième ? Quatrième !\nCinquième. Sixième. Septième."
+    out, cut = limit_lines(text, 5)
+    assert cut and out.splitlines() == ["Première phrase.", "Deuxième avec 26,9 %.", "Troisième ?", "Quatrième !", "Cinquième."]
+    assert limit_lines("Une seule phrase.", 5) == ("Une seule phrase.", False)
+
+
+def test_final_llm_text_is_capped_by_config(complete_rec):
+    ans = good_answer(complete_rec)
+    ans["synthesis"] = " ".join(["Phrase sans chiffre nouveau."] * 9)
+    ans["note_lines"] = ans["note_lines"][:1] + ["Ligne libre."] * 8
+    d = draft(FakeLLM(ans), D.llm, complete_rec["decision"], final_payload(complete_rec), list(complete_rec["questions"]))
+    assert D.llm.max_text_lines == 5
+    assert d["mode"] == "llm" and "ramené à 5 lignes" in d["status"]
+    assert len(d["synthesis"].splitlines()) == 5 and len(d["note_lines"]) == 5
+
+
+def test_prompt_states_the_line_limit():
+    from decision.llm import load_prompt
+    p = load_prompt(D.llm)
+    assert "<MAX_LIGNES>" not in p and "5 lignes au maximum" in p
+
+
+# ------------------------------------------------------------------ prix au m² : critère M et GO AVEC CONTRAINTES
+
+from decision.rules import GO_CONSTRAINED, market_price  # noqa: E402
+
+
+def priced(gap, capex=2500, asking_sqm=9333):
+    """Faits synthétiques avec une référence DVF (valeur et écart cohérents) et un coût de travaux."""
+    f = facts()
+    ref = asking_sqm / (1 + gap)
+    f["price_references"] = [{"key": "market.dvf_price_per_sqm", "label": "médiane DVF des comparables",
+                              "source": "DVF+ open data (Cerema)", "data_date": "2021-12-30", "confidence": "medium",
+                              "basis": "surface_before", "value_per_sqm": ref, "gap_pct": gap}]
+    f["inputs"] = [{"name": "capex_per_sqm", "value": capex}, {"name": "surface_before", "value": 3000}]
+    return f
+
+
+def test_price_in_line_on_a_building_to_restructure_means_go_with_constraints():
+    f = priced(-0.048)
+    v = decide(f, RULES)
+    assert v["decision"] == GO_CONSTRAINED
+    assert "en ligne avec la médiane DVF des comparables" in v["triggers"][0] and "le prix doit être négocié" in v["triggers"][0]
+    m = market_price(f, RULES)
+    assert m["position"] == "in_line" and m["constraint"]
+    assert m["target_per_sqm"] == pytest.approx(f["price_references"][0]["value_per_sqm"] * (1 - RULES.price_gap_band))
+    assert m["target_price"] == pytest.approx(m["target_per_sqm"] * 3000)
+    cond = " ".join(str(c) for c in conditions(f, v))
+    assert "négocier le prix d'acquisition sous" in cond
+
+
+def test_price_above_market_means_go_with_constraints_even_without_works():
+    assert decide(priced(0.20, capex=0), RULES)["decision"] == GO_CONSTRAINED
+
+
+def test_price_below_market_keeps_go_and_cites_the_comparison():
+    v = decide(priced(-0.20), RULES)
+    assert v["decision"] == GO and "en dessous de la médiane DVF" in " ".join(v["triggers"])
+
+
+def test_price_in_line_without_works_is_plain_go():
+    assert decide(priced(-0.02, capex=0), RULES)["decision"] == GO
+
+
+def test_no_market_reference_means_no_price_constraint():
+    m = market_price(facts(), RULES)
+    assert not m["available"] and decide(facts(), RULES)["decision"] == GO
+
+
+def test_failed_targets_still_beat_price_comparison():
+    f = priced(-0.048)
+    f["central"]["margin_on_cost"] = -0.05
+    assert decide(f, RULES)["decision"] == NO_GO
+
+
+def test_price_phrase_has_no_bare_figure():
+    import re
+    from decision.rules import market_price_phrase
+    p = market_price_phrase(market_price(priced(-0.048), RULES))
+    assert "donnée du 2021-12-30" in p and not re.search(r"\d", re.sub(r"\{\d+\}", "", p.template))
+
+
+def test_note_and_explanation_cite_price_per_sqm(explained):
+    assert explained["decision"] == GO_CONSTRAINED
+    assert any(str(l).startswith("Prix au m² : prix demandé de") for l in explained["template_lines"])
+    dec = next(s for s in explained["explanation"] if s["title"] == "Décision et raisons")["paragraphs"]
+    angles = next(p["text"] for p in dec if p["text"].startswith("Prix au m², sous tous les angles"))
+    assert "DVF+" in angles and "Firmio" in angles and "ImmoStat" in angles and "surface après travaux" in angles
+    assert any("Contrainte : négocier le prix sous" in p["text"] for p in dec)

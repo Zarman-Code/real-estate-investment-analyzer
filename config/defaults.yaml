@@ -153,6 +153,8 @@ dvf:
 submarket_zones:
   "Paris QCA":
     immostat: "Paris Centre Ouest"
+    cushman_marketbeat_bureaux_idf: "Paris QCA"   # libellé exact de la ligne du tableau « Données de marché »
+    globalicons_qca: "Paris QCA"                  # la page doit porter sur ce secteur (titre h1)
 
 # Contrôles de cohérence entre indicateurs (validate_research)
 coherence_rules:
@@ -327,7 +329,7 @@ scenarios:
 
 # --------------------------------------------------------------------------- recommandation (plan, section 8)
 # La DÉCISION est calculée par ces règles ; le LLM ne fait que rédiger (et peut exprimer un désaccord affiché).
-# Questions du comité (case Braxton AM), chacune confiée au nœud qui détient les données pour y répondre.
+# Questions du comité d'investissement, chacune confiée au nœud qui détient les données pour y répondre.
 committee_questions:
   q1: {node: financial_analysis, text: "Le prix demandé est-il cohérent avec les transactions du quartier ?"}
   q2: {node: financial_analysis, text: "Quel loyer peut-on espérer après restructuration, au regard du marché ?"}
@@ -341,23 +343,52 @@ decision_rules:
   # sans ces données, aucune décision (NON DÉTERMINÉ) ; le yield on cost et le taux de sortie doivent aussi être calculés
   required_data: [market.dvf_price_per_sqm, market.average_rent, market.investment_price_per_sqm]
   max_negotiable_discount: 0.15        # prix maximum < prix demandé x (1 - 15 %) : écart jugé non négociable -> NO-GO
-  max_critical_risks_conditional: 2    # au-delà : risques jugés non maîtrisables -> NO-GO
-  robustness_scenario: defavorable     # critère C : la marge doit rester positive dans ce scénario
+  # La décision se prend sur le SCÉNARIO CENTRAL : objectifs du fonds au prix demandé, prix maximum, marge centrale.
+  # Les risques et le scénario défavorable sont calculés et publiés dans la note et le dashboard, sans effet sur
+  # la décision tant que les deux interrupteurs ci-dessous restent à false.
+  risks_in_decision: false
+  robustness_in_decision: false
+  max_critical_risks_conditional: 2    # si risks_in_decision : au-delà, risques jugés non maîtrisables -> NO-GO
+  robustness_scenario: defavorable     # scénario de robustesse publié ; si robustness_in_decision : marge > 0 exigée
   top_risks: 3
   max_arguments: 5
+  price_gap_band: 0.05                 # q1 : écart du prix demandé à la médiane DVF au-delà duquel le prix est jugé élevé (ou bas)
+  # Critère M (prix au m²) : prix demandé au m² (surface actuelle) face à la médiane des transactions comparables.
+  # Au-dessus de la référence de plus de price_gap_band, ou seulement en ligne pour un immeuble à restructurer
+  # (restructuring_requires_discount), une opération qui atteint les objectifs devient GO AVEC CONTRAINTES :
+  # le prix doit être négocié sous la référence de marché diminuée de price_gap_band.
+  price_reference: market.dvf_price_per_sqm
+  restructuring_requires_discount: true
+
+explanation:
+  # texte explicatif du rapporteur final : 1) décision et raisons (scénario central), 2) risques déclarés,
+  # 3) hypothèses à valider, classées par influence sur le TRI, 4) seuils qui feraient changer la décision
+  max_hypotheses: 5
+  validation_actions:
+    relet_rent: "obtenir des références de loyers signés récemment pour des immeubles restructurés comparables du sous-marché, ou une lettre d'intention d'un preneur"
+    exit_yield: "recouper le taux de rendement prime avec un second rapport d'investissement récent et des transactions comparables"
+    stabilised_occupancy: "vérifier la vacance et la profondeur de la demande du sous-marché pour des plateaux de cette taille"
+    letting_void_months: "comparer avec le délai de commercialisation d'immeubles restructurés livrés récemment, et viser une pré-commercialisation"
+    capex_per_sqm: "faire chiffrer les travaux par un économiste de la construction ou une entreprise générale (prix global et forfaitaire)"
+    works_months: "établir un planning détaillé avec l'architecte : permis, délai de recours des tiers, désamiantage"
+    euribor: "obtenir une offre de financement et chiffrer une couverture de taux (cap ou swap)"
+    acq_fees_pct: "faire confirmer les droits d'enregistrement et frais d'acquisition par le notaire"
+    rent_free_months: "obtenir le niveau de mesures d'accompagnement pratiqué dans le sous-marché (rapport de marché, conseil)"
+    targets: "faire confirmer les objectifs du fonds (TRI, marge, spread, multiple) par le comité d'investissement"
 
 llm:
   provider: openai
   model: gpt-4o-mini                   # modèle prévu au plan
   temperature: 0
   api_key_env: OPENAI_API_KEY          # la clé n'est JAMAIS écrite dans un fichier du projet
-  prompt_file: prompts/final_v2.md
+  prompt_file: prompts/final_v3.md      # v3 : décision sur le scénario central, risques déclarés
   node_prompts:                        # un LLM par nœud d'analyse, chacun sur ses propres résultats
     financial_analysis: prompts/financial_v1.md
     risk_analysis: prompts/risk_v1.md
     sensitivity_analysis: prompts/sensitivity_v1.md
     scenario_analysis: prompts/scenario_v1.md
   number_tolerance_rel: 0.005          # un nombre du texte doit correspondre à un chiffre calculé (arrondi d'affichage)
+  max_text_lines: 5                    # texte du LLM final limité à 5 lignes : synthèse (une phrase par ligne) et lignes de la note
 
 risk_scoring:
   criticality_levels:            # criticité = probabilité (1-5) x impact (1-5)
@@ -401,3 +432,24 @@ risk_scoring:
                       rationale: "extension et rooftop refusés : surface finale égale à la surface actuelle"}
     dpe_target_missed: {changes: [{field: relet_rent, op: mult, value: 0.95}, {field: capex_per_sqm, op: mult, value: 1.05}],
                         rationale: "objectif DPE non atteint : décote de loyer de 5 % et 5 % de travaux énergétiques supplémentaires"}
+
+# --------------------------------------------------------------------------- dashboard (specification_dashboard_helios.md, 7.2)
+# Curseurs du simulateur. Chaque curseur exprime un ÉCART au scénario central (position 0 = central exact) :
+#   mult_pct    : valeur = central x (1 + k/100), bornes en % ;
+#   add_bps     : valeur = central + k/10 000, bornes en points de base ;
+#   abs_pts     : bornes ABSOLUES en fraction (ex. occupation 0,70 à 1,00), curseur par pas de 1 point ;
+#   abs_int     : bornes ABSOLUES entières (ex. durée des travaux 12 à 30 mois), curseur par pas de 1 ;
+#   add_int     : valeur = central + k, bornes entières.
+# shift_exit : la date de cession est décalée d'autant de mois (comme dans les sensibilités).
+dashboard:
+  sliders:
+    - {id: rent, label: "Loyer de relocation", field: relet_rent, kind: mult_pct, min: -20, max: 20, step: 1}
+    - {id: capex, label: "Coût des travaux", field: capex_per_sqm, kind: mult_pct, min: -10, max: 25, step: 1}
+    - {id: works, label: "Durée des travaux", field: works_months, kind: abs_int, min: 12, max: 30, step: 1, shift_exit: true}
+    - {id: occupancy, label: "Occupation stabilisée", field: stabilised_occupancy, kind: abs_pts, min: 0.70, max: 1.00, step: 1}
+    - {id: exit_yield, label: "Taux de sortie", field: exit_yield, kind: add_bps, min: -50, max: 100, step: 5}
+    - {id: euribor, label: "Euribor 3 mois", field: euribor, kind: add_bps, min: -100, max: 200, step: 5}
+    - {id: letting, label: "Retard de relocation", field: letting_void_months, kind: add_int, min: 0, max: 12, step: 1, shift_exit: true}
+    - {id: price, label: "Prix d'acquisition", field: price, kind: mult_pct, min: -20, max: 5, step: 1}
+  low_sample_threshold_from: market.dvf_price_per_sqm     # seuil « échantillon faible » = min_sample de ce besoin de données
+
